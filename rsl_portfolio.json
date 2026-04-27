@@ -1,0 +1,57 @@
+{
+  "S&P 500|INTC": {
+    "market": "S&P 500",
+    "ticker": "INTC",
+    "name": "Intel",
+    "wkn": "855681",
+    "isin": "",
+    "buy_date": "2026-04-27",
+    "initial_rank": 2,
+    "initial_rsl": 1.8018,
+    "added_at": "2026-04-27T12:22:28"
+  },
+  "S&P 500|SNDK": {
+    "market": "S&P 500",
+    "ticker": "SNDK",
+    "name": "Sandisk",
+    "wkn": "—",
+    "isin": "",
+    "buy_date": "2026-04-27",
+    "initial_rank": 1,
+    "initial_rsl": 2.0356,
+    "added_at": "2026-04-27T12:22:28"
+  },
+  "S&P 500|LITE": {
+    "market": "S&P 500",
+    "ticker": "LITE",
+    "name": "Lumentum",
+    "wkn": "—",
+    "isin": "",
+    "buy_date": "2026-04-27",
+    "initial_rank": 3,
+    "initial_rsl": 1.7581,
+    "added_at": "2026-04-27T12:22:28"
+  },
+  "S&P 500|CIEN": {
+    "market": "S&P 500",
+    "ticker": "CIEN",
+    "name": "Ciena",
+    "wkn": "—",
+    "isin": "",
+    "buy_date": "2026-04-27",
+    "initial_rank": 4,
+    "initial_rsl": 1.7575,
+    "added_at": "2026-04-27T12:22:28"
+  },
+  "S&P 500|WDC": {
+    "market": "S&P 500",
+    "ticker": "WDC",
+    "name": "Western Digital",
+    "wkn": "—",
+    "isin": "",
+    "buy_date": "2026-04-27",
+    "initial_rank": 5,
+    "initial_rsl": 1.6927,
+    "added_at": "2026-04-27T12:22:28"
+  }
+}
