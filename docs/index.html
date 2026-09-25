@@ -1,0 +1,17 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>RSL Scanner</title><link rel="stylesheet" href="style.css"></head><body>
+<header><div><h1>RSL Scanner</h1><p>Schnelle Browser-Version · ohne Alpaca</p></div><button id="refresh">↻ Aktualisieren</button></header>
+<main>
+<section class="card controls">
+<div class="label">INDEX AUSWÄHLEN:</div><div id="indexButtons" class="buttons"></div>
+<div class="row">
+<div><div class="label">RSL BASIS:</div><button class="basis active" data-basis="26w">26 Wochen</button><button class="basis" data-basis="26d">26 Tage</button></div>
+<div><div class="label">ANZEIGE:</div><button id="indicators" class="active">Indikatoren</button><button id="crossOnly">Golden/Death Cross</button><button id="outliers">Ausreißer ausblenden</button></div>
+<div class="search"><div class="label">AKTIE SUCHEN:</div><input id="search" placeholder="Ticker oder Name"></div>
+</div>
+<div class="row compact"><button id="print">PDF exportieren</button><button id="csv">Ticker exportieren</button><span id="status"></span></div>
+</section>
+<section class="card movers"><div class="section-title">RSL Top Mover (5 Handelstage) · <span id="moverIndex"></span></div><div class="mover-grid"><div class="upbox"><h3>Aufsteiger</h3><div id="gainers"></div></div><div class="downbox"><h3>Absteiger</h3><div id="losers"></div></div></div></section>
+<section class="card table-card"><div class="table-title"><div><b id="tableIndex">S&P 500</b> <span id="tableBasis">Basis: 26 Wochen</span></div><span id="updated"></span></div>
+<div class="legend"><span class="lg both"></span> Top 5 in 26 Tage & 26 Wochen <span class="lg one"></span> Top 5 in einer Basis <span class="lg low"></span> Untere 75% <span class="badge golden">Golden Cross</span><span class="badge death">Death Cross</span></div>
+<div class="table-wrap"><table><thead><tr><th>Rang</th><th>Δ 5T</th><th>Symbol</th><th>Name</th><th>Sektor</th><th>RSL</th><th class="indicator">Trendqualität</th><th class="indicator">RSI</th><th class="indicator">MACD</th><th class="indicator">Signal</th><th>% 1T</th><th>% 1W</th><th>% 1M</th><th>Cross</th></tr></thead><tbody id="rows"></tbody></table></div>
+</section></main><script src="app.js"></script></body></html>
