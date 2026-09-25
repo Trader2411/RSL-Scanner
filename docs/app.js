@@ -19,7 +19,7 @@ function values(){
 }
 function render(){const universe=[...(DATA.indexes?.[currentIndex]||[])],a=values(),total=universe.length,rk=basis==="26w"?"rank26w":"rank26d",mv=basis==="26w"?"move26w":"move26d",rv=basis==="26w"?"rsl26w":"rsl26d";$("tableIndex").textContent=currentIndex;$("moverIndex").textContent=currentIndex;$("tableBasis").textContent="Basis: "+(basis==="26w"?"26 Wochen":"26 Tage");$("updated").textContent=DATA.generated_at?"Stand: "+new Date(DATA.generated_at).toLocaleString("de-AT"):"Noch keine Kursdatei";document.body.classList.toggle("hide-indicators",!showIndicators);
 const sorted=[...a].sort((x,y)=>(x[rk]||9999)-(y[rk]||9999));$("rows").innerHTML=sorted.map(x=>row(x,rk,mv,rv,total)).join("");
-const movers=[...a].filter(x=>x[mv]!=null).sort((x,y)=>y[mv]-x[mv]);$("gainers").innerHTML=movers.slice(0,3).map((x,i)=>mover(x,i+1,mv,rk,rv,true)).join("")||"<small>Keine Daten</small>";$("losers").innerHTML=movers.slice(-3).reverse().map((x,i)=>mover(x,i+1,mv,rk,rv,false)).join("")||"<small>Keine Daten</small>"}
+const movers=[...universe].filter(x=>x[mv]!=null).sort((x,y)=>y[mv]-x[mv]);$("gainers").innerHTML=movers.slice(0,3).map((x,i)=>mover(x,i+1,mv,rk,rv,true)).join("")||"<small>Keine Daten</small>";$("losers").innerHTML=movers.slice(-3).reverse().map((x,i)=>mover(x,i+1,mv,rk,rv,false)).join("")||"<small>Keine Daten</small>"}
 function rankStatus(rank,total){
   if(!rank||!total)return {cls:"rank-bad",label:"—",pct:null};
   const pct=(rank/total)*100;
