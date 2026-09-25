@@ -39,3 +39,16 @@
 @media(max-width:700px){
   .rank-status{font-size:8px;padding:2px 5px}
 }
+
+.chart-link{
+  color:#69a6ff;
+  text-decoration:none;
+  font-weight:850;
+}
+.chart-link:hover{
+  text-decoration:underline;
+  color:#9bc3ff;
+}
+.mitem .chart-link{
+  color:inherit;
+}
