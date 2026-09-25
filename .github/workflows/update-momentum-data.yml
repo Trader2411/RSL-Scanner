@@ -48,8 +48,9 @@ jobs:
           from pathlib import Path
           p=Path('docs/momentum-radar/data.json')
           data=json.loads(p.read_text(encoding='utf-8'))
-          assert data.get('version') == 'momentum-radar-mvp-1'
-          assert 'candidates' in data and 'coverage' in data
+          assert data.get('version') == 'momentum-radar-mvp-2'
+          assert 'candidates' in data and 'coverage' in data and 'universes' in data
+          assert 'Emerging Markets' in data['universes']
           print('JSON OK:', data['coverage'])
           PY
 
