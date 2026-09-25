@@ -9,6 +9,12 @@ function chartNumber(v){
   const d=a>=100?2:a>=1?3:a>=0.01?4:8;
   return n.toLocaleString("de-AT",{maximumFractionDigits:d});
 }
+function formatDateShort(iso){
+  if(!iso)return "—";
+  const d=new Date(iso+"T00:00:00");
+  if(Number.isNaN(d.getTime()))return "—";
+  return d.toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit",year:"2-digit"});
+}
 function findRecord(symbol){
   const current=DATA?.indexes?.[currentIndex]||[];
   let hit=current.find(x=>x.symbol===symbol);
@@ -31,23 +37,42 @@ function openChart(symbol){
     box.innerHTML="<div class='chart-empty'>Chartdaten werden mit dem nächsten Datenlauf bereitgestellt.</div>";
   }else{
     const first=vals[0],last=vals[vals.length-1],low=Math.min(...vals),high=Math.max(...vals);
+    const mid=low+(high-low)/2;
     const change=first?((last/first)-1)*100:0;
     stats.innerHTML=`<span>Aktuell <b>${chartNumber(last)}</b></span><span>6M <b class="${change>=0?"pos":"neg"}">${change>=0?"+":""}${change.toFixed(2)}%</b></span><span>Tief <b>${chartNumber(low)}</b></span><span>Hoch <b>${chartNumber(high)}</b></span>`;
-    const W=900,H=360,P=30,range=(high-low)||1;
+    const W=900,H=380,L=70,R=24,T=28,B=46,range=(high-low)||1;
+    const plotW=W-L-R,plotH=H-T-B;
     const pts=vals.map((v,i)=>{
-      const px=P+(i/(vals.length-1))*(W-2*P);
-      const py=P+((high-v)/range)*(H-2*P);
+      const px=L+(i/(vals.length-1))*plotW;
+      const py=T+((high-v)/range)*plotH;
       return px.toFixed(1)+","+py.toFixed(1);
     }).join(" ");
-    const endY=P+((high-last)/range)*(H-2*P);
+    const endY=T+((high-last)/range)*plotH;
+    const startDate=x.chart_start;
+    const endDate=x.chart_end;
+    let midDate="—";
+    if(startDate&&endDate){
+      const s=new Date(startDate+"T00:00:00").getTime();
+      const e=new Date(endDate+"T00:00:00").getTime();
+      if(Number.isFinite(s)&&Number.isFinite(e))midDate=new Date((s+e)/2).toISOString().slice(0,10);
+    }
     box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kurschart ${x.symbol}">
-      <line x1="${P}" y1="${P}" x2="${W-P}" y2="${P}" class="chart-grid"/>
-      <line x1="${P}" y1="${H/2}" x2="${W-P}" y2="${H/2}" class="chart-grid"/>
-      <line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" class="chart-grid"/>
+      <line x1="${L}" y1="${T}" x2="${W-R}" y2="${T}" class="chart-grid"/>
+      <line x1="${L}" y1="${T+plotH/2}" x2="${W-R}" y2="${T+plotH/2}" class="chart-grid"/>
+      <line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" class="chart-grid"/>
+      <line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" class="chart-axis"/>
+      <line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" class="chart-axis"/>
+
+      <text x="${L-10}" y="${T+4}" text-anchor="end" class="chart-label">${chartNumber(high)}</text>
+      <text x="${L-10}" y="${T+plotH/2+4}" text-anchor="end" class="chart-label">${chartNumber(mid)}</text>
+      <text x="${L-10}" y="${H-B+4}" text-anchor="end" class="chart-label">${chartNumber(low)}</text>
+
+      <text x="${L}" y="${H-14}" text-anchor="start" class="chart-label">${formatDateShort(startDate)}</text>
+      <text x="${L+plotW/2}" y="${H-14}" text-anchor="middle" class="chart-label">${formatDateShort(midDate)}</text>
+      <text x="${W-R}" y="${H-14}" text-anchor="end" class="chart-label">${formatDateShort(endDate)}</text>
+
       <polyline points="${pts}" class="chart-line"/>
-      <circle cx="${W-P}" cy="${endY.toFixed(1)}" r="5" class="chart-dot"/>
-      <text x="${P}" y="18" class="chart-label">${chartNumber(high)}</text>
-      <text x="${P}" y="${H-8}" class="chart-label">${chartNumber(low)}</text>
+      <circle cx="${W-R}" cy="${endY.toFixed(1)}" r="5" class="chart-dot"/>
     </svg>`;
   }
   modal.classList.add("open");
