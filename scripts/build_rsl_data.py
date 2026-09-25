@@ -189,20 +189,38 @@ def nasdaq100():
     raise RuntimeError("NASDAQ-100 Komponenten konnten nicht geladen werden")
 
 def dow():
+    # Primär: aktuelle DIA/Dow-Komponenten von Slickcharts.
+    try:
+        for t in read_tables("https://www.slickcharts.com/dowjones"):
+            sc = find_col(t, ["symbol"])
+            nc = find_col(t, ["company"])
+            if sc is not None and nc is not None and len(t) >= 30:
+                out = pd.DataFrame({
+                    "symbol": t[sc].map(norm_symbol),
+                    "name": t[nc].astype(str),
+                    "sector": "Dow Jones",
+                })
+                out = out[out["symbol"].str.match(r"^[A-Z][A-Z0-9.-]{0,9}$", na=False)].drop_duplicates("symbol")
+                if len(out) >= 30:
+                    return out.head(30)
+    except Exception:
+        pass
+
+    # Fallback: Wikipedia.
     for url in [
         "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average",
         "https://de.wikipedia.org/wiki/Dow_Jones_Industrial_Average",
     ]:
         try:
             for t in read_tables(url):
-                sc = find_col(t, ["symbol", "ticker"])
-                nc = find_col(t, ["company", "name"])
-                sec = find_col(t, ["industry", "sector", "branche"])
-                if sc is not None and nc is not None and 25 <= len(t) <= 40:
+                sym_col = find_col(t, ["symbol", "ticker"])
+                name_col = find_col(t, ["company", "name"])
+                sec_col = find_col(t, ["industry", "sector", "branche"])
+                if sym_col is not None and name_col is not None and 25 <= len(t) <= 40:
                     out = pd.DataFrame({
-                        "symbol": t[sc].map(norm_symbol),
-                        "name": t[nc].astype(str),
-                        "sector": t[sec].astype(str) if sec is not None else "Dow Jones",
+                        "symbol": t[sym_col].map(norm_symbol),
+                        "name": t[name_col].astype(str),
+                        "sector": t[sec_col].astype(str) if sec_col is not None else "Dow Jones",
                     }).drop_duplicates("symbol")
                     if len(out) >= 25:
                         return out
