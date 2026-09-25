@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#0b111a">
+  <title>MomentumRadar</title>
+  <link rel="stylesheet" href="style.css?v=1">
+</head>
+<body>
+<header>
+  <div><h1>MomentumRadar</h1><p>Konstante Tagesbewegungen · S&P 500 + NASDAQ 100</p></div>
+  <button id="refresh" aria-label="Daten aktualisieren">↻ Aktualisieren</button>
+</header>
+<main>
+  <section class="status-card card">
+    <div class="signal-wrap"><span id="signalDot" class="dot"></span><div><span class="eyebrow">HEUTIGES SIGNAL</span><strong id="overallSignal">LÄDT…</strong></div></div>
+    <div class="status-meta"><span id="phase">—</span><span id="updated">—</span></div>
+    <div id="staleBanner" class="stale hidden">🔴 Daten sind zu alt – neue Einstiege gesperrt.</div>
+  </section>
+
+  <section class="card target-card">
+    <div class="section-head"><div><span class="eyebrow">TAGESZIEL</span><h2>Depot & Einsatz</h2></div><span class="muted">lokal auf diesem Gerät gespeichert</span></div>
+    <div class="inputs">
+      <label>Depotwert €<input id="depot" type="number" min="0" step="100" value="5000"></label>
+      <label>Max. Einsatz %<input id="allocation" type="number" min="1" max="100" step="1" value="50"></label>
+    </div>
+    <div class="target-grid">
+      <div><span>Max. Einsatz</span><b id="maxUse">—</b></div>
+      <div><span>1 % Depotziel</span><b id="target1">—</b><small id="need1">—</small></div>
+      <div><span>2 % Depotziel</span><b id="target2">—</b><small id="need2">—</small></div>
+      <div><span>Aktueller Fortschritt</span><b id="progress">—</b><small id="progressText">Kandidat antippen</small></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-head"><div><span class="eyebrow">TOP 3–5</span><h2>LONG-Kandidaten</h2></div><span class="hint">🟢 Einstieg · 🟡 Beobachten · 🔴 Kein Einstieg</span></div>
+    <div id="longList" class="candidate-list"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-head"><div><span class="eyebrow">OPTIONAL</span><h2>SHORT-Kandidaten</h2></div></div>
+    <div id="shortList" class="candidate-list"></div>
+  </section>
+
+  <section class="card compact-info">
+    <div><b id="coverage">—</b><span>Datenabdeckung</span></div>
+    <div><b>15 Min.</b><span>Berechnungsraster</span></div>
+    <div><b>stündlich</b><span>Hintergrund-Update</span></div>
+  </section>
+  <p class="footer-note">Zielgröße, kein Renditeversprechen. Keine automatischen Echtgeldorders. Bei veralteten Daten wird ein Einstieg blockiert.</p>
+</main>
+<script src="app.js?v=1"></script>
+</body>
+</html>
