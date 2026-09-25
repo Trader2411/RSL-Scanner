@@ -279,13 +279,26 @@ def commodities():
 
 def crypto():
     rows = [
-        ("BTC-USD","Bitcoin","Krypto"),("ETH-USD","Ethereum","Krypto"),("SOL-USD","Solana","Krypto"),
-        ("XRP-USD","XRP","Krypto"),("BNB-USD","BNB","Krypto"),("ADA-USD","Cardano","Krypto"),
-        ("DOGE-USD","Dogecoin","Krypto"),("AVAX-USD","Avalanche","Krypto"),("LINK-USD","Chainlink","Krypto"),
-        ("DOT-USD","Polkadot","Krypto"),("BCH-USD","Bitcoin Cash","Krypto"),("LTC-USD","Litecoin","Krypto"),
-        ("XLM-USD","Stellar","Krypto"),("UNI-USD","Uniswap","Krypto"),("AAVE-USD","Aave","Krypto"),
+        ("BTC-USD","Bitcoin","Krypto"),("ETH-USD","Ethereum","Krypto"),("BNB-USD","BNB","Krypto"),
+        ("XRP-USD","XRP","Krypto"),("SOL-USD","Solana","Krypto"),("DOGE-USD","Dogecoin","Krypto"),
+        ("ADA-USD","Cardano","Krypto"),("TRX-USD","TRON","Krypto"),("AVAX-USD","Avalanche","Krypto"),
+        ("LINK-USD","Chainlink","Krypto"),("DOT-USD","Polkadot","Krypto"),("BCH-USD","Bitcoin Cash","Krypto"),
+        ("LTC-USD","Litecoin","Krypto"),("SHIB-USD","Shiba Inu","Krypto"),("XLM-USD","Stellar","Krypto"),
+        ("HBAR-USD","Hedera","Krypto"),("UNI-USD","Uniswap","Krypto"),("AAVE-USD","Aave","Krypto"),
         ("ETC-USD","Ethereum Classic","Krypto"),("ATOM-USD","Cosmos","Krypto"),("FIL-USD","Filecoin","Krypto"),
-        ("NEAR-USD","NEAR Protocol","Krypto"),("ICP-USD","Internet Computer","Krypto"),
+        ("NEAR-USD","NEAR Protocol","Krypto"),("ICP-USD","Internet Computer","Krypto"),("ALGO-USD","Algorand","Krypto"),
+        ("VET-USD","VeChain","Krypto"),("MANA-USD","Decentraland","Krypto"),("SAND-USD","The Sandbox","Krypto"),
+        ("AXS-USD","Axie Infinity","Krypto"),("THETA-USD","Theta Network","Krypto"),("EOS-USD","EOS","Krypto"),
+        ("XTZ-USD","Tezos","Krypto"),("EGLD-USD","MultiversX","Krypto"),("FLOW-USD","Flow","Krypto"),
+        ("CHZ-USD","Chiliz","Krypto"),("GRT-USD","The Graph","Krypto"),("RUNE-USD","THORChain","Krypto"),
+        ("MKR-USD","Maker","Krypto"),("COMP-USD","Compound","Krypto"),("CRV-USD","Curve DAO","Krypto"),
+        ("SNX-USD","Synthetix","Krypto"),("LDO-USD","Lido DAO","Krypto"),("ARB-USD","Arbitrum","Krypto"),
+        ("OP-USD","Optimism","Krypto"),("IMX-USD","Immutable","Krypto"),("INJ-USD","Injective","Krypto"),
+        ("STX-USD","Stacks","Krypto"),("QNT-USD","Quant","Krypto"),("KAVA-USD","Kava","Krypto"),
+        ("ZEC-USD","Zcash","Krypto"),("DASH-USD","Dash","Krypto"),("NEO-USD","NEO","Krypto"),
+        ("IOTA-USD","IOTA","Krypto"),("BAT-USD","Basic Attention Token","Krypto"),("ZRX-USD","0x","Krypto"),
+        ("ONE-USD","Harmony","Krypto"),("ROSE-USD","Oasis Network","Krypto"),("KSM-USD","Kusama","Krypto"),
+        ("ENJ-USD","Enjin Coin","Krypto"),("1INCH-USD","1inch","Krypto"),("ANKR-USD","Ankr","Krypto"),
     ]
     return pd.DataFrame(rows, columns=["symbol","name","sector"])
 
