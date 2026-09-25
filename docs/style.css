@@ -84,3 +84,9 @@ body.modal-open{overflow:hidden}
   .chart-stats{gap:10px 16px}
   .chart-head b{font-size:16px}
 }
+
+.chart-axis{stroke:#44556d;stroke-width:1.2}
+.chart-label{fill:#9fb0c6;font-size:13px;font-weight:650}
+@media(max-width:700px){
+  .chart-label{font-size:12px}
+}
