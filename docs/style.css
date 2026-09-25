@@ -90,3 +90,21 @@ body.modal-open{overflow:hidden}
 @media(max-width:700px){
   .chart-label{font-size:12px}
 }
+
+.chart-canvas{position:relative}
+.chart-canvas svg{touch-action:none;user-select:none;-webkit-user-select:none}
+.chart-hit-area{fill:transparent;pointer-events:all}
+.chart-cursor-line{stroke:#cbd5e1;stroke-width:1.4;stroke-dasharray:5 5;pointer-events:none}
+.chart-cursor-dot{fill:#edf4ff;stroke:#69a6ff;stroke-width:3;pointer-events:none}
+.chart-hover-tooltip{
+  position:absolute;z-index:5;display:none;min-width:145px;
+  background:#0b1420f2;border:1px solid #40546e;border-radius:9px;
+  padding:8px 10px;box-shadow:0 8px 24px #0008;pointer-events:none;
+  font-size:12px;color:#edf4ff;white-space:nowrap;
+}
+.chart-hover-tooltip.show{display:block}
+.chart-hover-tooltip b{display:block;margin-bottom:3px}
+.chart-hover-tooltip span{display:block;color:#9fb0c6}
+@media(max-width:700px){
+  .chart-hover-tooltip{font-size:13px;min-width:155px;padding:9px 11px}
+}
