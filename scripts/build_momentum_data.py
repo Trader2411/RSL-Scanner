@@ -376,7 +376,8 @@ def signal_for(metrics, direction, now_ny, latest_age_min):
     vol = metrics.get("volume_ratio")
     open_check = metrics.get("open_check_long") if direction == "long" else metrics.get("open_check_short")
 
-    fresh = latest_age_min is not None and latest_age_min <= 45
+    market_open = dtime(4, 0) <= now_ny.time() < dtime(16, 0)
+    fresh = market_open and latest_age_min is not None and latest_age_min <= 45
     enough_history = intervals >= 7
     volume_ok = vol is None or vol >= 0.65
     open_ok = open_check is None or open_check > -0.45
