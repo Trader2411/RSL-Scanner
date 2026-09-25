@@ -20,7 +20,7 @@ NEW_YORK = ZoneInfo("America/New_York")
 BATCH_SIZE = 90
 LOOKBACK = "5d"
 INTERVAL = "15m"
-UNIVERSE_INDEXES = ["S&P 500", "S&P 400", "NASDAQ 100", "Dow Jones", "DAX", "Rohstoffe", "Krypto"]
+UNIVERSE_INDEXES = ["S&P 500", "S&P 400", "NASDAQ 100", "Dow Jones", "DAX", "Rohstoffe", "Krypto", "Emerging Markets"]
 INDEX_BENCHMARKS = {
     "S&P 500": "SPY",
     "S&P 400": "MDY",
@@ -29,7 +29,26 @@ INDEX_BENCHMARKS = {
     "DAX": "^GDAXI",
     "Rohstoffe": "DBC",
     "Krypto": "BTC-USD",
+    "Emerging Markets": "EEM",
 }
+
+EMERGING_MARKETS = [
+    ("TSM","Taiwan Semiconductor","Technology"),("BABA","Alibaba","Consumer Discretionary"),
+    ("PDD","PDD Holdings","Consumer Discretionary"),("JD","JD.com","Consumer Discretionary"),
+    ("BIDU","Baidu","Communication Services"),("NIO","NIO","Consumer Discretionary"),
+    ("LI","Li Auto","Consumer Discretionary"),("XPEV","XPeng","Consumer Discretionary"),
+    ("SE","Sea Limited","Communication Services"),("GRAB","Grab Holdings","Industrials"),
+    ("MELI","MercadoLibre","Consumer Discretionary"),("NU","Nu Holdings","Financials"),
+    ("VALE","Vale","Materials"),("PBR","Petrobras","Energy"),("ITUB","Itaú Unibanco","Financials"),
+    ("GGB","Gerdau","Materials"),("INFY","Infosys","Information Technology"),
+    ("HDB","HDFC Bank","Financials"),("IBN","ICICI Bank","Financials"),("WIT","Wipro","Information Technology"),
+    ("KB","KB Financial","Financials"),("PKX","POSCO","Materials"),("SKM","SK Telecom","Communication Services"),
+    ("KT","KT Corporation","Communication Services"),("YPF","YPF","Energy"),("GGAL","Grupo Financiero Galicia","Financials"),
+    ("CRESY","Cresud","Real Estate"),("FMX","FEMSA","Consumer Staples"),("AMX","América Móvil","Communication Services"),
+    ("ASR","Grupo Aeroportuario del Sureste","Industrials"),("PAC","Grupo Aeroportuario del Pacífico","Industrials"),
+    ("BAP","Credicorp","Financials"),("EC","Ecopetrol","Energy"),("CIB","Bancolombia","Financials"),
+]
+
 
 SECTOR_ETFS = {
     "communication services": "XLC",
@@ -97,7 +116,8 @@ def load_universe():
     payload = json.loads(RSL_DATA.read_text(encoding="utf-8"))
     indexes = payload.get("indexes", {})
     merged = {}
-    for index_name in UNIVERSE_INDEXES:
+    source_indexes = [x for x in UNIVERSE_INDEXES if x != "Emerging Markets"]
+    for index_name in source_indexes:
         rows = indexes.get(index_name, [])
         if not rows:
             continue
@@ -115,6 +135,15 @@ def load_universe():
                 item["indexes"].append(index_name)
             if not item["sector"] and row.get("sector"):
                 item["sector"] = str(row["sector"])
+    for symbol, name, sector in EMERGING_MARKETS:
+        item = merged.setdefault(symbol, {
+            "symbol": symbol,
+            "name": name,
+            "sector": sector,
+            "indexes": [],
+        })
+        if "Emerging Markets" not in item["indexes"]:
+            item["indexes"].append("Emerging Markets")
     return list(merged.values())
 
 
