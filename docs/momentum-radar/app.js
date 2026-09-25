@@ -16,7 +16,14 @@ function isStale(){
   const age=(Date.now()-new Date(DATA.generated_at).getTime())/60000;
   return age>90;
 }
-function displaySignal(raw){return isStale()?'KEIN EINSTIEG':raw}
+function isMarketClosed(){
+  const usSessionUniverses=['S&P 500','S&P 400','NASDAQ 100','Dow Jones','Emerging Markets'];
+  return usSessionUniverses.includes(currentUniverse) && DATA?.market?.phase==='US-Handel beendet';
+}
+function displaySignal(raw){
+  if(isMarketClosed()) return 'MARKT GESCHLOSSEN';
+  return isStale()?'KEIN EINSTIEG':raw;
+}
 async function load(){
   $('overallSignal').textContent='LÄDT…';
   const r=await fetch(`data.json?ts=${Date.now()}`,{cache:'no-store'});
@@ -39,12 +46,13 @@ function buildUniverseButtons(){
   });
 }
 function render(){
-  const u=universeData(), stale=isStale(), overall=displaySignal(u.overall_signal||'KEIN EINSTIEG');
+  const u=universeData(), stale=isStale(), closed=isMarketClosed(), overall=displaySignal(u.overall_signal||'KEIN EINSTIEG');
   $('overallSignal').textContent=overall;
   $('signalDot').className=`dot ${signalClass(overall)}`;
   $('phase').innerHTML=`${currentUniverse} · ${DATA?.market?.phase||'—'}${DATA?.market?.special_scan?` · <span class="special">${DATA.market.special_scan}</span>`:''}`;
   $('updated').textContent=DATA?.generated_at?`Stand: ${new Date(DATA.generated_at).toLocaleString('de-AT',{dateStyle:'short',timeStyle:'short'})}`:'Noch keine Daten';
-  $('staleBanner').classList.toggle('hidden',!stale);
+  $('staleBanner').textContent=closed?'🔴 Markt geschlossen – neue Einstiege gesperrt.':'🔴 Daten sind zu alt – neue Einstiege gesperrt.';
+  $('staleBanner').classList.toggle('hidden',!stale&&!closed);
   $('coverage').textContent=`${u.coverage?.with_intraday_data||0}/${u.coverage?.universe||0}`;
   renderList('longList',u.candidates?.long||[]);
   renderList('shortList',u.candidates?.short||[]);
@@ -67,7 +75,7 @@ function findCandidate(symbol,direction){
   return [...(u.candidates?.long||[]),...(u.candidates?.short||[])].find(x=>x.symbol===symbol&&x.direction===direction);
 }
 function card(x){
-  const shownSignal=isStale()?'KEIN EINSTIEG':x.signal;
+  const shownSignal=displaySignal(x.signal);
   const scls=signalClass(shownSignal);
   const stab=x.stability==null?'—':`${Math.round(x.stability)} %`;
   const move=x.momentum_change||'—';
