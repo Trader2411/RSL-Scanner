@@ -37,12 +37,7 @@ jobs:
 
       - run: python scripts/build_rsl_data.py
 
-      - name: Upload current site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-      - name: Commit refreshed data
+      - name: Commit refreshed data and sync latest main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -50,6 +45,12 @@ jobs:
           git diff --cached --quiet || git commit -m "Refresh RSL market data"
           git pull --rebase origin main
           git push origin main
+          git pull --ff-only origin main
+
+      - name: Upload latest site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
 
   deploy:
     needs: update
