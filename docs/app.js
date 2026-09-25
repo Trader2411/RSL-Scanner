@@ -1,7 +1,7 @@
 let DATA=null,currentIndex="S&P 500",basis="26w",outliers=false,showIndicators=true;
 const $=id=>document.getElementById(id);
 const fmt=v=>v==null?"—":(v>0?"+":"")+Number(v).toFixed(2)+"%";
-const chartUrl=s=>`https://finance.yahoo.com/chart/${encodeURIComponent(s)}`;
+const chartUrl=s=>`https://finance.yahoo.com/quote/${encodeURIComponent(s)}/chart/`;
 const chartLink=s=>`<a class="chart-link" href="${chartUrl(s)}" target="_blank" rel="noopener noreferrer" title="${s} Chart öffnen">${s} ↗</a>`;
 async function load(){ $("status").textContent="Daten werden geladen…"; const r=await fetch("data.json?"+Date.now()); DATA=await r.json(); const names=Object.keys(DATA.indexes||{}); if(names.length&&!names.includes(currentIndex))currentIndex=names[0]; buildButtons(); render(); $("status").textContent=DATA.generated_at?"Daten geladen":"Erster Datenlauf noch offen"; }
 function buildButtons(){const box=$("indexButtons");box.innerHTML="";const names=Object.keys(DATA.indexes||{});(names.length?names:["S&P 500","NASDAQ 100","Dow Jones","DAX","Krypto"]).forEach(n=>{const b=document.createElement("button");b.textContent=n;b.className=n===currentIndex?"active":"";b.onclick=()=>{currentIndex=n;buildButtons();render()};box.appendChild(b)})}
