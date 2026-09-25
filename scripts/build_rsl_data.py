@@ -1,6 +1,7 @@
 import json, time
 from datetime import datetime, timezone
 from pathlib import Path
+from io import StringIO
 
 import numpy as np
 import pandas as pd
@@ -90,7 +91,7 @@ def cross_signal(s):
 def read_tables(url):
     r = requests.get(url, headers=HEADERS, timeout=30)
     r.raise_for_status()
-    return pd.read_html(r.text)
+    return pd.read_html(StringIO(r.text))
 
 def sp500():
     t = read_tables("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")[0]
