@@ -1,8 +1,66 @@
 let DATA=null,currentIndex="S&P 500",basis="26w",outliers=false,showIndicators=true;
 const $=id=>document.getElementById(id);
 const fmt=v=>v==null?"—":(v>0?"+":"")+Number(v).toFixed(2)+"%";
-const chartUrl=s=>`https://finance.yahoo.com/quote/${encodeURIComponent(s)}/chart/`;
-const chartLink=s=>`<a class="chart-link" href="${chartUrl(s)}" target="_blank" rel="noopener noreferrer" title="${s} Chart öffnen">${s} ↗</a>`;
+const chartLink=s=>`<a class="chart-link" href="#chart" data-symbol="${s}" title="${s} Chart öffnen">${s} ↗</a>`;
+
+function chartNumber(v){
+  if(v==null||!Number.isFinite(Number(v)))return "—";
+  const n=Number(v),a=Math.abs(n);
+  const d=a>=100?2:a>=1?3:a>=0.01?4:8;
+  return n.toLocaleString("de-AT",{maximumFractionDigits:d});
+}
+function findRecord(symbol){
+  const current=DATA?.indexes?.[currentIndex]||[];
+  let hit=current.find(x=>x.symbol===symbol);
+  if(hit)return hit;
+  for(const items of Object.values(DATA?.indexes||{})){
+    hit=items.find(x=>x.symbol===symbol);
+    if(hit)return hit;
+  }
+  return null;
+}
+function openChart(symbol){
+  const x=findRecord(symbol);
+  if(!x)return;
+  const modal=$("chartModal"), box=$("chartCanvas"), stats=$("chartStats");
+  $("chartTitle").textContent=x.name+" · "+x.symbol;
+  $("chartSubtitle").textContent="6 Monate · "+(x.chart_start||"—")+" bis "+(x.chart_end||"—");
+  const vals=(x.chart130||[]).map(Number).filter(Number.isFinite);
+  if(vals.length<2){
+    stats.innerHTML="";
+    box.innerHTML="<div class='chart-empty'>Chartdaten werden mit dem nächsten Datenlauf bereitgestellt.</div>";
+  }else{
+    const first=vals[0],last=vals[vals.length-1],low=Math.min(...vals),high=Math.max(...vals);
+    const change=first?((last/first)-1)*100:0;
+    stats.innerHTML=`<span>Aktuell <b>${chartNumber(last)}</b></span><span>6M <b class="${change>=0?"pos":"neg"}">${change>=0?"+":""}${change.toFixed(2)}%</b></span><span>Tief <b>${chartNumber(low)}</b></span><span>Hoch <b>${chartNumber(high)}</b></span>`;
+    const W=900,H=360,P=30,range=(high-low)||1;
+    const pts=vals.map((v,i)=>{
+      const px=P+(i/(vals.length-1))*(W-2*P);
+      const py=P+((high-v)/range)*(H-2*P);
+      return px.toFixed(1)+","+py.toFixed(1);
+    }).join(" ");
+    const endY=P+((high-last)/range)*(H-2*P);
+    box.innerHTML=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Kurschart ${x.symbol}">
+      <line x1="${P}" y1="${P}" x2="${W-P}" y2="${P}" class="chart-grid"/>
+      <line x1="${P}" y1="${H/2}" x2="${W-P}" y2="${H/2}" class="chart-grid"/>
+      <line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" class="chart-grid"/>
+      <polyline points="${pts}" class="chart-line"/>
+      <circle cx="${W-P}" cy="${endY.toFixed(1)}" r="5" class="chart-dot"/>
+      <text x="${P}" y="18" class="chart-label">${chartNumber(high)}</text>
+      <text x="${P}" y="${H-8}" class="chart-label">${chartNumber(low)}</text>
+    </svg>`;
+  }
+  modal.classList.add("open");
+  modal.setAttribute("aria-hidden","false");
+  document.body.classList.add("modal-open");
+}
+function closeChart(){
+  const modal=$("chartModal");
+  if(!modal)return;
+  modal.classList.remove("open");
+  modal.setAttribute("aria-hidden","true");
+  document.body.classList.remove("modal-open");
+}
 async function load(){ $("status").textContent="Daten werden geladen…"; const r=await fetch("data.json?"+Date.now()); DATA=await r.json(); const names=Object.keys(DATA.indexes||{}); if(names.length&&!names.includes(currentIndex))currentIndex=names[0]; buildButtons(); render(); $("status").textContent=DATA.generated_at?"Daten geladen":"Erster Datenlauf noch offen"; }
 function buildButtons(){const box=$("indexButtons");box.innerHTML="";const names=Object.keys(DATA.indexes||{});(names.length?names:["S&P 500","NASDAQ 100","Dow Jones","DAX","Krypto"]).forEach(n=>{const b=document.createElement("button");b.textContent=n;b.className=n===currentIndex?"active":"";b.onclick=()=>{currentIndex=n;buildButtons();render()};box.appendChild(b)})}
 function values(){
@@ -42,5 +100,12 @@ function row(x,rk,mv,rv,total){
   return `<tr class="${cls}"><td><b>${x[rk]||"—"}</b></td><td>${status}</td><td class="${move>=0?"pos":"neg"}">${move>0?"↑ ":""}${move<0?"↓ ":""}${Math.abs(move)}</td><td class="sym">${chartLink(x.symbol)}</td><td>${x.name}</td><td>${x.sector||"—"}</td><td><b>${x[rv]?.toFixed(4)||"—"}</b></td><td class="indicator"><span class="trend">${x.trendq==null?"—":(x.trendq>0?"+":"")+x.trendq.toFixed(2)}</span></td><td class="indicator ${rsiCls}">${x.rsi??"—"}</td><td class="indicator ${(x.macd_hist||0)>=0?"pos":"neg"}">${x.macd_hist==null?"—":(x.macd_hist>0?"+":"")+x.macd_hist.toFixed(2)}</td><td class="indicator">${sig}</td><td class="${(x.d1||0)>=0?"pos":"neg"}">${fmt(x.d1)}</td><td class="${(x.w1||0)>=0?"pos":"neg"}">${fmt(x.w1)}</td><td class="${(x.m1||0)>=0?"pos":"neg"}">${fmt(x.m1)}</td></tr>`
 }
 function mover(x,i,mv,rk,rv,up){return `<div class="mitem"><b><span>${i}. ${chartLink(x.symbol)}</span><span class="${up?"pos":"neg"}">${up?"↑":"↓"} ${Math.abs(x[mv]||0)}</span></b><small>${x.name}</small><div><small>#${x["old"+rk]||"—"} → #${x[rk]||"—"} · RSL ${x[rv]?.toFixed(2)||"—"}</small></div></div>`}
+document.addEventListener("click",e=>{
+  const a=e.target.closest(".chart-link");
+  if(a){e.preventDefault();openChart(a.dataset.symbol)}
+});
+$("chartClose").onclick=closeChart;
+$("chartModal").onclick=e=>{if(e.target===$("chartModal"))closeChart()};
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeChart()});
 document.querySelectorAll(".basis").forEach(b=>b.onclick=()=>{basis=b.dataset.basis;document.querySelectorAll(".basis").forEach(x=>x.classList.toggle("active",x===b));render()});
 $("search").oninput=render;$("outliers").onclick=()=>{outliers=!outliers;$("outliers").classList.toggle("active",outliers);render()};$("indicators").onclick=()=>{showIndicators=!showIndicators;$("indicators").classList.toggle("active",showIndicators);render()};$("refresh").onclick=load;$("print").onclick=()=>window.print();$("csv").onclick=()=>{const a=values();const s="Symbol,Name\n"+a.map(x=>`${x.symbol},"${x.name.replaceAll('"','""')}"`).join("\n");const u=URL.createObjectURL(new Blob([s],{type:"text/csv"}));const el=document.createElement("a");el.href=u;el.download="rsl-ticker.csv";el.click();URL.revokeObjectURL(u)};load().catch(e=>{$("status").textContent="Fehler: "+e.message});
