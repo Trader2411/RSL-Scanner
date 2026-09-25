@@ -605,7 +605,6 @@ def main():
             "coverage": {"universe": expected, "with_intraday_data": len(rows)},
             "overall_signal": overall,
             "candidates": {"long": long_records, "short": short_records},
-        "universes": universes,
         }
 
     default_universe = universes.get("S&P 500", {"overall_signal": "KEIN EINSTIEG", "candidates": {"long": [], "short": []}})
@@ -641,6 +640,7 @@ def main():
             "lookback": LOOKBACK,
         },
         "candidates": {"long": long_records, "short": short_records},
+        "universes": universes,
         "errors": errors[:8],
         "source": "Yahoo Finance Intraday-Daten via yfinance; Universum/Metadaten aus dem RSL-Scanner",
         "notes": [
