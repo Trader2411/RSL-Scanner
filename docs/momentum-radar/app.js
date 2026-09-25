@@ -7,6 +7,7 @@ const cls=v=>(v||0)>=0?'pos':'neg';
 const signalClass=s=>s==='EINSTIEG'?'entry':s==='BEOBACHTEN'?'watch':'no';
 const signalIcon=s=>s==='EINSTIEG'?'🟢':s==='BEOBACHTEN'?'🟡':'🔴';
 const preferred=['S&P 500','S&P 400','NASDAQ 100','Dow Jones','DAX','Rohstoffe','Krypto','Emerging Markets'];
+function sourceChartUrl(symbol){return `https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}/chart/`;}
 
 function universeData(){
   return DATA?.universes?.[currentUniverse]||{coverage:{universe:0,with_intraday_data:0},overall_signal:'KEIN EINSTIEG',candidates:{long:[],short:[]}};
@@ -80,7 +81,7 @@ function card(x){
   const stab=x.stability==null?'—':`${Math.round(x.stability)} %`;
   const move=x.momentum_change||'—';
   return `<article class="candidate ${scls}${selected?.symbol===x.symbol&&selected?.direction===x.direction?' selected':''}" data-symbol="${x.symbol}" data-direction="${x.direction}">
-    <div class="candidate-top"><div class="rank-name"><span class="rank">${x.rank}</span><div class="name"><b>${x.name} <span class="muted">${x.symbol}</span></b><small>${x.sector||''}${x.wkn?` · <a class="wkn-link" href="${x.wkn_url||'#'}" target="_blank" rel="noopener">WKN ${x.wkn} ↗</a>`:''}</small></div></div><span class="signal-pill ${scls}">${signalIcon(shownSignal)} ${shownSignal}</span></div>
+    <div class="candidate-top"><div class="rank-name"><span class="rank">${x.rank}</span><div class="name"><b>${x.name} <span class="muted">${x.symbol}</span></b><small>${x.sector||''}${x.wkn?` · <a class="wkn-link" href="${x.wkn_url||'#'}" target="_blank" rel="noopener">WKN ${x.wkn} ↗</a>`:''} · <a class="source-chart-link" href="${sourceChartUrl(x.symbol)}" target="_blank" rel="noopener">Chart Kursquelle ↗</a></small></div></div><span class="signal-pill ${scls}">${signalIcon(shownSignal)} ${shownSignal}</span></div>
     <div class="kpis">
       <div class="kpi"><span>Tag</span><b class="${cls(x.day_pct)}">${pct(x.day_pct)}</b></div>
       <div class="kpi"><span>1 Std.</span><b class="${cls(x.m1)}">${pct(x.m1)}</b></div>
