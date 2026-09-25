@@ -5,6 +5,7 @@ import time
 import re
 import unicodedata
 import requests
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, time as dtime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -536,7 +537,7 @@ def resolve_wkn(name, symbol, cache):
     for slug in dict.fromkeys(slugs):
         url = f"https://www.finanzen.net/aktien/{slug}-aktie"
         try:
-            r = requests.get(url, headers=headers, timeout=6, allow_redirects=True)
+            r = requests.get(url, headers=headers, timeout=3, allow_redirects=True)
             if r.status_code != 200:
                 continue
             title = re.search(r"<title[^>]*>(.*?)</title>", r.text, flags=re.I | re.S)
@@ -556,19 +557,31 @@ def resolve_wkn(name, symbol, cache):
 
 def enrich_candidate_wkns(universes):
     cache = load_wkn_cache()
-    seen = set()
+    targets = {}
     for index_name, u in universes.items():
         if index_name in ("Krypto", "Rohstoffe"):
             continue
         for side in ("long", "short"):
             for row in (u.get("candidates") or {}).get(side, []):
                 key = row.get("symbol")
-                if not key:
-                    continue
-                if key not in seen:
-                    resolve_wkn(row.get("name") or key, key, cache)
-                    seen.add(key)
-                info = cache.get(key) or {}
+                if key and key not in cache:
+                    targets[key] = row.get("name") or key
+
+    if targets:
+        with ThreadPoolExecutor(max_workers=12) as pool:
+            futures = {pool.submit(resolve_wkn, name, symbol, cache): symbol for symbol, name in targets.items()}
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception:
+                    pass
+
+    for index_name, u in universes.items():
+        if index_name in ("Krypto", "Rohstoffe"):
+            continue
+        for side in ("long", "short"):
+            for row in (u.get("candidates") or {}).get(side, []):
+                info = cache.get(row.get("symbol")) or {}
                 row["wkn"] = info.get("wkn")
                 row["wkn_url"] = info.get("wkn_url")
     return universes
