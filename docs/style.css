@@ -10,3 +10,17 @@
   .sym{font-size:9px}
   .trend{padding:2px 5px;border-radius:5px}
 }
+
+@media(max-width:700px){
+  #indexButtons{
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:visible!important;
+    gap:8px!important;
+  }
+  #indexButtons button{
+    width:100%!important;
+    text-align:left!important;
+    white-space:normal!important;
+  }
+}
