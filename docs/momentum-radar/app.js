@@ -53,12 +53,14 @@ function render(){
 }
 function renderList(id,items){
   $(id).innerHTML=items.length?items.map(card).join(''):'<div class="muted">Noch keine verwertbaren Kandidaten.</div>';
-  $(id).querySelectorAll('.candidate').forEach(el=>el.onclick=()=>{
+  $(id).querySelectorAll('.candidate').forEach(el=>el.onclick=e=>{
+    if(e.target.closest('a,button')) return;
     selected=findCandidate(el.dataset.symbol,el.dataset.direction);
     document.querySelectorAll('.candidate').forEach(x=>x.classList.remove('selected'));
     el.classList.add('selected');
     renderTargets();
   });
+  $(id).querySelectorAll('.wkn-link').forEach(a=>a.addEventListener('click',e=>e.stopPropagation()));
 }
 function findCandidate(symbol,direction){
   const u=universeData();
