@@ -15,6 +15,12 @@ function formatDateShort(iso){
   if(Number.isNaN(d.getTime()))return "—";
   return d.toLocaleDateString("de-AT",{day:"2-digit",month:"2-digit",year:"2-digit"});
 }
+function formatDateLong(iso){
+  if(!iso)return "—";
+  const d=new Date(iso+"T00:00:00");
+  if(Number.isNaN(d.getTime()))return "—";
+  return d.toLocaleDateString("de-AT",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"});
+}
 function findRecord(symbol){
   const current=DATA?.indexes?.[currentIndex]||[];
   let hit=current.find(x=>x.symbol===symbol);
@@ -73,7 +79,72 @@ function openChart(symbol){
 
       <polyline points="${pts}" class="chart-line"/>
       <circle cx="${W-R}" cy="${endY.toFixed(1)}" r="5" class="chart-dot"/>
-    </svg>`;
+      <line id="chartCursorLine" x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" class="chart-cursor-line" visibility="hidden"/>
+      <circle id="chartCursorDot" cx="${L}" cy="${H-B}" r="6" class="chart-cursor-dot" visibility="hidden"/>
+      <rect x="${L}" y="${T}" width="${plotW}" height="${plotH}" class="chart-hit-area"/>
+    </svg><div id="chartHoverTooltip" class="chart-hover-tooltip"></div>`;
+
+    const svg=box.querySelector("svg");
+    const cursorLine=box.querySelector("#chartCursorLine");
+    const cursorDot=box.querySelector("#chartCursorDot");
+    const tooltip=box.querySelector("#chartHoverTooltip");
+    const dates=Array.isArray(x.chart_dates)&&x.chart_dates.length===vals.length?x.chart_dates:null;
+
+    function fallbackDate(index){
+      if(dates)return dates[index];
+      if(!startDate||!endDate)return "";
+      const s=new Date(startDate+"T00:00:00").getTime();
+      const e=new Date(endDate+"T00:00:00").getTime();
+      if(!Number.isFinite(s)||!Number.isFinite(e))return "";
+      const t=s+(e-s)*(index/Math.max(1,vals.length-1));
+      return new Date(t).toISOString().slice(0,10);
+    }
+    function showChartPoint(ev){
+      const rect=svg.getBoundingClientRect();
+      if(!rect.width)return;
+      const vx=((ev.clientX-rect.left)/rect.width)*W;
+      const clamped=Math.max(L,Math.min(W-R,vx));
+      const ratio=(clamped-L)/plotW;
+      const idx=Math.max(0,Math.min(vals.length-1,Math.round(ratio*(vals.length-1))));
+      const value=vals[idx];
+      const px=L+(idx/(vals.length-1))*plotW;
+      const py=T+((high-value)/range)*plotH;
+      cursorLine.setAttribute("x1",px.toFixed(1));
+      cursorLine.setAttribute("x2",px.toFixed(1));
+      cursorLine.setAttribute("visibility","visible");
+      cursorDot.setAttribute("cx",px.toFixed(1));
+      cursorDot.setAttribute("cy",py.toFixed(1));
+      cursorDot.setAttribute("visibility","visible");
+
+      const date=fallbackDate(idx);
+      tooltip.innerHTML=`<b>${formatDateLong(date)}</b><span>Kurs ${chartNumber(value)}</span>`;
+      tooltip.classList.add("show");
+
+      const boxRect=box.getBoundingClientRect();
+      const localX=((px/W)*rect.width)+(rect.left-boxRect.left);
+      const localY=((py/H)*rect.height)+(rect.top-boxRect.top);
+      const tipW=tooltip.offsetWidth||145;
+      let left=localX-tipW/2;
+      left=Math.max(8,Math.min(box.clientWidth-tipW-8,left));
+      let top=localY-68;
+      if(top<8)top=localY+18;
+      tooltip.style.left=left+"px";
+      tooltip.style.top=top+"px";
+    }
+    svg.addEventListener("pointerdown",ev=>{
+      if(ev.pointerType==="touch")ev.preventDefault();
+      showChartPoint(ev);
+    });
+    svg.addEventListener("pointermove",ev=>{
+      if(ev.pointerType==="mouse"||ev.buttons||ev.pointerType==="touch")showChartPoint(ev);
+    });
+    svg.addEventListener("pointerleave",ev=>{
+      if(ev.pointerType==="mouse"){
+        cursorLine.setAttribute("visibility","hidden");
+        cursorDot.setAttribute("visibility","hidden");
+        tooltip.classList.remove("show");
+      }
+    });
   }
   modal.classList.add("open");
   modal.setAttribute("aria-hidden","false");
