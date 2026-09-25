@@ -20,6 +20,16 @@ NEW_YORK = ZoneInfo("America/New_York")
 BATCH_SIZE = 90
 LOOKBACK = "5d"
 INTERVAL = "15m"
+UNIVERSE_INDEXES = ["S&P 500", "S&P 400", "NASDAQ 100", "Dow Jones", "DAX", "Rohstoffe", "Krypto"]
+INDEX_BENCHMARKS = {
+    "S&P 500": "SPY",
+    "S&P 400": "MDY",
+    "NASDAQ 100": "QQQ",
+    "Dow Jones": "DIA",
+    "DAX": "^GDAXI",
+    "Rohstoffe": "DBC",
+    "Krypto": "BTC-USD",
+}
 
 SECTOR_ETFS = {
     "communication services": "XLC",
@@ -81,16 +91,16 @@ def sector_etf(sector):
 
 
 def load_universe():
-    """Reuse the already-successful RSL scanner's current S&P 500 / NASDAQ 100 metadata."""
+    """Reuse exactly the selectable universes already maintained by the RSL scanner."""
     if not RSL_DATA.exists():
         raise RuntimeError("RSL-Metadaten fehlen (docs/data.json)")
     payload = json.loads(RSL_DATA.read_text(encoding="utf-8"))
     indexes = payload.get("indexes", {})
     merged = {}
-    for index_name in ("S&P 500", "NASDAQ 100"):
+    for index_name in UNIVERSE_INDEXES:
         rows = indexes.get(index_name, [])
-        if len(rows) < 80:
-            raise RuntimeError(f"{index_name}: zu wenige Komponenten in RSL-Metadaten")
+        if not rows:
+            continue
         for row in rows:
             symbol = str(row.get("symbol", "")).strip().upper()
             if not symbol:
@@ -471,7 +481,7 @@ def main():
     universe = load_universe()
     by_symbol = {x["symbol"]: x for x in universe}
     sector_symbols = sorted({sector_etf(x.get("sector")) for x in universe})
-    helper_symbols = sorted(set(["SPY", "QQQ"] + sector_symbols))
+    helper_symbols = sorted(set(list(INDEX_BENCHMARKS.values()) + sector_symbols))
     symbols = sorted(set(by_symbol) | set(helper_symbols))
 
     frames, errors = download_intraday(symbols)
@@ -509,7 +519,9 @@ def main():
         mh = macd_hist(close)
         tq = trend_quality(close)
         accel = None if m1 is None or prev1 is None else m1 - prev1
-        index_symbol = "QQQ" if "NASDAQ 100" in meta.get("indexes", []) else "SPY"
+        memberships = meta.get("indexes", [])
+        primary_index = memberships[0] if memberships else "S&P 500"
+        index_symbol = INDEX_BENCHMARKS.get(primary_index, "SPY")
         idx_ret = bench_returns.get(index_symbol)
         sec_symbol = sector_etf(meta.get("sector"))
         sec_ret = bench_returns.get(sec_symbol, bench_returns.get("SPY"))
@@ -550,13 +562,27 @@ def main():
         metrics["momentum_change_short"] = momentum_change(m1, prev1, "short")
         scored.append((meta, metrics))
 
-    longs = sorted(scored, key=lambda x: x[1]["score_long"], reverse=True)[:5]
-    shorts = sorted(scored, key=lambda x: x[1]["score_short"], reverse=True)[:3]
-    long_records = [candidate_record(meta, metrics, "long", i + 1) for i, (meta, metrics) in enumerate(longs)]
-    short_records = [candidate_record(meta, metrics, "short", i + 1) for i, (meta, metrics) in enumerate(shorts)]
+    universes = {}
+    for index_name in UNIVERSE_INDEXES:
+        rows = [(meta, metrics) for meta, metrics in scored if index_name in meta.get("indexes", [])]
+        longs = sorted(rows, key=lambda x: x[1]["score_long"], reverse=True)[:5]
+        shorts = sorted(rows, key=lambda x: x[1]["score_short"], reverse=True)[:3]
+        long_records = [candidate_record(meta, metrics, "long", i + 1) for i, (meta, metrics) in enumerate(longs)]
+        short_records = [candidate_record(meta, metrics, "short", i + 1) for i, (meta, metrics) in enumerate(shorts)]
+        all_signals = [x["signal"] for x in long_records + short_records]
+        overall = "EINSTIEG" if "EINSTIEG" in all_signals else ("BEOBACHTEN" if "BEOBACHTEN" in all_signals else "KEIN EINSTIEG")
+        expected = sum(1 for meta in universe if index_name in meta.get("indexes", []))
+        universes[index_name] = {
+            "coverage": {"universe": expected, "with_intraday_data": len(rows)},
+            "overall_signal": overall,
+            "candidates": {"long": long_records, "short": short_records},
+        "universes": universes,
+        }
 
-    all_signals = [x["signal"] for x in long_records + short_records]
-    overall = "EINSTIEG" if "EINSTIEG" in all_signals else ("BEOBACHTEN" if "BEOBACHTEN" in all_signals else "KEIN EINSTIEG")
+    default_universe = universes.get("S&P 500", {"overall_signal": "KEIN EINSTIEG", "candidates": {"long": [], "short": []}})
+    overall = default_universe["overall_signal"]
+    long_records = default_universe["candidates"]["long"]
+    short_records = default_universe["candidates"]["short"]
     latest_bars = [pd.Timestamp(m["latest_bar"]) for _, m in scored if m.get("latest_bar")]
     latest_market_bar = max(latest_bars).isoformat() if latest_bars else None
 
@@ -569,7 +595,7 @@ def main():
         phase = "Vor US-Vorbörse"
 
     payload = {
-        "version": "momentum-radar-mvp-1",
+        "version": "momentum-radar-mvp-2",
         "generated_at": now_utc.isoformat(),
         "generated_at_vienna": now_vienna.isoformat(),
         "market": {
@@ -581,7 +607,7 @@ def main():
         "coverage": {
             "universe": len(universe),
             "with_intraday_data": len(scored),
-            "indexes": ["S&P 500", "NASDAQ 100"],
+            "indexes": UNIVERSE_INDEXES,
             "interval": INTERVAL,
             "lookback": LOOKBACK,
         },
