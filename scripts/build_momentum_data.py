@@ -2,6 +2,9 @@ import json
 import math
 import os
 import time
+import re
+import unicodedata
+import requests
 from datetime import datetime, timezone, time as dtime
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -498,6 +501,78 @@ def candidate_record(meta, metrics, direction, rank):
     }
 
 
+
+def _slugify_name(name):
+    s = unicodedata.normalize("NFKD", str(name)).encode("ascii", "ignore").decode("ascii").lower()
+    s = s.replace("&", " und ")
+    s = re.sub(r"\b(inc|incorporated|corp|corporation|company|co|ag|se|plc|nv|ltd|limited|holdings|holding|group)\b", " ", s)
+    s = re.sub(r"[^a-z0-9]+", "_", s).strip("_")
+    return s
+
+
+def load_wkn_cache():
+    cache = {}
+    try:
+        old = json.loads(OUT.read_text(encoding="utf-8"))
+        for u in (old.get("universes") or {}).values():
+            for side in ("long", "short"):
+                for row in (u.get("candidates") or {}).get(side, []):
+                    if row.get("wkn"):
+                        cache[row.get("symbol")] = {"wkn": row.get("wkn"), "wkn_url": row.get("wkn_url")}
+    except Exception:
+        pass
+    return cache
+
+
+def resolve_wkn(name, symbol, cache):
+    if symbol in cache:
+        return cache[symbol]
+    slugs = []
+    base = _slugify_name(name)
+    if base:
+        slugs.append(base)
+    slugs.append(str(symbol).lower().replace(".", "_"))
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; MomentumRadar/1.0)"}
+    for slug in dict.fromkeys(slugs):
+        url = f"https://www.finanzen.net/aktien/{slug}-aktie"
+        try:
+            r = requests.get(url, headers=headers, timeout=6, allow_redirects=True)
+            if r.status_code != 200:
+                continue
+            title = re.search(r"<title[^>]*>(.*?)</title>", r.text, flags=re.I | re.S)
+            if not title:
+                continue
+            title_text = re.sub(r"\s+", " ", title.group(1))
+            m = re.search(r"\|\s*([A-Z0-9]{6})\s*\|\s*finanzen\.net", title_text, flags=re.I)
+            if m:
+                out = {"wkn": m.group(1).upper(), "wkn_url": r.url}
+                cache[symbol] = out
+                return out
+        except Exception:
+            continue
+    cache[symbol] = {"wkn": None, "wkn_url": None}
+    return cache[symbol]
+
+
+def enrich_candidate_wkns(universes):
+    cache = load_wkn_cache()
+    seen = set()
+    for index_name, u in universes.items():
+        if index_name in ("Krypto", "Rohstoffe"):
+            continue
+        for side in ("long", "short"):
+            for row in (u.get("candidates") or {}).get(side, []):
+                key = row.get("symbol")
+                if not key:
+                    continue
+                if key not in seen:
+                    resolve_wkn(row.get("name") or key, key, cache)
+                    seen.add(key)
+                info = cache.get(key) or {}
+                row["wkn"] = info.get("wkn")
+                row["wkn_url"] = info.get("wkn_url")
+    return universes
+
 def main():
     now_utc = datetime.now(timezone.utc)
     now_vienna = now_utc.astimezone(VIENNA)
@@ -606,6 +681,8 @@ def main():
             "overall_signal": overall,
             "candidates": {"long": long_records, "short": short_records},
         }
+
+    universes = enrich_candidate_wkns(universes)
 
     default_universe = universes.get("S&P 500", {"overall_signal": "KEIN EINSTIEG", "candidates": {"long": [], "short": []}})
     overall = default_universe["overall_signal"]
