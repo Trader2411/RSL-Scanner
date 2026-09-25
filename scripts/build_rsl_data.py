@@ -371,6 +371,7 @@ def build_index(meta):
             "m1": pct(d.iloc[-1], d.iloc[-22]) if len(d) > 22 else None,
             "cross": cross_signal(d),
             "chart130": chart_values,
+            "chart_dates": [ts.strftime("%Y-%m-%d") for ts in chart.index],
             "chart_start": chart.index[0].strftime("%Y-%m-%d") if len(chart) else None,
             "chart_end": chart.index[-1].strftime("%Y-%m-%d") if len(chart) else None,
         })
