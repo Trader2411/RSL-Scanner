@@ -345,6 +345,12 @@ def build_index(meta):
         if r26d is None or r26w is None or o26d is None or o26w is None:
             continue
         macd, macd_signal, macd_hist = macd_values(d)
+        chart = d.tail(130)
+        chart_values = []
+        for v in chart.to_numpy(dtype=float):
+            av = abs(v)
+            decimals = 2 if av >= 100 else 3 if av >= 1 else 4 if av >= 0.01 else 8
+            chart_values.append(round(float(v), decimals))
         rec.append({
             "symbol": s,
             "name": str(m["name"]),
@@ -364,6 +370,9 @@ def build_index(meta):
             "w1": pct(d.iloc[-1], d.iloc[-6]) if len(d) > 6 else None,
             "m1": pct(d.iloc[-1], d.iloc[-22]) if len(d) > 22 else None,
             "cross": cross_signal(d),
+            "chart130": chart_values,
+            "chart_start": chart.index[0].strftime("%Y-%m-%d") if len(chart) else None,
+            "chart_end": chart.index[-1].strftime("%Y-%m-%d") if len(chart) else None,
         })
 
     def assign_rank(key, outkey):
