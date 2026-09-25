@@ -12,6 +12,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: rsl-data-update
@@ -35,6 +37,11 @@ jobs:
 
       - run: python scripts/build_rsl_data.py
 
+      - name: Upload current site
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
       - name: Commit refreshed data
         run: |
           git config user.name "github-actions[bot]"
@@ -43,3 +50,14 @@ jobs:
           git diff --cached --quiet || git commit -m "Refresh RSL market data"
           git pull --rebase origin main
           git push origin main
+
+  deploy:
+    needs: update
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy latest site
+        id: deployment
+        uses: actions/deploy-pages@v4
