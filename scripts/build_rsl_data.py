@@ -1,4 +1,4 @@
-import json, time
+import json, re, time
 from datetime import datetime, timezone
 from pathlib import Path
 from io import StringIO
@@ -10,10 +10,17 @@ import yfinance as yf
 
 OUT = Path("docs/data.json")
 OUT.parent.mkdir(parents=True, exist_ok=True)
-HEADERS = {"User-Agent": "Mozilla/5.0"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; RSL-Scanner/1.0)"}
 
 def norm_symbol(s):
-    return str(s).strip().upper().replace(".", "-")
+    s = str(s).strip().upper()
+    if s.endswith(".DE"):
+        return s
+    return s.replace(".", "-")
+
+def clean_symbol_text(s):
+    s = re.sub(r"\[[^\]]*\]", "", str(s)).strip().upper()
+    return s
 
 def pct(a, b):
     try:
@@ -93,55 +100,195 @@ def read_tables(url):
     r.raise_for_status()
     return pd.read_html(StringIO(r.text))
 
+def flat_col(c):
+    if isinstance(c, tuple):
+        parts = [str(x).strip() for x in c if str(x).strip() and not str(x).lower().startswith("unnamed")]
+        return " ".join(parts).lower()
+    return str(c).strip().lower()
+
+def find_col(df, terms):
+    cols = {c: flat_col(c) for c in df.columns}
+    for term in terms:
+        for c, label in cols.items():
+            if term in label:
+                return c
+    return None
+
 def sp500():
     t = read_tables("https://en.wikipedia.org/wiki/List_of_S%26P_500_companies")[0]
-    return pd.DataFrame({"symbol": t["Symbol"].map(norm_symbol), "name": t["Security"].astype(str), "sector": t["GICS Sector"].astype(str)})
+    return pd.DataFrame({
+        "symbol": t["Symbol"].map(norm_symbol),
+        "name": t["Security"].astype(str),
+        "sector": t["GICS Sector"].astype(str),
+    })
+
+def sp400():
+    url = "https://raw.githubusercontent.com/benjaminpo/finance-dataset/main/config/listings/sp400-constituents.csv"
+    r = requests.get(url, headers=HEADERS, timeout=30)
+    r.raise_for_status()
+    symbols = pd.read_csv(StringIO(r.text))
+    symbols["symbol"] = symbols["Symbol"].map(norm_symbol)
+
+    meta = None
+    try:
+        for t in read_tables("https://en.wikipedia.org/wiki/List_of_S%26P_400_companies"):
+            sc = find_col(t, ["symbol", "ticker"])
+            nc = find_col(t, ["security", "company", "name"])
+            sec = find_col(t, ["gics sector", "sector"])
+            if sc is not None and nc is not None and len(t) >= 300:
+                m = pd.DataFrame({
+                    "symbol": t[sc].map(norm_symbol),
+                    "name": t[nc].astype(str),
+                    "sector": t[sec].astype(str) if sec is not None else "S&P 400",
+                })
+                meta = m.drop_duplicates("symbol")
+                break
+    except Exception:
+        meta = None
+
+    out = symbols[["symbol"]].copy()
+    if meta is not None:
+        out = out.merge(meta, on="symbol", how="left")
+    else:
+        out["name"] = out["symbol"]
+        out["sector"] = "S&P 400"
+
+    out["name"] = out["name"].fillna(out["symbol"])
+    out["sector"] = out["sector"].fillna("S&P 400")
+    return out
 
 def nasdaq100():
-    for t in read_tables("https://en.wikipedia.org/wiki/Nasdaq-100"):
-        tc = next((c for c in t.columns if "ticker" in str(c).lower()), None)
-        nc = next((c for c in t.columns if "company" in str(c).lower()), None)
-        if tc is not None and nc is not None:
-            sc = next((c for c in t.columns if "sector" in str(c).lower()), None)
-            return pd.DataFrame({"symbol": t[tc].map(norm_symbol), "name": t[nc].astype(str), "sector": t[sc].astype(str) if sc is not None else ""})
-    raise RuntimeError("NASDAQ-100 Tabelle nicht gefunden")
+    for url in [
+        "https://de.wikipedia.org/wiki/Nasdaq-100",
+        "https://en.wikipedia.org/wiki/Nasdaq-100",
+    ]:
+        try:
+            for t in read_tables(url):
+                sc = find_col(t, ["symbol", "ticker"])
+                nc = find_col(t, ["name", "company"])
+                sec = find_col(t, ["branche", "industry", "sector"])
+                if sc is None or nc is None or len(t) < 80:
+                    continue
+                rows = []
+                for _, row in t.iterrows():
+                    raw = clean_symbol_text(row[sc])
+                    if not raw or raw == "NAN":
+                        continue
+                    syms = [x.strip() for x in re.split(r"[,/]", raw) if x.strip()]
+                    for sym in syms:
+                        rows.append({
+                            "symbol": norm_symbol(sym),
+                            "name": str(row[nc]),
+                            "sector": str(row[sec]) if sec is not None else "NASDAQ 100",
+                        })
+                out = pd.DataFrame(rows).drop_duplicates("symbol")
+                if len(out) >= 90:
+                    return out
+        except Exception:
+            continue
+    raise RuntimeError("NASDAQ-100 Komponenten konnten nicht geladen werden")
 
 def dow():
-    for t in read_tables("https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average"):
-        tc = next((c for c in t.columns if "symbol" in str(c).lower()), None)
-        nc = next((c for c in t.columns if "company" in str(c).lower()), None)
-        if tc is not None and nc is not None and len(t) >= 25:
-            sc = next((c for c in t.columns if "industry" in str(c).lower() or "sector" in str(c).lower()), None)
-            return pd.DataFrame({"symbol": t[tc].map(norm_symbol), "name": t[nc].astype(str), "sector": t[sc].astype(str) if sc is not None else ""})
-    raise RuntimeError("Dow Tabelle nicht gefunden")
+    for url in [
+        "https://en.wikipedia.org/wiki/Dow_Jones_Industrial_Average",
+        "https://de.wikipedia.org/wiki/Dow_Jones_Industrial_Average",
+    ]:
+        try:
+            for t in read_tables(url):
+                sc = find_col(t, ["symbol", "ticker"])
+                nc = find_col(t, ["company", "name"])
+                sec = find_col(t, ["industry", "sector", "branche"])
+                if sc is not None and nc is not None and 25 <= len(t) <= 40:
+                    out = pd.DataFrame({
+                        "symbol": t[sc].map(norm_symbol),
+                        "name": t[nc].astype(str),
+                        "sector": t[sec].astype(str) if sec is not None else "Dow Jones",
+                    }).drop_duplicates("symbol")
+                    if len(out) >= 25:
+                        return out
+        except Exception:
+            continue
+    raise RuntimeError("Dow Komponenten konnten nicht geladen werden")
 
 def dax():
-    for t in read_tables("https://en.wikipedia.org/wiki/DAX"):
-        tc = next((c for c in t.columns if "ticker" in str(c).lower()), None)
-        nc = next((c for c in t.columns if "company" in str(c).lower()), None)
-        if tc is not None and nc is not None and len(t) >= 30:
-            raw = t[tc].astype(str)
-            sy = raw.map(lambda x: norm_symbol(x) if "." in x else norm_symbol(x) + ".DE")
-            sc = next((c for c in t.columns if "industry" in str(c).lower() or "sector" in str(c).lower()), None)
-            return pd.DataFrame({"symbol": sy, "name": t[nc].astype(str), "sector": t[sc].astype(str) if sc is not None else ""})
-    raise RuntimeError("DAX Tabelle nicht gefunden")
+    for url in [
+        "https://de.wikipedia.org/wiki/DAX",
+        "https://en.wikipedia.org/wiki/DAX",
+    ]:
+        try:
+            for t in read_tables(url):
+                sc = find_col(t, ["symbol", "ticker"])
+                nc = find_col(t, ["name", "company"])
+                sec = find_col(t, ["branche", "sector", "industry"])
+                if sc is None or nc is None or len(t) < 30:
+                    continue
+                rows = []
+                for _, row in t.iterrows():
+                    sym = clean_symbol_text(row[sc])
+                    if not sym or sym == "NAN":
+                        continue
+                    if sym.endswith(".DE"):
+                        ys = sym
+                    else:
+                        ys = sym.replace(".", "-") + ".DE"
+                    rows.append({
+                        "symbol": ys,
+                        "name": str(row[nc]),
+                        "sector": str(row[sec]) if sec is not None else "DAX",
+                    })
+                out = pd.DataFrame(rows).drop_duplicates("symbol")
+                if len(out) >= 30:
+                    return out
+        except Exception:
+            continue
+    raise RuntimeError("DAX Komponenten konnten nicht geladen werden")
+
+def commodities():
+    rows = [
+        ("GC=F", "Gold", "Edelmetalle"),
+        ("SI=F", "Silber", "Edelmetalle"),
+        ("PL=F", "Platin", "Edelmetalle"),
+        ("PA=F", "Palladium", "Edelmetalle"),
+        ("CL=F", "WTI Rohöl", "Energie"),
+        ("BZ=F", "Brent Rohöl", "Energie"),
+        ("NG=F", "Erdgas", "Energie"),
+        ("HG=F", "Kupfer", "Industriemetalle"),
+        ("ZC=F", "Mais", "Agrar"),
+        ("ZW=F", "Weizen", "Agrar"),
+        ("ZS=F", "Sojabohnen", "Agrar"),
+    ]
+    return pd.DataFrame(rows, columns=["symbol", "name", "sector"])
 
 def crypto():
     rows = [
         ("BTC-USD","Bitcoin","Krypto"),("ETH-USD","Ethereum","Krypto"),("SOL-USD","Solana","Krypto"),
         ("XRP-USD","XRP","Krypto"),("BNB-USD","BNB","Krypto"),("ADA-USD","Cardano","Krypto"),
         ("DOGE-USD","Dogecoin","Krypto"),("AVAX-USD","Avalanche","Krypto"),("LINK-USD","Chainlink","Krypto"),
-        ("DOT-USD","Polkadot","Krypto")
+        ("DOT-USD","Polkadot","Krypto"),("BCH-USD","Bitcoin Cash","Krypto"),("LTC-USD","Litecoin","Krypto"),
+        ("XLM-USD","Stellar","Krypto"),("UNI-USD","Uniswap","Krypto"),("AAVE-USD","Aave","Krypto"),
+        ("ETC-USD","Ethereum Classic","Krypto"),("ATOM-USD","Cosmos","Krypto"),("FIL-USD","Filecoin","Krypto"),
+        ("NEAR-USD","NEAR Protocol","Krypto"),("ICP-USD","Internet Computer","Krypto"),
     ]
     return pd.DataFrame(rows, columns=["symbol","name","sector"])
 
-LOADERS = {"S&P 500": sp500, "NASDAQ 100": nasdaq100, "Dow Jones": dow, "DAX": dax, "Krypto": crypto}
+LOADERS = {
+    "S&P 500": sp500,
+    "S&P 400": sp400,
+    "NASDAQ 100": nasdaq100,
+    "Dow Jones": dow,
+    "DAX": dax,
+    "Rohstoffe": commodities,
+    "Krypto": crypto,
+}
 
 def download_prices(symbols):
     parts = []
     for i in range(0, len(symbols), 80):
         batch = symbols[i:i+80]
-        d = yf.download(batch, period="2y", interval="1d", auto_adjust=False, progress=False, group_by="column", threads=True)
+        d = yf.download(
+            batch, period="2y", interval="1d", auto_adjust=False,
+            progress=False, group_by="column", threads=True
+        )
         if isinstance(d.columns, pd.MultiIndex):
             close = d["Close"]
         else:
@@ -185,7 +332,7 @@ def build_index(meta):
             "d1": pct(d.iloc[-1], d.iloc[-2]),
             "w1": pct(d.iloc[-1], d.iloc[-6]) if len(d) > 6 else None,
             "m1": pct(d.iloc[-1], d.iloc[-22]) if len(d) > 22 else None,
-            "cross": cross_signal(d)
+            "cross": cross_signal(d),
         })
 
     def assign_rank(key, outkey):
@@ -207,18 +354,27 @@ def build_index(meta):
 def main():
     payload = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
-        "source": "Yahoo Finance Kursdaten; Indexlisten aus öffentlichen Quellen",
+        "source": "Yahoo Finance Kursdaten; Indexkomponenten aus öffentlichen Quellen",
         "indexes": {},
-        "errors": {}
+        "errors": {},
     }
     for name, loader in LOADERS.items():
         try:
             print(f"Baue {name} ...", flush=True)
-            payload["indexes"][name] = build_index(loader())
+            meta = loader()
+            values = build_index(meta)
+            payload["indexes"][name] = values
+            print(f"{name}: {len(values)} verwertbare Werte", flush=True)
+            if len(values) == 0:
+                payload["errors"][name] = "Keine verwertbaren Kursreihen"
         except Exception as e:
             payload["errors"][name] = f"{type(e).__name__}: {e}"
-    OUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",",":")), encoding="utf-8")
-    print(f"Fertig: {OUT}")
+
+    OUT.write_text(
+        json.dumps(payload, ensure_ascii=False, separators=(",",":")),
+        encoding="utf-8"
+    )
+    print(f"Fertig: {OUT}", flush=True)
 
 if __name__ == "__main__":
     main()
