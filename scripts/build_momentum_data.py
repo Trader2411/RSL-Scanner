@@ -586,6 +586,122 @@ def enrich_candidate_wkns(universes):
                 row["wkn_url"] = info.get("wkn_url")
     return universes
 
+
+def _directional_pct(new_price, entry_price, direction):
+    move = pct(new_price, entry_price)
+    if move is None:
+        return None
+    return move if direction == "LONG" else -move
+
+
+def update_momentum_history(universe, scored, frames, now_utc, now_vienna, now_ny):
+    """Persist scan candidates and objectively measure what happened after each signal."""
+    history_dir = ROOT / "docs" / "momentum-radar" / "history"
+    history_dir.mkdir(parents=True, exist_ok=True)
+    history_path = history_dir / f"{now_vienna.date().isoformat()}.json"
+    try:
+        records = json.loads(history_path.read_text(encoding="utf-8")) if history_path.exists() else []
+        if not isinstance(records, list):
+            records = []
+    except Exception:
+        records = []
+
+    # Enrich earlier signals from today's actual intraday bars.
+    for rec in records:
+        symbol = rec.get("symbol")
+        frame = frames.get(symbol)
+        entry = safe(rec.get("signal_price"))
+        signal_time_raw = rec.get("signal_time_ny")
+        direction = rec.get("direction")
+        if frame is None or frame.empty or entry in (None, 0) or not signal_time_raw or direction not in ("LONG", "SHORT"):
+            continue
+        try:
+            signal_ts = pd.Timestamp(signal_time_raw)
+            if signal_ts.tzinfo is None:
+                signal_ts = signal_ts.tz_localize(NEW_YORK)
+            else:
+                signal_ts = signal_ts.tz_convert(NEW_YORK)
+        except Exception:
+            continue
+
+        future = frame.loc[frame.index >= signal_ts]
+        if future.empty:
+            continue
+        close = future["Close"].dropna()
+        if close.empty:
+            continue
+
+        def first_close_at(minutes):
+            target = signal_ts + pd.Timedelta(minutes=minutes)
+            rows = close.loc[close.index >= target]
+            return safe(rows.iloc[0]) if not rows.empty else None
+
+        p1 = first_close_at(60)
+        p2 = first_close_at(120)
+        rec["return_1h_pct"] = rounded(_directional_pct(p1, entry, direction), 2)
+        rec["return_2h_pct"] = rounded(_directional_pct(p2, entry, direction), 2)
+
+        highs = future["High"].dropna() if "High" in future else close
+        lows = future["Low"].dropna() if "Low" in future else close
+        if not highs.empty and not lows.empty:
+            if direction == "LONG":
+                favorable = pct(safe(highs.max()), entry)
+                adverse = pct(safe(lows.min()), entry)
+            else:
+                favorable = pct(entry, safe(lows.min()))
+                adverse = -pct(safe(highs.max()), entry)
+            rec["max_favorable_pct"] = rounded(favorable, 2)
+            rec["max_adverse_pct"] = rounded(adverse, 2)
+
+        regular = future.loc[(future.index.time >= dtime(9, 30)) & (future.index.time <= dtime(16, 0))]
+        if now_ny.time() >= dtime(16, 0) and not regular.empty:
+            eod = safe(regular["Close"].dropna().iloc[-1])
+            rec["return_eod_pct"] = rounded(_directional_pct(eod, entry, direction), 2)
+            rec["outcome_complete"] = True
+
+    # Append Top-10 long and short candidates per selectable universe.
+    for index_name in UNIVERSE_INDEXES:
+        rows = [(meta, metrics) for meta, metrics in scored if index_name in meta.get("indexes", [])]
+        for direction in ("long", "short"):
+            key = "score_long" if direction == "long" else "score_short"
+            ranked = sorted(rows, key=lambda x: x[1][key], reverse=True)[:10]
+            for rank, (meta, metrics) in enumerate(ranked, 1):
+                signal = metrics["signal_long"] if direction == "long" else metrics["signal_short"]
+                stability_value = metrics["stability_long"] if direction == "long" else metrics["stability_short"]
+                records.append({
+                    "id": f"{now_utc.strftime('%Y%m%dT%H%M%SZ')}|{index_name}|{direction.upper()}|{meta['symbol']}|{rank}",
+                    "scan_time_utc": now_utc.isoformat(),
+                    "scan_time_vienna": now_vienna.isoformat(),
+                    "signal_time_ny": now_ny.isoformat(),
+                    "universe": index_name,
+                    "direction": direction.upper(),
+                    "rank": rank,
+                    "symbol": meta["symbol"],
+                    "name": meta.get("name") or meta["symbol"],
+                    "signal": signal,
+                    "score": rounded(metrics.get(key), 0),
+                    "signal_price": rounded(metrics.get("price"), 4),
+                    "day_pct": rounded(metrics.get("day_pct"), 2),
+                    "m1": rounded(metrics.get("m1"), 2),
+                    "m2": rounded(metrics.get("m2"), 2),
+                    "m3": rounded(metrics.get("m3"), 2),
+                    "stability": rounded(stability_value, 0),
+                    "volume_ratio": rounded(metrics.get("volume_ratio"), 2),
+                    "rel_index": rounded(metrics.get("rel_index"), 2),
+                    "rel_sector": rounded(metrics.get("rel_sector"), 2),
+                    "rsi": rounded(metrics.get("rsi"), 1),
+                    "momentum_change": metrics.get("momentum_change_long") if direction == "long" else metrics.get("momentum_change_short"),
+                    "return_1h_pct": None,
+                    "return_2h_pct": None,
+                    "return_eod_pct": None,
+                    "max_favorable_pct": None,
+                    "max_adverse_pct": None,
+                    "outcome_complete": False,
+                })
+
+    history_path.write_text(json.dumps(records, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"MomentumRadar history: {len(records)} records · {history_path}")
+
 def main():
     now_utc = datetime.now(timezone.utc)
     now_vienna = now_utc.astimezone(VIENNA)
@@ -739,6 +855,7 @@ def main():
             "Keine automatischen Echtgeldorders und keine Renditegarantie.",
         ],
     }
+    update_momentum_history(universe, scored, frames, now_utc, now_vienna, now_ny)
     OUT.write_text(json.dumps(payload, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print(f"MomentumRadar: {len(scored)}/{len(universe)} Werte · Signal {overall} · {OUT}")
 
