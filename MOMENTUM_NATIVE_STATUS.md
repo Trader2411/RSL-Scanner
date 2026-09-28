@@ -35,3 +35,32 @@ Repository: Trader2411/RSL-Scanner, öffentlich, ID 1222400682. Default-Branch: 
 - https://github.com/Trader2411/RSL-Scanner/actions/runs/36463958577
 
 GitHub dokumentiert mögliche Verzögerungen und ausfallende Schedule-Ereignisse. Weitere Änderungen nur bei neuer Erkenntnis; kein weiterer kosmetischer Minutenwechsel und keine unbelegte Fertigmeldung.
+
+## Erneute Ursachenprüfung, 28.09.2026, 21:54 Wien
+
+Auftrag: ausbleibenden automatischen Start lösen, vorhandenes Setup beibehalten. Aktueller geprüfter Repository-Stand: `b6fde5bce91d9b6f3dc96b388594cc3a9cd4ed1a`; Hauptbranch `main`, keine offenen lokalen Änderungen vor der Prüfung. Neuere RSL-Änderungen wurden gelesen und nicht verändert.
+
+- GitHub meldet weiterhin insgesamt 11 `event=schedule`-Läufe. Letzter Start: 13:52:30 UTC, abgebrochen. Letzter erfolgreicher Start: 05:22:24 UTC. Alle elf betreffen RSL; keiner einen Momentum-Workflow.
+- Neue historische Erkenntnis: Auch `update-momentum-data.yml` besaß bereits einen erfolglosen Zeitplan. Commit `a890ac8e922058f1453cf5090970042e895b6ea8` änderte den damaligen Cron von `5 8-21 * * 1-5` auf `17 8-21 * * 1-5`; um 11:58:36 UTC wurde dieser Workflow auf manuelle Auslösung beschränkt. Die Rückverlagerung des heutigen Crons dorthin wäre daher kein unabhängiger Reparaturansatz.
+- Der angemeldete Repository-Inhaber besitzt weiterhin Administratorrechte. Fehlende Benutzerrechte sind nicht als Ursache belegt.
+- Die Datenkette funktioniert nach einem tatsächlichen Start: Kandidatenlauf `36475084467` (Auslöser `workflow_run` nach RSL) und Pages-Lauf `36475154904` erfolgreich. Das ist kein Beleg für den nativen Zeitplan.
+- Die offizielle GitHub-Statusseite meldet Actions als betriebsbereit und am 28.09. keine allgemeine Störung. Eine globale Störung wird deshalb nicht behauptet.
+- Keine erneute Aktivierung, kein Minutenwechsel, kein zusätzlicher Workflow und keine Änderung der Frische- oder Handelsregeln vorgenommen. Es liegt keine neue, durch diese Befunde begründete Codekorrektur vor.
+
+### Konkreter externer Diagnosebericht – noch nicht abgesendet
+
+**Subject:** Scheduled Actions events are missing for active workflows in Trader2411/RSL-Scanner
+
+Repository: https://github.com/Trader2411/RSL-Scanner (public; ID 1222400682; default branch main).
+
+The active workflow `.github/workflows/update-momentum-watch.yml` (ID 369201340) has schedule `7,22,37,52 8-21 * * 1-5` in UTC. Push and workflow_run invocations execute successfully and publish the generated data through Pages. Example: data run https://github.com/Trader2411/RSL-Scanner/actions/runs/36475084467 and publication https://github.com/Trader2411/RSL-Scanner/actions/runs/36475154904.
+
+However, the repository run history filtered by event=schedule still contains only 11 runs, all belonging to the older RSL workflow. The latest schedule run started at 2026-09-28T13:52:30Z and was cancelled; the most recent successful scheduled run started at 05:22:24Z. Neither the current Momentum workflow nor its earlier independently scheduled data workflow has an event=schedule run in the available history.
+
+The current active Momentum workflow was disabled and immediately re-enabled once at 18:15:57Z, without fixing the missing schedule events. Evidence: https://github.com/Trader2411/RSL-Scanner/actions/runs/36463958577. The workflow is on main, the repository has ongoing activity, and the repository owner still has administrator access. There are no queued schedule runs to diagnose. Please investigate schedule registration/event generation for this repository and identify whether an account or repository restriction, registration problem, or service-side delay explains the missing events. We are not asserting a platform-wide outage.
+
+### Weiterer Weg und Freigabegrenze
+
+Technischer Bericht vorbereitet; keine externe Nachricht gesendet. Laut GitHub-Dokumentation ist direkter technischer Support für bezahlte Konten verfügbar. Kostenlose Konten werden für die meisten technischen Fragen an GitHub Community Discussions verwiesen. Der verfügbare Kontotarif und ein angemeldeter Supportzugang sind hier nicht nachgewiesen. Keine kostenpflichtige Aufrüstung veranlasst. Für das Absenden beziehungsweise eine öffentliche Community-Meldung ist eine ausdrückliche Freigabe erforderlich; übermittelt würden ausschließlich diese öffentlichen technischen Angaben, keine Depot-, Handels- oder Zugangsdaten.
+
+Quellen: https://docs.github.com/en/support/contacting-github-support/creating-a-support-ticket und https://www.githubstatus.com/ (am 28.09.2026 gelesen).
