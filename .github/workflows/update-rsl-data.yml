@@ -4,10 +4,12 @@ on:
   push:
     paths:
       - "scripts/build_rsl_data.py"
+      - "scripts/build_momentum_data.py"
       - "requirements-web.txt"
       - ".github/workflows/update-rsl-data.yml"
   schedule:
     - cron: "17 */2 * * 1-5"
+    - cron: "17 9,11,13,15,17,19,21 * * 1-5"
     - cron: "17 */6 * * 0,6"
 
 permissions:
@@ -35,13 +37,30 @@ jobs:
 
       - run: pip install -r requirements-web.txt
 
-      - run: python scripts/build_rsl_data.py
+      - name: Build RSL JSON
+        if: ${{ github.event_name != 'schedule' || github.event.schedule != '17 9,11,13,15,17,19,21 * * 1-5' }}
+        run: python scripts/build_rsl_data.py
+
+      - name: Build MomentumRadar JSON
+        run: python scripts/build_momentum_data.py
+
+      - name: Validate MomentumRadar JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('docs/momentum-radar/data.json')
+          data=json.loads(p.read_text(encoding='utf-8'))
+          assert data.get('version') == 'momentum-radar-mvp-2'
+          assert 'candidates' in data and 'coverage' in data and 'universes' in data
+          print('MomentumRadar JSON OK:', data['coverage'])
+          PY
 
       - name: Commit refreshed data and sync latest main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data.json
+          git add docs/data.json docs/momentum-radar/data.json docs/momentum-radar/history/
           git diff --cached --quiet || git commit -m "Refresh RSL market data"
           git pull --rebase origin main
           git push origin main
