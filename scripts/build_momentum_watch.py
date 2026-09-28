@@ -1,5 +1,6 @@
 import json
 import math
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -94,9 +95,6 @@ def monitor_signal(base_signal, direction, age_min, raw15, raw30, raw60, raw_sin
     d60 = None if raw60 is None else sign * raw60
     ds = None if raw_since_scan is None else sign * raw_since_scan
 
-    if age_min is None or age_min > 20:
-        return "KEIN EINSTIEG", "Kurzcheck veraltet – kein neuer Einstieg."
-
     hard = (
         (ds is not None and ds <= -0.80)
         or (d15 is not None and d15 <= -0.50)
@@ -104,6 +102,9 @@ def monitor_signal(base_signal, direction, age_min, raw15, raw30, raw60, raw_sin
     )
     if hard:
         return "KEIN EINSTIEG", "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt."
+
+    if age_min is None or age_min > 25:
+        return "KEIN EINSTIEG", "Kurzcheck veraltet – kein neuer Einstieg."
 
     soft = (
         (ds is not None and ds <= -0.35)
@@ -118,6 +119,12 @@ def monitor_signal(base_signal, direction, age_min, raw15, raw30, raw60, raw_sin
 
 
 def main():
+    now_utc = datetime.now(timezone.utc)
+    now_vienna = now_utc.astimezone(VIENNA)
+    if os.getenv("GITHUB_EVENT_NAME", "manual") == "schedule" and not (10 <= now_vienna.hour <= 22):
+        print(f"Außerhalb Kurzcheck-Fenster: {now_vienna.isoformat()}")
+        return
+
     if not DATA_PATH.exists():
         raise RuntimeError("MomentumRadar data.json fehlt")
 
@@ -142,9 +149,6 @@ def main():
                     candidates[key]["universes"].append(universe_name)
 
     symbols = sorted({x["symbol"] for x in candidates.values()})
-    now_utc = datetime.now(timezone.utc)
-    now_vienna = now_utc.astimezone(VIENNA)
-
     frames = {}
     errors = []
     if symbols:
