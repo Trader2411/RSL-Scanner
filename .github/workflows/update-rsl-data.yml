@@ -8,13 +8,16 @@ on:
       - requirements-web.txt
       - .github/workflows/update-rsl-data.yml
   schedule:
-    - cron: '17 8-21 * * 1-5'
+    - cron: '17 */2 * * 1-5'
     - cron: '17 */6 * * 0,6'
+
 permissions:
   contents: write
+
 concurrency:
   group: rsl-data-update
   cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -24,23 +27,17 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
+
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
           cache: pip
+
       - run: pip install -r requirements-web.txt
-      - name: Build RSL JSON at the existing cadence
-        run: |
-          if [ '${{ github.event_name }}' != 'schedule' ]; then
-            python scripts/build_rsl_data.py
-          else
-            HOUR=$(date -u +%H)
-            if [ $((10#$HOUR % 2)) -eq 0 ]; then
-              python scripts/build_rsl_data.py
-            else
-              echo 'RSL-Zwischenstunde: RSL-Build übersprungen.'
-            fi
-          fi
+
+      - name: Build fresh RSL data
+        run: python scripts/build_rsl_data.py
+
       - name: Save RSL independently of MomentumRadar
         run: |
           git config user.name 'github-actions[bot]'
