@@ -1,0 +1,56 @@
+name: RSL schedule one-time repair
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/rsl-schedule-repair.yml
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rsl-schedule-repair
+  cancel-in-progress: false
+
+jobs:
+  repair:
+    if: github.repository == 'Trader2411/RSL-Scanner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: repos/Trader2411/RSL-Scanner/actions/workflows/update-rsl-data.yml
+    steps:
+      - name: Verify RSL workflow is active and idle
+        id: inspect
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa-output
+          gh api "$TARGET" --jq '{id,name,path,state,created_at,updated_at}' > qa-output/before.json
+          gh api "$TARGET/runs?branch=main&per_page=20" --jq '{runs:[.workflow_runs[]|{id,event,status,conclusion,created_at}]}' > qa-output/recent-runs.json
+          cat qa-output/before.json
+          [ "$(jq -r '.state' qa-output/before.json)" = active ] || { echo 'RSL workflow is not active; aborting without changes.'; exit 1; }
+          [ "$(jq '[.runs[]|select(.status != "completed")] | length' qa-output/recent-runs.json)" -eq 0 ] || { echo 'RSL data run still active; aborting repair.'; exit 1; }
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+
+      - name: Re-register active RSL schedule
+        if: steps.inspect.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method PUT "$TARGET/disable"
+          gh api --method PUT "$TARGET/enable"
+          gh api "$TARGET" --jq '{id,name,path,state,created_at,updated_at}' > qa-output/after.json
+          [ "$(jq -r '.state' qa-output/after.json)" = active ]
+          date -u +'%Y-%m-%dT%H:%M:%SZ' > qa-output/reactivated-at.txt
+          cat qa-output/after.json
+
+      - name: Save repair evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rsl-schedule-repair
+          path: qa-output/
+          retention-days: 2
