@@ -9,7 +9,7 @@ on:
       - "requirements-web.txt"
       - ".github/workflows/update-momentum-data.yml"
   schedule:
-    - cron: "5 8-21 * * 1-5"
+    - cron: "17 8-21 * * 1-5"
     - cron: "35 13,14 * * 1-5"
 
 permissions:
