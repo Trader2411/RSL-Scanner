@@ -1,71 +1,31 @@
 name: Update MomentumRadar data
-
 on:
   workflow_dispatch:
-
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
 concurrency:
-  group: momentum-radar-data-update
-  cancel-in-progress: true
-
+  group: momentum-data-write
+  cancel-in-progress: false
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: '3.13'
           cache: pip
-
-      - name: Install dependencies
-        run: pip install -r requirements-web.txt
-
-      - name: Build MomentumRadar JSON
-        run: python scripts/build_momentum_data.py
-
-      - name: Validate JSON
+      - run: pip install -r requirements-web.txt
+      - run: python scripts/momentum_delivery.py --force-full
+      - name: Save complete snapshot
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('docs/momentum-radar/data.json')
-          data=json.loads(p.read_text(encoding='utf-8'))
-          assert data.get('version') == 'momentum-radar-mvp-2'
-          assert 'candidates' in data and 'coverage' in data and 'universes' in data
-          assert 'Emerging Markets' in data['universes']
-          print('JSON OK:', data['coverage'])
-          PY
-
-      - name: Upload current site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-      - name: Commit refreshed MomentumRadar data
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/momentum-radar/data.json docs/momentum-radar/history/
-          git diff --cached --quiet || git commit -m "Refresh MomentumRadar market data"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/momentum-radar/
+          git diff --cached --quiet || git commit -m 'Refresh verified MomentumRadar snapshot'
           git pull --rebase origin main
           git push origin main
-
-  deploy:
-    needs: update
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy latest site
-        id: deployment
-        uses: actions/deploy-pages@v4
