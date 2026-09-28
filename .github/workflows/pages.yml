@@ -5,7 +5,7 @@ on:
     paths: ['docs/**', '.github/workflows/pages.yml', 'scripts/verify_momentum_publication.py']
   workflow_dispatch:
   workflow_run:
-    workflows: [Update MomentumRadar candidate watch, Update MomentumRadar data, Update RSL data]
+    workflows: [Update MomentumRadar candidate watch, Update MomentumRadar data, Update RSL data, RSL hourly watchdog]
     types: [completed]
     branches: [main]
 permissions:
