@@ -1,0 +1,29 @@
+name: MomentumRadar scheduler diagnostic
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/momentum-scheduler-diagnostic.yml]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect workflow activation and recent automatic starts
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPOSITORY: ${{ github.repository }}
+        run: |
+          mkdir -p qa-output
+          gh api "repos/$REPOSITORY/actions/workflows" --jq '[.workflows[] | {id,name,path,state}]' > qa-output/workflow-states.json
+          gh api "repos/$REPOSITORY/actions/runs?event=schedule&per_page=10" --jq '{total_count,runs:[.workflow_runs[] | {id,name,event,status,conclusion,created_at,run_started_at,head_sha}]}' > qa-output/scheduled-runs.json
+          cat qa-output/workflow-states.json
+          cat qa-output/scheduled-runs.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: momentum-scheduler-diagnostic
+          path: qa-output/
+          retention-days: 7
