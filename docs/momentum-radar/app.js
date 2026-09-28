@@ -78,8 +78,8 @@ function card(x,expanded=false){
 }
 function renderTargets(persist=false){
   const depot=Number($('depot').value),allocation=Number($('allocation').value);
-  const valid=$('depot').value!==''&&$('allocation').value!==''&&Number.isFinite(depot)&&Number.isFinite(allocation)&&depot>=0&&allocation>=1&&allocation<=100;
-  $('targetStatus').textContent=valid?'Ziele vor Kosten und Steuern.':'Bitte einen Depotwert ab 0 € und einen Einsatz von 1 bis 100 % eingeben.';
+  const valid=$('depot').value!==''&&$('allocation').value!==''&&Number.isFinite(depot)&&Number.isFinite(allocation)&&depot>=0&&allocation>=1&&allocation<=50;
+  $('targetStatus').textContent=valid?'Ziele vor Kosten und Steuern. Bei 50 % Einsatz erfordert 1 % Depotgewinn eine Rendite von 2 % auf den Einsatz.':'Bitte einen Depotwert ab 0 € und einen Einsatz von 1 bis höchstens 50 % eingeben. Höhere gespeicherte Werte sind ungültig.';
   if(!valid){for(const id of ['maxUse','target1','target2'])$(id).textContent='—';$('need1').textContent='';$('need2').textContent='';return}
   if(persist){store('momentumRadarDepot',depot);store('momentumRadarAllocation',allocation)}
   const fraction=allocation/100;$('maxUse').textContent=money(depot*fraction);$('target1').textContent=money(depot*.01);$('target2').textContent=money(depot*.02);

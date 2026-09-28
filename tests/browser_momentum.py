@@ -63,6 +63,19 @@ with sync_playwright() as p:
     page.fill('#allocation','0')
     assert page.locator('#maxUse').inner_text()=='—', 'Invalid allocation silently recalculated'
     assert page.evaluate("localStorage.getItem('momentumRadarAllocation')")=='50', 'Invalid input overwrote valid saved setting'
+    page.fill('#allocation','75')
+    assert page.locator('#maxUse').inner_text()=='—', 'Allocation above confirmed 50% limit accepted'
+    assert 'höchstens 50 %' in page.locator('#targetStatus').inner_text(), 'Allocation cap has no explanation'
+    assert page.evaluate("localStorage.getItem('momentumRadarAllocation')")=='50', 'Excess allocation overwrote saved limit'
+    page.fill('#allocation','50')
+    assert '3.600' in page.locator('#maxUse').inner_text(), 'Restoring permitted allocation did not recover calculation'
+    assert '1 % Depotgewinn' in page.locator('#targetStatus').inner_text(), 'Depot versus invested-capital return not explained'
+    page.evaluate("localStorage.setItem('momentumRadarAllocation','75')")
+    page.reload(wait_until='networkidle')
+    assert page.input_value('#allocation')=='75', 'Invalid legacy allocation was silently changed'
+    assert page.locator('#maxUse').inner_text()=='—', 'Invalid saved allocation produced a target'
+    assert 'Höhere gespeicherte Werte sind ungültig.' in page.locator('#targetStatus').inner_text(), 'Invalid saved allocation unexplained'
+    page.get_by_text('Depot & Tagesziel – Rechenbeispiel',exact=True).click()
     page.fill('#allocation','50')
     page.reload(wait_until='networkidle')
     assert page.input_value('#depot')=='7200', 'Saved value did not survive reopen'

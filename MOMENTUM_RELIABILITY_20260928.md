@@ -11,7 +11,7 @@ Auftrag: bestehende App verlässlich nutzbar machen; keine neue Plattform, keine
 - Browser prüft die vollständige Snapshot-Struktur vor Übernahme, erhält die letzte lesbare Ansicht bei Fehlern und sperrt dabei Einstiege.
 - Separate Anzeige empfangener und qualitativ auswertbarer Werte; verständliche Zeitangaben in österreichischer Zeit.
 - Speichern wiederholt nur einen echten Paralleländerungskonflikt; fremde Änderungen werden per Rebase erhalten. Keine Force-Pushes.
-- Automatische Läufe enden am bestätigten Scanfenster 22:00 Europe/Vienna, nicht erst um22:59.
+- Automatische Läufe enden am bestätigten Scanfenster 22:00 Europe/Vienna, nicht erst um 22:59.
 
 ## Prüfungen
 Die finale Test- und Live-Abnahme wird nach den tatsächlichen Läufen ergänzt. Synthetische Testdaten werden ausschließlich im Test verwendet und niemals als Kursdaten veröffentlicht.
@@ -19,16 +19,16 @@ Die finale Test- und Live-Abnahme wird nach den tatsächlichen Läufen ergänzt.
 Lokaler Integrationstest des Speicherns: getrenntes temporäres Git-Repository, konkurrierender unabhängiger RSL-Commit, Snapshot-Speicherung und anschließender Lauf ohne Änderungen erfolgreich. Beide Änderungen erhalten.
 
 ## Weiterhin offene automatische Auslösung
-Erneute Prüfung am28.09.2026: nur11 native `schedule`-Läufe in der gesamten verfügbaren Historie. Neuester Lauf13:52:30 UTC abgebrochen; letzter erfolgreicher05:22:24 UTC. Die spätere einmalige Reaktivierung hat bis zur Prüfung keinen neuen zeitgesteuerten Lauf erzeugt. Workflow-Dateien aktiv, Hauptbranch korrekt, Repository aktiv, keine wartenden Schedule-Läufe. Die konkrete Ursache fehlender GitHub-Ereignisse ist weiterhin nicht zugänglich.
+Erneute Prüfung am 28.09.2026: nur 11 native `schedule`-Läufe in der gesamten verfügbaren Historie. Neuester Lauf 13:52:30 UTC abgebrochen; letzter erfolgreicher 05:22:24 UTC. Die spätere einmalige Reaktivierung hat bis zur Prüfung keinen neuen zeitgesteuerten Lauf erzeugt. Workflow-Dateien aktiv, Hauptbranch korrekt, Repository aktiv, keine wartenden Schedule-Läufe. Die konkrete Ursache fehlender GitHub-Ereignisse ist weiterhin nicht zugänglich.
 
-Push oder manueller Start beweisen nur die Datenkette, nicht den automatischen15-Minuten-Betrieb. Zusätzliche Crondateien, beliebige Minutenwechsel und dauernde Neustartketten werden nicht als Zuverlässigkeitslösung ausgegeben. Der vorhandene manuelle Datenlauf bleibt ein ausdrücklich manueller Ersatz. Der vorbereitete Supportfall in MOMENTUM_NATIVE_STATUS.md wurde nicht versendet.
+Push oder manueller Start beweisen nur die Datenkette, nicht den automatischen 15-Minuten-Betrieb. Zusätzliche Crondateien, beliebige Minutenwechsel und dauernde Neustartketten werden nicht als Zuverlässigkeitslösung ausgegeben. Der vorhandene manuelle Datenlauf bleibt ein ausdrücklich manueller Ersatz. Der vorbereitete Supportfall in MOMENTUM_NATIVE_STATUS.md wurde nicht versendet.
 
 ## Aussagegrenzen
-Die1% sind ein Suchziel auf dem eingesetzten Kapital, keine bestätigte Strategieperformance. Technische Tests liefern keinen Renditenachweis. Keine Risikolimits, Einsatzgrenzen oder Bewertungsgewichte geändert. Brokerkurs, Spread, Gebühren und Risiko sind vor einer Order maßgeblich.
+Die 1 % sind ein Suchziel, keine bestätigte Strategieperformance. Der bestehende Rechner benennt seine Basis ausdrücklich: 1 % Depotziel bedeutet bei 50 % Einsatz eine Bewegung von 2 % auf diesen Einsatz, vor Kosten und Steuern. Der Einsatz ist entsprechend Projektvorgabe auf höchstens 50 % begrenzt. Technische Tests liefern keinen Renditenachweis. Keine Risikolimits, Einsatzgrenzen oder Bewertungsgewichte geändert. Brokerkurs, Spread, Gebühren und Risiko sind vor einer Order maßgeblich.
 
 Yahoo/yfinance kann Daten verzögert oder unvollständig liefern. yfinance verweist auf persönliche Nutzung und auf Yahoo-Nutzungsrechte. Keine Freigabe zur kommerziellen Datenweiterverbreitung oder pauschale Rechtsfreigabe erteilt.
 
-## Primärquellen, geprüft28.09.2026
+## Primärquellen, geprüft 28.09.2026
 - https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule (Verzögerungen und ausfallende Ereignisse möglich)
 - https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#actions (keine dauernde Serverersatzschleife)
 - https://github.com/ranaroussi/yfinance (Datenrechte und persönliche Nutzung)
