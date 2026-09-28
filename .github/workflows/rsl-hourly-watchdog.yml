@@ -1,0 +1,73 @@
+name: RSL hourly watchdog
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/rsl-hourly-watchdog.yml
+  schedule:
+    - cron: '7,22,37,52 * * 1-5'
+    - cron: '7 1,7,13,19 * * 0,6'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: rsl-hourly-watchdog
+  cancel-in-progress: false
+
+jobs:
+  refresh-if-stale:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+          cache: pip
+
+      - run: pip install -r requirements-web.txt
+
+      - name: Check RSL freshness
+        id: freshness
+        run: |
+          NEEDS_BUILD=$(python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p = Path("docs/data.json")
+          if not p.exists():
+              print("true")
+              raise SystemExit
+
+          try:
+              payload = json.loads(p.read_text(encoding="utf-8"))
+              dt = datetime.fromisoformat(payload["generated_at"].replace("Z", "+00:00"))
+              age = (datetime.now(timezone.utc) - dt).total_seconds() / 60
+              print("true" if age >= 55 else "false")
+          except Exception:
+              print("true")
+          PY
+          )
+          echo "run=$NEEDS_BUILD" >> "$GITHUB_OUTPUT"
+
+      - name: Build fresh RSL data
+        if: steps.freshness.outputs.run == 'true'
+        run: python scripts/build_rsl_data.py
+
+      - name: Commit fresh RSL data
+        if: steps.freshness.outputs.run == 'true'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data.json
+          git diff --cached --quiet || git commit -m 'Refresh RSL market data'
+          git pull --rebase origin main
+          git push origin main
