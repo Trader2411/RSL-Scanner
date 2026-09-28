@@ -72,13 +72,18 @@ with sync_playwright() as p:
     assert '1 % Depotgewinn' in page.locator('#targetStatus').inner_text(), 'Depot versus invested-capital return not explained'
     page.evaluate("localStorage.setItem('momentumRadarAllocation','75')")
     page.reload(wait_until='networkidle')
-    assert page.input_value('#allocation')=='75', 'Invalid legacy allocation was silently changed'
-    assert page.locator('#maxUse').inner_text()=='—', 'Invalid saved allocation produced a target'
-    assert 'Höhere gespeicherte Werte sind ungültig.' in page.locator('#targetStatus').inner_text(), 'Invalid saved allocation unexplained'
+    page.wait_for_function("document.getElementById('refresh').disabled === false")
+    # Reload collapses <details>; open the panel before asserting rendered text.
     page.get_by_text('Depot & Tagesziel – Rechenbeispiel',exact=True).click()
+    assert page.input_value('#allocation')=='75', 'Invalid legacy allocation was silently changed'
+    assert page.locator('#maxUse').is_visible(), 'Reopened target panel not visible'
+    assert page.locator('#maxUse').inner_text()=='—', f"Invalid saved allocation produced a target: {page.locator('#maxUse').text_content()!r}"
+    assert 'Höhere gespeicherte Werte sind ungültig.' in page.locator('#targetStatus').inner_text(), 'Invalid saved allocation unexplained'
     page.fill('#allocation','50')
     page.reload(wait_until='networkidle')
+    page.wait_for_function("document.getElementById('refresh').disabled === false")
     assert page.input_value('#depot')=='7200', 'Saved value did not survive reopen'
+    assert page.input_value('#allocation')=='50', 'Permitted allocation did not survive reopen'
     assert page.input_value('#universe')==ids[-1], 'Saved universe not restored'
     page.evaluate('window.scrollTo(0,0)')
     page.screenshot(path=str(OUT/'mobile.png'),full_page=True)

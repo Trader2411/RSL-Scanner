@@ -11,6 +11,20 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Determine whether provider code changed
+        id: scope
+        run: |
+          python - <<'PY'
+          import os, subprocess
+          paths = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD^', 'HEAD'], text=True).splitlines()
+          needs_provider = os.getenv('GITHUB_EVENT_NAME') == 'workflow_dispatch' or any(
+              path.startswith(('scripts/', 'requirements', 'docs/data.json')) or path == 'tests/check_live_momentum.py'
+              for path in paths)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write(f'provider={str(needs_provider).lower()}\n')
+          PY
       - uses: actions/setup-python@v5
         with:
           python-version: '3.13'
@@ -19,7 +33,7 @@ jobs:
       - run: python -m unittest discover -s tests -p 'test_momentum*.py' -v
       - run: node --test tests/state.test.cjs
       - name: Verify actual provider data without publishing
-        if: github.ref == 'refs/heads/repair/momentum-reliability'
+        if: github.ref == 'refs/heads/repair/momentum-reliability' && steps.scope.outputs.provider == 'true'
         run: |
           pip install -r requirements-web.txt
           python scripts/momentum_delivery.py --force-full
