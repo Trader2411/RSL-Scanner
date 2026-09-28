@@ -1183,5 +1183,1190 @@
     "ret_15m_pct": 0.86,
     "ret_30m_pct": 1.91,
     "ret_60m_pct": 2.69
+  },
+  {
+    "symbol": "NVDA",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 231.97,
+    "universes": [
+      "S&P 500",
+      "NASDAQ 100",
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 230.82,
+    "move_since_scan_pct": -0.5,
+    "ret_15m_pct": -0.22,
+    "ret_30m_pct": -0.18,
+    "ret_60m_pct": -0.75
+  },
+  {
+    "symbol": "LEN",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 83.82,
+    "universes": [
+      "S&P 500"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 83.265,
+    "move_since_scan_pct": -0.66,
+    "ret_15m_pct": 0.39,
+    "ret_30m_pct": 0.3,
+    "ret_60m_pct": 0.45
+  },
+  {
+    "symbol": "CNC",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 63.21,
+    "universes": [
+      "S&P 500"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 62.66,
+    "move_since_scan_pct": -0.87,
+    "ret_15m_pct": 0.41,
+    "ret_30m_pct": 0.22,
+    "ret_60m_pct": 1.03
+  },
+  {
+    "symbol": "FIX",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 1676.73,
+    "universes": [
+      "S&P 500"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 1682.21,
+    "move_since_scan_pct": 0.33,
+    "ret_15m_pct": -0.31,
+    "ret_30m_pct": 0.36,
+    "ret_60m_pct": 1.49
+  },
+  {
+    "symbol": "ECHO",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 91.28,
+    "universes": [
+      "S&P 500"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 90.085,
+    "move_since_scan_pct": -1.31,
+    "ret_15m_pct": -0.48,
+    "ret_30m_pct": -0.75,
+    "ret_60m_pct": -0.51
+  },
+  {
+    "symbol": "PODD",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 130.96,
+    "universes": [
+      "S&P 500"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 132.315,
+    "move_since_scan_pct": 1.03,
+    "ret_15m_pct": 0.49,
+    "ret_30m_pct": -0.27,
+    "ret_60m_pct": -1.13
+  },
+  {
+    "symbol": "REGN",
+    "direction": "SHORT",
+    "base_signal": "EINSTIEG",
+    "scan_price": 760.36,
+    "universes": [
+      "S&P 500",
+      "NASDAQ 100"
+    ],
+    "watch_signal": "EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 759.74,
+    "move_since_scan_pct": -0.08,
+    "ret_15m_pct": -0.14,
+    "ret_30m_pct": -0.24,
+    "ret_60m_pct": -0.17
+  },
+  {
+    "symbol": "DASH",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 181.09,
+    "universes": [
+      "S&P 500",
+      "NASDAQ 100"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 182.47,
+    "move_since_scan_pct": 0.76,
+    "ret_15m_pct": -0.41,
+    "ret_30m_pct": 0.45,
+    "ret_60m_pct": -0.44
+  },
+  {
+    "symbol": "AAON",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 91.04,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 88.32,
+    "move_since_scan_pct": -2.99,
+    "ret_15m_pct": -1.03,
+    "ret_30m_pct": -1.27,
+    "ret_60m_pct": -2.59
+  },
+  {
+    "symbol": "GME",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 23.96,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 23.8599,
+    "move_since_scan_pct": -0.42,
+    "ret_15m_pct": 0.19,
+    "ret_30m_pct": -1.08,
+    "ret_60m_pct": 0.31
+  },
+  {
+    "symbol": "CAVA",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 52.45,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 52.27,
+    "move_since_scan_pct": -0.34,
+    "ret_15m_pct": -0.13,
+    "ret_30m_pct": -0.69,
+    "ret_60m_pct": 0.71
+  },
+  {
+    "symbol": "MUSA",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 522.14,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 518.435,
+    "move_since_scan_pct": -0.71,
+    "ret_15m_pct": -0.42,
+    "ret_30m_pct": -0.57,
+    "ret_60m_pct": -0.17
+  },
+  {
+    "symbol": "GAP",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 22.36,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 22.725,
+    "move_since_scan_pct": 1.63,
+    "ret_15m_pct": 0.2,
+    "ret_30m_pct": -0.02,
+    "ret_60m_pct": 2.25
+  },
+  {
+    "symbol": "DUOL",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 136.19,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 136.885,
+    "move_since_scan_pct": 0.51,
+    "ret_15m_pct": 0.16,
+    "ret_30m_pct": -0.51,
+    "ret_60m_pct": -0.47
+  },
+  {
+    "symbol": "MANH",
+    "direction": "SHORT",
+    "base_signal": "EINSTIEG",
+    "scan_price": 198.08,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 200.71,
+    "move_since_scan_pct": 1.33,
+    "ret_15m_pct": 0.0,
+    "ret_30m_pct": 0.04,
+    "ret_60m_pct": 1.02
+  },
+  {
+    "symbol": "BILL",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 42.37,
+    "universes": [
+      "S&P 400"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 42.5,
+    "move_since_scan_pct": 0.31,
+    "ret_15m_pct": -0.19,
+    "ret_30m_pct": 0.16,
+    "ret_60m_pct": -0.35
+  },
+  {
+    "symbol": "PANW",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 379.69,
+    "universes": [
+      "NASDAQ 100"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 378.62,
+    "move_since_scan_pct": -0.28,
+    "ret_15m_pct": -0.73,
+    "ret_30m_pct": -0.48,
+    "ret_60m_pct": -0.22
+  },
+  {
+    "symbol": "NBIS",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 241.3,
+    "universes": [
+      "NASDAQ 100"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 235.2713,
+    "move_since_scan_pct": -2.5,
+    "ret_15m_pct": -2.28,
+    "ret_30m_pct": -2.55,
+    "ret_60m_pct": -3.22
+  },
+  {
+    "symbol": "ASML",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 1755.64,
+    "universes": [
+      "NASDAQ 100"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 1752.4396,
+    "move_since_scan_pct": -0.18,
+    "ret_15m_pct": -0.19,
+    "ret_30m_pct": -0.13,
+    "ret_60m_pct": -0.52
+  },
+  {
+    "symbol": "ISRG",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 408.35,
+    "universes": [
+      "NASDAQ 100"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 414.605,
+    "move_since_scan_pct": 1.53,
+    "ret_15m_pct": 0.66,
+    "ret_30m_pct": 0.98,
+    "ret_60m_pct": 1.17
+  },
+  {
+    "symbol": "MELI",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 1700.0,
+    "universes": [
+      "NASDAQ 100",
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 1714.21,
+    "move_since_scan_pct": 0.84,
+    "ret_15m_pct": 0.01,
+    "ret_30m_pct": -0.06,
+    "ret_60m_pct": 1.31
+  },
+  {
+    "symbol": "NKE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 35.92,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 36.285,
+    "move_since_scan_pct": 1.02,
+    "ret_15m_pct": 0.42,
+    "ret_30m_pct": 0.58,
+    "ret_60m_pct": 1.85
+  },
+  {
+    "symbol": "AAPL",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 342.84,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 341.06,
+    "move_since_scan_pct": -0.52,
+    "ret_15m_pct": -0.12,
+    "ret_30m_pct": -0.23,
+    "ret_60m_pct": -0.45
+  },
+  {
+    "symbol": "AMGN",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 417.03,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 415.45,
+    "move_since_scan_pct": -0.38,
+    "ret_15m_pct": 0.34,
+    "ret_30m_pct": 0.23,
+    "ret_60m_pct": -0.15
+  },
+  {
+    "symbol": "WMT",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 109.11,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 109.045,
+    "move_since_scan_pct": -0.06,
+    "ret_15m_pct": 0.23,
+    "ret_30m_pct": 0.28,
+    "ret_60m_pct": 0.75
+  },
+  {
+    "symbol": "BA",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 188.37,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 189.7,
+    "move_since_scan_pct": 0.71,
+    "ret_15m_pct": 0.33,
+    "ret_30m_pct": 0.6,
+    "ret_60m_pct": 0.23
+  },
+  {
+    "symbol": "IBM",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 221.28,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 220.81,
+    "move_since_scan_pct": -0.21,
+    "ret_15m_pct": -0.05,
+    "ret_30m_pct": -0.12,
+    "ret_60m_pct": -0.1
+  },
+  {
+    "symbol": "AXP",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 304.92,
+    "universes": [
+      "Dow Jones"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 305.91,
+    "move_since_scan_pct": 0.32,
+    "ret_15m_pct": 0.08,
+    "ret_30m_pct": 0.04,
+    "ret_60m_pct": 0.06
+  },
+  {
+    "symbol": "HOT.DE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 400.4,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 403.4,
+    "move_since_scan_pct": 0.75,
+    "ret_15m_pct": 0.12,
+    "ret_30m_pct": 0.65,
+    "ret_60m_pct": 1.05
+  },
+  {
+    "symbol": "QIA.DE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 39.51,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 39.24,
+    "move_since_scan_pct": -0.68,
+    "ret_15m_pct": -0.61,
+    "ret_30m_pct": -0.44,
+    "ret_60m_pct": -0.22
+  },
+  {
+    "symbol": "BAYN.DE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 50.78,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 50.82,
+    "move_since_scan_pct": 0.08,
+    "ret_15m_pct": -0.24,
+    "ret_30m_pct": 0.08,
+    "ret_60m_pct": -0.08
+  },
+  {
+    "symbol": "AIR.DE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 195.32,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 195.68,
+    "move_since_scan_pct": 0.18,
+    "ret_15m_pct": 0.07,
+    "ret_30m_pct": 0.28,
+    "ret_60m_pct": 0.49
+  },
+  {
+    "symbol": "MRK.DE",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 137.75,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 138.55,
+    "move_since_scan_pct": 0.58,
+    "ret_15m_pct": 0.0,
+    "ret_30m_pct": 0.4,
+    "ret_60m_pct": 0.33
+  },
+  {
+    "symbol": "BEI.DE",
+    "direction": "SHORT",
+    "base_signal": "EINSTIEG",
+    "scan_price": 77.16,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 78.54,
+    "move_since_scan_pct": 1.79,
+    "ret_15m_pct": 0.9,
+    "ret_30m_pct": 1.21,
+    "ret_60m_pct": 1.13
+  },
+  {
+    "symbol": "SAP.DE",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 179.54,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 182.9,
+    "move_since_scan_pct": 1.87,
+    "ret_15m_pct": 0.15,
+    "ret_30m_pct": 1.37,
+    "ret_60m_pct": 1.16
+  },
+  {
+    "symbol": "G24.DE",
+    "direction": "SHORT",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 66.6,
+    "universes": [
+      "DAX"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:20:00-04:00",
+    "age_min": 17.8,
+    "price": 66.85,
+    "move_since_scan_pct": 0.38,
+    "ret_15m_pct": 0.0,
+    "ret_30m_pct": 0.53,
+    "ret_60m_pct": 0.0
+  },
+  {
+    "symbol": "NG=F",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 3.14,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 3.143,
+    "move_since_scan_pct": 0.1,
+    "ret_15m_pct": 0.26,
+    "ret_30m_pct": 0.29,
+    "ret_60m_pct": 0.16
+  },
+  {
+    "symbol": "SI=F",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 61.82,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 61.715,
+    "move_since_scan_pct": -0.17,
+    "ret_15m_pct": -0.04,
+    "ret_30m_pct": -0.72,
+    "ret_60m_pct": 0.16
+  },
+  {
+    "symbol": "CL=F",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 94.36,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 94.15,
+    "move_since_scan_pct": -0.22,
+    "ret_15m_pct": 0.13,
+    "ret_30m_pct": 0.31,
+    "ret_60m_pct": -0.3
+  },
+  {
+    "symbol": "BZ=F",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 99.18,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 99.01,
+    "move_since_scan_pct": -0.17,
+    "ret_15m_pct": 0.14,
+    "ret_30m_pct": 0.36,
+    "ret_60m_pct": -0.19
+  },
+  {
+    "symbol": "ZC=F",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 523.0,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 518.25,
+    "move_since_scan_pct": -0.91,
+    "ret_15m_pct": -0.1,
+    "ret_30m_pct": 0.05,
+    "ret_60m_pct": -1.14
+  },
+  {
+    "symbol": "PA=F",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 1216.0,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 1220.0,
+    "move_since_scan_pct": 0.33,
+    "ret_15m_pct": 0.16,
+    "ret_30m_pct": -0.29,
+    "ret_60m_pct": 0.45
+  },
+  {
+    "symbol": "ZS=F",
+    "direction": "SHORT",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 1293.75,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 1280.25,
+    "move_since_scan_pct": -1.04,
+    "ret_15m_pct": -0.14,
+    "ret_30m_pct": -0.35,
+    "ret_60m_pct": -1.14
+  },
+  {
+    "symbol": "GC=F",
+    "direction": "SHORT",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 4180.4,
+    "universes": [
+      "Rohstoffe"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:25:00-04:00",
+    "age_min": 12.8,
+    "price": 4173.7998,
+    "move_since_scan_pct": -0.16,
+    "ret_15m_pct": 0.06,
+    "ret_30m_pct": -0.37,
+    "ret_60m_pct": -0.01
+  },
+  {
+    "symbol": "ALGO-USD",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 0.13,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Momentum im Kurzcheck schwächer – erst beobachten.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 0.1333,
+    "move_since_scan_pct": 2.57,
+    "ret_15m_pct": -0.28,
+    "ret_30m_pct": -0.68,
+    "ret_60m_pct": 0.44
+  },
+  {
+    "symbol": "QNT-USD",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 242.42,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 233.57,
+    "move_since_scan_pct": -3.65,
+    "ret_15m_pct": 1.11,
+    "ret_30m_pct": 0.24,
+    "ret_60m_pct": -1.46
+  },
+  {
+    "symbol": "HBAR-USD",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 0.12,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 0.1192,
+    "move_since_scan_pct": -0.63,
+    "ret_15m_pct": -1.06,
+    "ret_30m_pct": -1.31,
+    "ret_60m_pct": -2.55
+  },
+  {
+    "symbol": "LINK-USD",
+    "direction": "LONG",
+    "base_signal": "EINSTIEG",
+    "scan_price": 14.79,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 14.379,
+    "move_since_scan_pct": -2.78,
+    "ret_15m_pct": -0.7,
+    "ret_30m_pct": -1.28,
+    "ret_60m_pct": -3.18
+  },
+  {
+    "symbol": "XLM-USD",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 0.22,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 0.2192,
+    "move_since_scan_pct": -0.37,
+    "ret_15m_pct": -0.6,
+    "ret_30m_pct": -0.67,
+    "ret_60m_pct": -2.44
+  },
+  {
+    "symbol": "OP-USD",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 0.14,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 0.1363,
+    "move_since_scan_pct": -2.67,
+    "ret_15m_pct": -0.65,
+    "ret_30m_pct": -1.0,
+    "ret_60m_pct": -2.32
+  },
+  {
+    "symbol": "ATOM-USD",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 1.74,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 1.7198,
+    "move_since_scan_pct": -1.16,
+    "ret_15m_pct": -0.47,
+    "ret_30m_pct": -1.02,
+    "ret_60m_pct": -1.43
+  },
+  {
+    "symbol": "LDO-USD",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 0.46,
+    "universes": [
+      "Krypto"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 0.4489,
+    "move_since_scan_pct": -2.41,
+    "ret_15m_pct": -0.82,
+    "ret_30m_pct": -1.56,
+    "ret_60m_pct": -3.1
+  },
+  {
+    "symbol": "LI",
+    "direction": "LONG",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 11.76,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "BEOBACHTEN",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 11.835,
+    "move_since_scan_pct": 0.64,
+    "ret_15m_pct": 0.51,
+    "ret_30m_pct": 0.17,
+    "ret_60m_pct": 0.98
+  },
+  {
+    "symbol": "PBR",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 20.62,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 20.785,
+    "move_since_scan_pct": 0.8,
+    "ret_15m_pct": 0.53,
+    "ret_30m_pct": 0.82,
+    "ret_60m_pct": 1.09
+  },
+  {
+    "symbol": "NIO",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 3.63,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 3.64,
+    "move_since_scan_pct": 0.28,
+    "ret_15m_pct": 0.14,
+    "ret_30m_pct": -0.05,
+    "ret_60m_pct": 0.41
+  },
+  {
+    "symbol": "PKX",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 58.17,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 58.185,
+    "move_since_scan_pct": 0.03,
+    "ret_15m_pct": 0.14,
+    "ret_30m_pct": -0.09,
+    "ret_60m_pct": 0.6
+  },
+  {
+    "symbol": "JD",
+    "direction": "LONG",
+    "base_signal": "KEIN EINSTIEG",
+    "scan_price": 26.61,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Kurzcheck bestätigt das bestehende Signal.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 26.785,
+    "move_since_scan_pct": 0.66,
+    "ret_15m_pct": 0.17,
+    "ret_30m_pct": 0.22,
+    "ret_60m_pct": 0.79
+  },
+  {
+    "symbol": "NU",
+    "direction": "SHORT",
+    "base_signal": "EINSTIEG",
+    "scan_price": 12.44,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 12.59,
+    "move_since_scan_pct": 1.21,
+    "ret_15m_pct": -0.08,
+    "ret_30m_pct": -0.2,
+    "ret_60m_pct": 0.92
+  },
+  {
+    "symbol": "SE",
+    "direction": "SHORT",
+    "base_signal": "BEOBACHTEN",
+    "scan_price": 97.3,
+    "universes": [
+      "Emerging Markets"
+    ],
+    "watch_signal": "KEIN EINSTIEG",
+    "reason": "Deutliche Gegenbewegung seit dem Vollscan – Einstieg gesperrt.",
+    "checked_at": "2026-09-28T14:37:46.528853+00:00",
+    "checked_at_vienna": "2026-09-28T16:37:46.528853+02:00",
+    "latest_bar": "2026-09-28T10:35:00-04:00",
+    "age_min": 2.8,
+    "price": 99.11,
+    "move_since_scan_pct": 1.86,
+    "ret_15m_pct": 0.68,
+    "ret_30m_pct": 1.73,
+    "ret_60m_pct": 2.51
   }
 ]
