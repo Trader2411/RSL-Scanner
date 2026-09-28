@@ -1,0 +1,63 @@
+name: MomentumRadar one-time schedule repair
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [.github/workflows/momentum-schedule-repair.yml]
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: momentum-schedule-repair
+  cancel-in-progress: false
+jobs:
+  repair:
+    if: github.repository == 'Trader2411/RSL-Scanner'
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET: repos/Trader2411/RSL-Scanner/actions/workflows/update-momentum-watch.yml
+    steps:
+      - name: Inspect only the currently authorised MomentumRadar workflow
+        id: inspect
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p qa-output
+          gh api "$TARGET" --jq '{id,name,path,state,created_at,updated_at}' > qa-output/before.json
+          gh api "$TARGET/runs?branch=main&per_page=20" --jq '{total_count,runs:[.workflow_runs[]|{id,event,status,conclusion,created_at}]}' > qa-output/recent-runs.json
+          cat qa-output/before.json
+          # Never reactivate a workflow previously disabled by the user.
+          [ "$(jq -r '.state' qa-output/before.json)" = active ] || { echo 'Existing workflow is not active; nothing changed.'; exit 0; }
+          [ "$(jq '[.runs[]|select(.status != "completed")] | length' qa-output/recent-runs.json)" -eq 0 ] || { echo 'A data run is active; no reset attempted.'; exit 0; }
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+      - name: Temporarily disable this active workflow once
+        if: steps.inspect.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method PUT "$TARGET/disable"
+      - name: Restore activation even if the previous request failed
+        if: always() && steps.inspect.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --method PUT "$TARGET/enable"
+          gh api "$TARGET" --jq '{id,name,path,state,created_at,updated_at}' > qa-output/after.json
+          [ "$(jq -r '.state' qa-output/after.json)" = active ]
+          date -u +'%Y-%m-%dT%H:%M:%SZ' > qa-output/reactivated-at.txt
+          cat qa-output/after.json
+          {
+            echo '## Existing MomentumRadar schedule reactivated once'
+            echo 'No schedule expression, ranking, data provider, UI or RSL workflow changed.'
+            echo 'No data workflow was manually started. No automatic restart loop was installed.'
+            echo 'This is a configuration result only. Subsequent event=schedule runs must still be verified.'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Save activation evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: momentum-schedule-reactivation
+          path: qa-output/
+          retention-days: 7
