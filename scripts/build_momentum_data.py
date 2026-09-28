@@ -21,7 +21,7 @@ OUT.parent.mkdir(parents=True, exist_ok=True)
 
 VIENNA = ZoneInfo("Europe/Vienna")
 NEW_YORK = ZoneInfo("America/New_York")
-BATCH_SIZE = 90
+BATCH_SIZE = 80
 LOOKBACK = "5d"
 INTERVAL = "15m"
 UNIVERSE_INDEXES = ["S&P 500", "S&P 400", "NASDAQ 100", "Dow Jones", "DAX", "Rohstoffe", "Krypto", "Emerging Markets"]
@@ -214,7 +214,7 @@ def download_intraday(symbols):
                     frames[symbol] = frame
         except Exception as exc:
             errors.append(f"Batch {i // BATCH_SIZE + 1}: {type(exc).__name__}: {exc}")
-        time.sleep(0.35)
+        time.sleep(0.25)
     return frames, errors
 
 
