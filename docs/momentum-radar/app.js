@@ -21,6 +21,14 @@ function isMarketClosed(){
   const usSessionUniverses=['S&P 500','S&P 400','NASDAQ 100','Dow Jones','Emerging Markets'];
   return usSessionUniverses.includes(currentUniverse) && DATA?.market?.phase==='US-Handel beendet';
 }
+function candidateDataAgeMin(x){
+  if(!x?.latest_bar)return Infinity;
+  const t=new Date(x.latest_bar).getTime();
+  return Number.isFinite(t)?(Date.now()-t)/60000:Infinity;
+}
+function candidateIsStale(x){
+  return candidateDataAgeMin(x)>35;
+}
 function displaySignal(raw){
   if(isMarketClosed()) return 'MARKT GESCHLOSSEN';
   return isStale()?'KEIN EINSTIEG':raw;
@@ -76,10 +84,12 @@ function findCandidate(symbol,direction){
   return [...(u.candidates?.long||[]),...(u.candidates?.short||[])].find(x=>x.symbol===symbol&&x.direction===direction);
 }
 function card(x){
-  const shownSignal=displaySignal(x.signal);
+  const candidateStale=candidateIsStale(x);
+  const shownSignal=candidateStale?'KEIN EINSTIEG':displaySignal(x.signal);
   const scls=signalClass(shownSignal);
   const stab=x.stability==null?'—':`${Math.round(x.stability)} %`;
   const move=x.momentum_change||'—';
+  const reasonText=candidateStale?`Kursdaten zu alt (${Math.round(candidateDataAgeMin(x))} Min.) – kein neuer Einstieg.`:(x.reason||'—');
   return `<article class="candidate ${scls}${selected?.symbol===x.symbol&&selected?.direction===x.direction?' selected':''}" data-symbol="${x.symbol}" data-direction="${x.direction}">
     <div class="candidate-top"><div class="rank-name"><span class="rank">${x.rank}</span><div class="name"><b>${x.name} <span class="muted">${x.symbol}</span></b><small>${x.sector||''}${x.wkn?` · <a class="wkn-link" href="${x.wkn_url||'#'}" target="_blank" rel="noopener">WKN ${x.wkn} ↗</a>`:''} · <a class="source-chart-link" href="${sourceChartUrl(x.symbol)}" target="_blank" rel="noopener">Chart Kursquelle ↗</a></small></div></div><span class="signal-pill ${scls}">${signalIcon(shownSignal)} ${shownSignal}</span></div>
     <div class="kpis">
@@ -90,7 +100,7 @@ function card(x){
       <div class="kpi"><span>Volumen</span><b>${vol(x.volume_ratio)}</b></div>
       <div class="kpi"><span>Stabilität</span><b>${stab}</b></div>
     </div>
-    <div class="candidate-bottom"><div class="reason">${x.reason||'—'}</div><div class="momentum-change">Momentum: <b>${move}</b></div></div>
+    <div class="candidate-bottom"><div class="reason">${reasonText}</div><div class="momentum-change">Momentum: <b>${move}</b></div></div>
   </article>`;
 }
 function renderTargets(){
