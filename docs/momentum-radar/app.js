@@ -28,6 +28,15 @@ function effectiveAgeMin(x){
   const ms=new Date(t).getTime();
   return Number.isFinite(ms)?(Date.now()-ms)/60000:Infinity;
 }
+function effectiveUniverseSignal(u){
+  if(isMarketClosed())return 'MARKT GESCHLOSSEN';
+  if(isStale())return 'KEIN EINSTIEG';
+  const items=[...(u?.candidates?.long||[]),...(u?.candidates?.short||[])];
+  const signals=items.map(x=>candidateIsStale(x)?'KEIN EINSTIEG':effectiveSignal(x));
+  if(signals.includes('EINSTIEG'))return 'EINSTIEG';
+  if(signals.includes('BEOBACHTEN'))return 'BEOBACHTEN';
+  return 'KEIN EINSTIEG';
+}
 
 function universeData(){
   return DATA?.universes?.[currentUniverse]||{coverage:{universe:0,with_intraday_data:0},overall_signal:'KEIN EINSTIEG',candidates:{long:[],short:[]}};
@@ -81,7 +90,7 @@ function buildUniverseButtons(){
   });
 }
 function render(){
-  const u=universeData(), stale=isStale(), closed=isMarketClosed(), overall=displaySignal(u.overall_signal||'KEIN EINSTIEG');
+  const u=universeData(), stale=isStale(), closed=isMarketClosed(), overall=effectiveUniverseSignal(u);
   $('overallSignal').textContent=overall;
   $('signalDot').className=`dot ${signalClass(overall)}`;
   $('phase').innerHTML=`${currentUniverse} · ${DATA?.market?.phase||'—'}${DATA?.market?.special_scan?` · <span class="special">${DATA.market.special_scan}</span>`:''}`;
