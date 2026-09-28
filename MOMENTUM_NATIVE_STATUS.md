@@ -64,3 +64,10 @@ The current active Momentum workflow was disabled and immediately re-enabled onc
 Technischer Bericht vorbereitet; keine externe Nachricht gesendet. Laut GitHub-Dokumentation ist direkter technischer Support für bezahlte Konten verfügbar. Kostenlose Konten werden für die meisten technischen Fragen an GitHub Community Discussions verwiesen. Der verfügbare Kontotarif und ein angemeldeter Supportzugang sind hier nicht nachgewiesen. Keine kostenpflichtige Aufrüstung veranlasst. Für das Absenden beziehungsweise eine öffentliche Community-Meldung ist eine ausdrückliche Freigabe erforderlich; übermittelt würden ausschließlich diese öffentlichen technischen Angaben, keine Depot-, Handels- oder Zugangsdaten.
 
 Quellen: https://docs.github.com/en/support/contacting-github-support/creating-a-support-ticket und https://www.githubstatus.com/ (am 28.09.2026 gelesen).
+
+
+## Verifizierter Meldeweg, 28.09.2026, 22:01 Wien
+
+Die GitHub-Oberfläche bestätigt die API-Historie: neun Kandidatenläufe, ausschließlich Push bzw. workflow_run, kein nativer Zeitplanlauf. Im angemeldeten Supportportal steht beim persönlichen Standardkonto ausdrücklich „Technical support not included“. Der technische Meldeweg für dieses Konto ist deshalb GitHub Community. Es wurde keine fachfremde Supportkategorie verwendet und kein Supportfall abgesendet.
+
+Ein passender bestehender Fehlerbericht wurde gelesen: https://github.com/orgs/community/discussions/206019 . Mehrere Nutzer melden das gleiche beobachtbare Symptom; eine identische Ursache für dieses Repository ist damit nicht bewiesen. Statt einen doppelten Bericht zu eröffnen, ist dort ein Kommentar mit den eigenen öffentlichen technischen Belegen als Vorschau vorbereitet. Noch nicht abgesendet; Schaltfläche „Comment“ nicht betätigt. Vor der öffentlichen Veröffentlichung ist die ausdrückliche Freigabe des Nutzers erforderlich. Der Bericht enthält keine Depotwerte, Handelsziele, E-Mail-Adresse oder Zugangsdaten.
