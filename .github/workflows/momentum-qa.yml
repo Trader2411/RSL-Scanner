@@ -1,14 +1,14 @@
 name: MomentumRadar repair QA
 on:
   push:
-    branches: [repair/momentum-delivery]
+    branches: [repair/momentum-delivery, repair/momentum-reliability]
   workflow_dispatch:
 permissions:
   contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -18,6 +18,12 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - run: python -m unittest discover -s tests -p 'test_momentum*.py' -v
       - run: node --test tests/state.test.cjs
+      - name: Verify actual provider data without publishing
+        if: github.ref == 'refs/heads/repair/momentum-reliability'
+        run: |
+          pip install -r requirements-web.txt
+          python scripts/momentum_delivery.py --force-full
+          python tests/check_live_momentum.py
       - name: Mobile browser with explicit synthetic fixture
         env:
           MOMENTUM_FIXTURE: '1'

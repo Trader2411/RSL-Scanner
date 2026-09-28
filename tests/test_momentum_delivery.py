@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'scripts'))
-from momentum_delivery import age_minutes, atomic_json, validate_pair
+from momentum_delivery import age_minutes, atomic_json, validate_pair, scan_window
 from build_momentum_watch import monitor_signal, frame_for, return_at_minutes, collect_candidates
 
 class Regression(unittest.TestCase):
@@ -51,9 +51,9 @@ class Regression(unittest.TestCase):
         self.assertIsNone(collect_candidates(data)['X-USD|LONG']['scan_price'])
     def test_pair_binding_and_block(self):
         now=datetime.now(timezone.utc); stamp=now.isoformat()
-        row={'symbol':'A','direction':'LONG','signal':'BEOBACHTEN'}
+        row={'symbol':'A','direction':'LONG','signal':'BEOBACHTEN','price_asof':stamp,'data_quality_ok':True}
         data={'generated_at':stamp,'universes':{'U':{'candidates':{'long':[row]}}}}
-        record={'watch_signal':'EINSTIEG','price':100.,'price_asof':stamp,'ret_15m_pct':1.,'ret_30m_pct':1.,'ret_60m_pct':1.}
+        record={'symbol':'A','direction':'LONG','watch_signal':'EINSTIEG','price':100.,'price_asof':stamp,'ret_15m_pct':1.,'ret_30m_pct':1.,'ret_60m_pct':1.}
         watch={'generated_at':stamp,'base_scan_generated_at':stamp,'candidates':{'A|LONG':record}}
         validate_pair(data,watch,now)
         self.assertEqual(record['watch_signal'],'BEOBACHTEN')
@@ -61,6 +61,23 @@ class Regression(unittest.TestCase):
         self.assertEqual(record['watch_signal'],'KEIN EINSTIEG')
         watch['base_scan_generated_at']='wrong'
         with self.assertRaises(ValueError): validate_pair(data,watch,now)
+    def test_scan_window_has_exact_end_and_dst(self):
+        for month, utc_open, utc_end in ((9,8,20),(12,9,21)):
+            # Both dates are Monday in 2026.
+            day=28
+            self.assertTrue(scan_window(datetime(2026,month,day,utc_open,tzinfo=timezone.utc)))
+            self.assertTrue(scan_window(datetime(2026,month,day,utc_end,tzinfo=timezone.utc)))
+            self.assertFalse(scan_window(datetime(2026,month,day,utc_end,1,tzinfo=timezone.utc)))
+            self.assertFalse(scan_window(datetime(2026,month,day,utc_open-1,59,tzinfo=timezone.utc)))
+    def test_new_watch_does_not_repair_invalid_full_scan(self):
+        now=datetime.now(timezone.utc); stamp=now.isoformat()
+        for quality, source in ((False,stamp),(True,(now-timedelta(hours=3)).isoformat()),(True,None)):
+            row={'symbol':'A','direction':'LONG','signal':'EINSTIEG','price_asof':source,'data_quality_ok':quality}
+            data={'generated_at':stamp,'universes':{'U':{'candidates':{'long':[row]}}}}
+            rec={'symbol':'A','direction':'LONG','watch_signal':'EINSTIEG','price':100.,'price_asof':stamp,'ret_15m_pct':1.,'ret_30m_pct':1.,'ret_60m_pct':1.}
+            watch={'generated_at':stamp,'base_scan_generated_at':stamp,'candidates':{'A|LONG':rec}}
+            validate_pair(data,watch,now)
+            self.assertEqual(rec['watch_signal'],'KEIN EINSTIEG')
     def test_atomic_json_preserves_previous_on_invalid(self):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d)/'a.json'; atomic_json(p,{'valid':1})

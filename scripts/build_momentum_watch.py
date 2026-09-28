@@ -43,15 +43,20 @@ def frame_for(raw, symbol, now, single=False):
         return pd.DataFrame()
     frame.index = frame.index.tz_convert('UTC')
     frame = frame.loc[~frame.index.duplicated(keep='last')].sort_index()
-    aligned = (frame.index.minute % 5 == 0) & (frame.index.second == 0)
+    aligned = (frame.index.minute % 5 == 0) & (frame.index.second == 0) & (frame.index.microsecond == 0)
     complete = frame.index + pd.Timedelta(minutes=5) <= pd.Timestamp(now)
     frame = frame.loc[aligned & complete]
     for field in ('Open', 'High', 'Low', 'Close', 'Volume'):
         if field in frame:
             frame[field] = pd.to_numeric(frame[field], errors='coerce')
-    frame = frame.loc[frame['Close'].notna() & (frame['Close'] > 0)]
+    frame = frame.loc[frame['Close'].map(lambda value: safe(value) is not None) & (frame['Close'] > 0)]
     if all(k in frame for k in ('High', 'Low')):
-        frame = frame.loc[(frame['Low'] <= frame['Close']) & (frame['High'] >= frame['Close']) & (frame['Low'] > 0)]
+        valid = (frame['Low'].map(lambda value: safe(value) is not None)
+                 & frame['High'].map(lambda value: safe(value) is not None)
+                 & (frame['Low'] <= frame['Close']) & (frame['High'] >= frame['Close']) & (frame['Low'] > 0))
+        if 'Open' in frame:
+            valid &= frame['Open'].map(lambda value: safe(value) is not None) & (frame['Low'] <= frame['Open']) & (frame['High'] >= frame['Open'])
+        frame = frame.loc[valid]
     return frame
 
 
@@ -59,17 +64,22 @@ def return_at_minutes(close, minutes):
     if close is None or len(close) < 2:
         return None
     target = close.index[-1] - pd.Timedelta(minutes=minutes)
-    before = close.loc[(close.index <= target) & (close.index >= target - pd.Timedelta(minutes=5))]
-    return pct(close.iloc[-1], before.iloc[-1]) if not before.empty else None
+    window = close.loc[close.index >= target]
+    expected = pd.date_range(target, close.index[-1], freq='5min')
+    if not window.index.equals(expected) or any(safe(value) is None or value <= 0 for value in window):
+        return None
+    return pct(window.iloc[-1], window.iloc[0])
 
 
 def monitor_signal(base, direction, age, raw15, raw30, raw60, raw_since):
     if base not in LEVEL or direction not in ('LONG', 'SHORT'):
         return 'KEIN EINSTIEG', 'Unbekanntes Signal – kein neuer Einstieg.'
-    if age is None or not math.isfinite(age) or age > QUOTE_LIMIT:
+    if age is None or not math.isfinite(age) or not 0 <= age <= QUOTE_LIMIT:
         return 'KEIN EINSTIEG', 'Kursdaten zu alt – kein neuer Einstieg.'
     if any(safe(v) is None for v in (raw15, raw30, raw60)):
         return 'KEIN EINSTIEG', '5-Minuten-Verlauf unvollständig – kein neuer Einstieg.'
+    if safe(raw_since) is None:
+        return 'KEIN EINSTIEG', 'Vergleichskurs des Vollscans fehlt – kein neuer Einstieg.'
     sign = 1 if direction == 'LONG' else -1
     d15, d30, d60 = (sign * v for v in (raw15, raw30, raw60))
     ds = None if safe(raw_since) is None else sign * raw_since
@@ -90,6 +100,8 @@ def collect_candidates(data):
                 if not symbol or direction not in ('LONG', 'SHORT'):
                     continue
                 key, signal = f'{symbol}|{direction}', row.get('signal', 'KEIN EINSTIEG')
+                if row.get('data_quality_ok') is not True:
+                    signal = 'KEIN EINSTIEG'
                 reference = safe(row.get('reference_price'))
                 if reference is None and (safe(row.get('price')) or 0) >= 1:
                     reference = safe(row['price'])

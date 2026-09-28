@@ -22,10 +22,4 @@ jobs:
       - run: pip install -r requirements-web.txt
       - run: python scripts/momentum_delivery.py --force-full
       - name: Save complete snapshot
-        run: |
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add docs/momentum-radar/
-          git diff --cached --quiet || git commit -m 'Refresh verified MomentumRadar snapshot'
-          git pull --rebase origin main
-          git push origin main
+        run: bash scripts/save_momentum_snapshot.sh

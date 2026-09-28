@@ -7,7 +7,7 @@ import os
 import subprocess
 import sys
 import tempfile
-from datetime import datetime, timezone
+from datetime import datetime, time, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -15,6 +15,12 @@ ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'docs/momentum-radar'
 LEVEL = {'KEIN EINSTIEG': 0, 'BEOBACHTEN': 1, 'EINSTIEG': 2}
 FULL_LIMIT, WATCH_LIMIT, QUOTE_LIMIT = 90, 20, 20
+BASE_QUOTE_LIMIT = 45
+
+
+def scan_window(now):
+    local = now.astimezone(ZoneInfo('Europe/Vienna'))
+    return local.weekday() < 5 and time(10) <= local.time() <= time(22)
 
 
 def age_minutes(value, now):
@@ -53,23 +59,43 @@ def read_json(path):
 
 
 def validate_pair(data, watch, now):
-    if not data.get('universes') or not math.isfinite(age_minutes(data.get('generated_at'), now)):
+    if not isinstance(data.get('universes'), dict) or not data['universes'] or not math.isfinite(age_minutes(data.get('generated_at'), now)):
         raise ValueError('Invalid full scan')
     if watch.get('base_scan_generated_at') != data.get('generated_at'):
         raise ValueError('Full scan / candidate check mismatch')
     if not isinstance(watch.get('candidates'), dict):
         raise ValueError('Candidate checks missing')
+    scan_time = datetime.fromisoformat(data['generated_at'].replace('Z', '+00:00'))
+    watch_age = age_minutes(watch.get('generated_at'), now)
+    watch_time = datetime.fromisoformat(watch['generated_at'].replace('Z', '+00:00')) if math.isfinite(watch_age) else None
+    if watch_time is not None and watch_time < scan_time:
+        raise ValueError('Candidate check predates full scan')
     for universe in data['universes'].values():
+        if not isinstance(universe, dict) or not isinstance(universe.get('candidates'), dict):
+            raise ValueError('Malformed universe')
         for side in ('long', 'short'):
-            for row in universe.get('candidates', {}).get(side, []):
+            rows = universe['candidates'].get(side, [])
+            if not isinstance(rows, list):
+                raise ValueError('Malformed candidate list')
+            for row in rows:
+                if not isinstance(row, dict) or not row.get('symbol') or row.get('direction') != side.upper():
+                    raise ValueError('Malformed candidate identity')
                 rec = watch['candidates'].get(f"{row['symbol']}|{row['direction']}")
                 if rec is None:
                     continue  # Missing records are blocked by the browser.
-                valid = all(finite(rec.get(k)) for k in ('price', 'ret_15m_pct', 'ret_30m_pct', 'ret_60m_pct'))
+                valid = isinstance(rec, dict) and all(finite(rec.get(k)) for k in ('price', 'ret_15m_pct', 'ret_30m_pct', 'ret_60m_pct'))
+                if not isinstance(rec, dict):
+                    watch['candidates'][f"{row['symbol']}|{row['direction']}"] = {'watch_signal': 'KEIN EINSTIEG', 'reason': 'Ungültiger Kurzcheck.'}
+                    continue
                 valid = valid and rec['price'] > 0
+                valid = valid and row.get('data_quality_ok') is True
+                valid = valid and age_minutes(row.get('price_asof'), scan_time) <= BASE_QUOTE_LIMIT
                 valid = valid and age_minutes(rec.get('price_asof'), now) <= QUOTE_LIMIT
-                valid = valid and age_minutes(watch.get('generated_at'), now) <= WATCH_LIMIT
+                valid = valid and watch_age <= WATCH_LIMIT
+                valid = valid and watch_time is not None and math.isfinite(age_minutes(rec.get('price_asof'), watch_time))
                 valid = valid and age_minutes(data.get('generated_at'), now) <= FULL_LIMIT
+                valid = valid and row.get('signal') in LEVEL and rec.get('watch_signal') in LEVEL
+                valid = valid and rec.get('symbol') == row['symbol'] and rec.get('direction') == row['direction']
                 if not valid:
                     rec.update(watch_signal='KEIN EINSTIEG', reason='Kursdaten fehlen oder sind veraltet – kein neuer Einstieg.')
                 elif LEVEL.get(rec.get('watch_signal'), 0) > LEVEL.get(row.get('signal'), 0):
@@ -79,19 +105,12 @@ def validate_pair(data, watch, now):
 
 def build_full():
     import build_momentum_data as builder
-    original = builder.candidate_record
-    def precise_record(meta, metrics, direction, rank):
-        record = original(meta, metrics, direction, rank)
-        record['reference_price'] = builder.safe(metrics.get('price'))
-        return record
-    builder.candidate_record = precise_record
     builder.main()
 
 
 def main(force_full=False):
     now = datetime.now(timezone.utc)
-    local = now.astimezone(ZoneInfo('Europe/Vienna'))
-    if os.getenv('GITHUB_EVENT_NAME') in ('schedule', 'workflow_run') and (local.weekday() >= 5 or not 10 <= local.hour <= 22):
+    if os.getenv('GITHUB_EVENT_NAME') in ('schedule', 'workflow_run') and not scan_window(now):
         print('Outside the approved weekday 10:00–22:00 Vienna scan window.')
         return
     try:

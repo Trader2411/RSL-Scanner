@@ -4,7 +4,6 @@ import os
 import time
 import re
 import unicodedata
-import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone, time as dtime
 from pathlib import Path
@@ -12,7 +11,6 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
-import yfinance as yf
 
 ROOT = Path(__file__).resolve().parents[1]
 RSL_DATA = ROOT / "docs" / "data.json"
@@ -24,6 +22,7 @@ NEW_YORK = ZoneInfo("America/New_York")
 BATCH_SIZE = 80
 LOOKBACK = "5d"
 INTERVAL = "15m"
+BAR_MINUTES = 15
 UNIVERSE_INDEXES = ["S&P 500", "S&P 400", "NASDAQ 100", "Dow Jones", "DAX", "Rohstoffe", "Krypto", "Emerging Markets"]
 INDEX_BENCHMARKS = {
     "S&P 500": "SPY",
@@ -104,13 +103,13 @@ def pct(new, old):
 def sector_etf(sector):
     s = str(sector or "").strip().lower()
     if not s:
-        return "SPY"
+        return None
     if s in SECTOR_ETFS:
         return SECTOR_ETFS[s]
     for key, etf in SECTOR_ETFS.items():
         if key in s or s in key:
             return etf
-    return "SPY"
+    return None
 
 
 def load_universe():
@@ -156,7 +155,8 @@ def normalize_download(df):
         return df
     idx = pd.DatetimeIndex(df.index)
     if idx.tz is None:
-        idx = idx.tz_localize("UTC")
+        # An unidentified exchange timezone cannot safely be guessed.
+        return pd.DataFrame()
     df = df.copy()
     df.index = idx.tz_convert(NEW_YORK)
     return df
@@ -187,11 +187,32 @@ def extract_symbol_frame(data, symbol):
         return pd.DataFrame()
     frame = pd.DataFrame(out).dropna(subset=["Close"])
     if "Volume" not in frame:
-        frame["Volume"] = 0.0
+        frame["Volume"] = np.nan
     return frame
 
 
+def complete_bars(frame, now):
+    """Yahoo intraday timestamps identify candle starts, not closing times."""
+    if frame is None or frame.empty or not isinstance(frame.index, pd.DatetimeIndex) or frame.index.tz is None:
+        return pd.DataFrame()
+    frame = frame.loc[~frame.index.duplicated(keep="last")].sort_index().copy()
+    for field in ("Open", "High", "Low", "Close", "Volume"):
+        if field in frame:
+            frame[field] = pd.to_numeric(frame[field], errors="coerce")
+    if "Close" not in frame:
+        return pd.DataFrame()
+    aligned = (frame.index.minute % BAR_MINUTES == 0) & (frame.index.second == 0) & (frame.index.microsecond == 0)
+    complete = frame.index + pd.Timedelta(minutes=BAR_MINUTES) <= pd.Timestamp(now)
+    valid = np.isfinite(frame["Close"]) & (frame["Close"] > 0)
+    if all(field in frame for field in ("Open", "High", "Low")):
+        valid &= (np.isfinite(frame[["Open", "High", "Low"]]).all(axis=1)
+                  & (frame["Low"] > 0) & (frame["Low"] <= frame[["Open", "Close"]].min(axis=1))
+                  & (frame["High"] >= frame[["Open", "Close"]].max(axis=1)))
+    return frame.loc[aligned & complete & valid]
+
+
 def download_intraday(symbols):
+    import yfinance as yf
     frames = {}
     errors = []
     for i in range(0, len(symbols), BATCH_SIZE):
@@ -218,51 +239,65 @@ def download_intraday(symbols):
     return frames, errors
 
 
-def session_rows(frame, session_date):
+def session_spec(symbol=""):
+    if symbol.endswith(".DE") or symbol == "^GDAXI":
+        return VIENNA, dtime(9, 0), dtime(17, 30), dtime(9, 0), dtime(17, 30)
+    if symbol.endswith("-USD"):
+        return VIENNA, dtime(0), None, dtime(0), None
+    if "=F" in symbol:
+        # Futures use the actual quote freshness; do not invent equity hours.
+        return NEW_YORK, dtime(0), None, dtime(0), None
+    return NEW_YORK, dtime(4, 0), dtime(20, 0), dtime(9, 30), dtime(16, 0)
+
+
+def session_rows(frame, session_date, symbol=""):
     if frame.empty:
         return frame
-    idx = frame.index
-    mask = (idx.date == session_date) & (idx.time >= dtime(4, 0)) & (idx.time <= dtime(20, 0))
+    zone, start, end, _, _ = session_spec(symbol)
+    idx = frame.index.tz_convert(zone)
+    mask = (idx.date == session_date) & (idx.time >= start)
+    if end is not None:
+        mask &= idx.time < end
     return frame.loc[mask]
 
 
-def previous_regular_close(frame, session_date):
+def previous_regular_close(frame, session_date, symbol=""):
     if frame.empty:
         return None
-    dates = sorted({d for d in frame.index.date if d < session_date})
+    zone, _, _, start, end = session_spec(symbol)
+    idx = frame.index.tz_convert(zone)
+    dates = sorted({d for d in idx.date if d < session_date})
     if not dates:
         return None
     prev = dates[-1]
-    idx = frame.index
-    mask = (idx.date == prev) & (idx.time >= dtime(9, 30)) & (idx.time <= dtime(16, 0))
+    mask = (idx.date == prev) & (idx.time >= start)
+    if end is not None:
+        mask &= idx.time < end
     regular = frame.loc[mask]
-    if regular.empty:
-        regular = frame.loc[idx.date == prev]
     return safe(regular["Close"].iloc[-1]) if not regular.empty else None
 
 
-def ret_at_hours(close, hours):
+def continuous_window(close, minutes, interval=BAR_MINUTES):
     if close is None or len(close) < 2:
         return None
-    last_ts = close.index[-1]
-    cutoff = last_ts - pd.Timedelta(hours=hours)
-    before = close.loc[close.index <= cutoff]
-    if before.empty:
+    cutoff = close.index[-1] - pd.Timedelta(minutes=minutes)
+    window = close.loc[close.index >= cutoff]
+    expected = pd.date_range(cutoff, close.index[-1], freq=f"{interval}min")
+    if not window.index.equals(expected) or not np.isfinite(window).all() or (window <= 0).any():
         return None
-    return pct(close.iloc[-1], before.iloc[-1])
+    return window
+
+
+def ret_at_hours(close, hours):
+    window = continuous_window(close, hours * 60)
+    return None if window is None else pct(window.iloc[-1], window.iloc[0])
 
 
 def previous_hour_return(close):
-    if close is None or len(close) < 3:
+    window = continuous_window(close, 120)
+    if window is None:
         return None
-    last_ts = close.index[-1]
-    t1 = last_ts - pd.Timedelta(hours=1)
-    t2 = last_ts - pd.Timedelta(hours=2)
-    p1 = close.loc[close.index <= t1]
-    p2 = close.loc[close.index <= t2]
-    if p1.empty or p2.empty:
-        return None
-    return pct(p1.iloc[-1], p2.iloc[-1])
+    return pct(window.iloc[4], window.iloc[0])
 
 
 def rsi14(close):
@@ -272,6 +307,8 @@ def rsi14(close):
     delta = s.diff()
     gain = delta.clip(lower=0).ewm(alpha=1 / 14, adjust=False).mean()
     loss = (-delta.clip(upper=0)).ewm(alpha=1 / 14, adjust=False).mean()
+    if loss.iloc[-1] == 0:
+        return 100.0 if gain.iloc[-1] > 0 else 50.0
     rs = gain / loss.replace(0, np.nan)
     rsi = 100 - 100 / (1 + rs)
     return safe(rsi.iloc[-1])
@@ -320,38 +357,57 @@ def stability(close, direction):
     return clamp(score, 0.0, 100.0), int(directional.sum()), int(len(rets))
 
 
-def volume_ratio(frame, current_session, now_ny):
+def volume_ratio(frame, current_session, now_ny, symbol=""):
     if current_session.empty:
         return None
-    current = safe(current_session["Volume"].fillna(0).sum(), 0.0)
-    if current is None:
+    volumes = current_session["Volume"]
+    if not np.isfinite(volumes).all() or (volumes < 0).any():
         return None
-    prior_dates = sorted({d for d in frame.index.date if d < now_ny.date()}, reverse=True)[:4]
+    current = safe(volumes.sum())
+    if not current or current <= 0:
+        return None
+    zone = session_spec(symbol)[0]
+    clock = now_ny.astimezone(zone)
+    # Compare identical *completed* intraday periods, not the next prior-day candle.
+    cutoff = current_session.index[-1].tz_convert(zone).time()
+    prior_dates = sorted({d for d in frame.index.tz_convert(zone).date if d < clock.date()}, reverse=True)[:4]
     comps = []
     for d in prior_dates:
-        rows = session_rows(frame, d)
+        rows = session_rows(frame, d, symbol)
         if rows.empty:
             continue
-        rows = rows.loc[rows.index.time <= now_ny.time()]
-        if not rows.empty:
-            comps.append(float(rows["Volume"].fillna(0).sum()))
+        rows = rows.loc[rows.index.tz_convert(zone).time <= cutoff]
+        if not rows.empty and np.isfinite(rows["Volume"]).all() and (rows["Volume"] >= 0).all():
+            comps.append(float(rows["Volume"].sum()))
     base = float(np.median(comps)) if comps else 0.0
     if base <= 0:
         return None
     return current / base
 
 
-def benchmark_return(frame, now_ny):
-    sess = session_rows(frame, now_ny.date())
+def benchmark_return(frame, now_ny, symbol="", asof=None):
+    clock = now_ny.astimezone(session_spec(symbol)[0])
+    sess = session_rows(frame, clock.date(), symbol)
+    if asof is not None:
+        sess = sess.loc[sess.index <= asof]
     if sess.empty:
         return None
-    prev = previous_regular_close(frame, now_ny.date())
-    base = prev if prev else safe(sess["Close"].iloc[0])
-    return pct(sess["Close"].iloc[-1], base)
+    if asof is not None and sess.index[-1] != asof:
+        return None
+    age = (pd.Timestamp(now_ny) - (sess.index[-1] + pd.Timedelta(minutes=BAR_MINUTES))).total_seconds() / 60
+    if age < 0 or age > 45:
+        return None
+    prev = previous_regular_close(frame, clock.date(), symbol)
+    return pct(sess["Close"].iloc[-1], prev)
 
 
-def regular_open_check(sess, direction):
-    regular = sess.loc[(sess.index.time >= dtime(9, 30)) & (sess.index.time <= dtime(16, 0))]
+def regular_open_check(sess, direction, symbol=""):
+    zone, _, _, start, end = session_spec(symbol)
+    idx = sess.index.tz_convert(zone)
+    mask = idx.time >= start
+    if end is not None:
+        mask &= idx.time < end
+    regular = sess.loc[mask]
     if len(regular) < 2:
         return None
     move = pct(regular["Close"].iloc[-1], regular["Open"].iloc[0] if "Open" in regular else regular["Close"].iloc[0])
@@ -407,7 +463,31 @@ def score_candidate(metrics, direction):
     return clamp(score, 0, 100)
 
 
+def data_quality_issues(metrics):
+    issues = []
+    age = safe(metrics.get("latest_age_min"))
+    if age is None or not 0 <= age <= 45:
+        issues.append("Vollscan-Kursdaten fehlen oder sind älter als 45 Minuten.")
+    for key, label in (("day_pct", "Vortagesschluss"), ("m1", "1-Stunden-Verlauf"),
+                       ("m2", "2-Stunden-Verlauf"), ("m3", "3-Stunden-Verlauf"),
+                       ("volume_ratio", "Volumenvergleich"), ("rel_index", "Indexvergleich"),
+                       ("rel_sector", "Sektorvergleich")):
+        if key == "rel_sector" and metrics.get("sector_benchmark_kind") == "not_applicable" and (metrics.get("symbol", "").endswith("-USD") or "=F" in metrics.get("symbol", "")):
+            continue
+        if safe(metrics.get(key)) is None:
+            issues.append(f"{label} fehlt oder ist unvollständig – kein neuer Einstieg.")
+    return issues
+
+
+def ranked_candidates(rows, direction, limit):
+    """Preserve the score order within usable data before showing blocked rows."""
+    return sorted(rows, key=lambda item: (item[1].get("data_quality_ok") is True,
+                                          item[1][f"score_{direction}"]), reverse=True)[:limit]
+
+
 def signal_for(metrics, direction, now_ny, latest_age_min):
+    if metrics.get("data_quality_ok") is not True:
+        return "KEIN EINSTIEG"
     sign = 1 if direction == "long" else -1
     score = metrics["score_long"] if direction == "long" else metrics["score_short"]
     m1 = sign * (metrics.get("m1") or 0.0)
@@ -419,10 +499,14 @@ def signal_for(metrics, direction, now_ny, latest_age_min):
     vol = metrics.get("volume_ratio")
     open_check = metrics.get("open_check_long") if direction == "long" else metrics.get("open_check_short")
 
-    market_open = dtime(4, 0) <= now_ny.time() < dtime(16, 0)
-    fresh = market_open and latest_age_min is not None and latest_age_min <= 45
+    symbol = metrics.get("symbol", "")
+    zone, start, _, _, end = session_spec(symbol)
+    clock = now_ny.astimezone(zone)
+    continuous = symbol.endswith("-USD") or "=F" in symbol
+    market_open = continuous or (clock.weekday() < 5 and start <= clock.time() < end)
+    fresh = market_open and latest_age_min is not None and 0 <= latest_age_min <= 45
     enough_history = intervals >= 7
-    volume_ok = vol is None or vol >= 0.65
+    volume_ok = vol is not None and vol >= 0.65
     open_ok = open_check is None or open_check > -0.45
     if fresh and enough_history and score >= 68 and day > 0 and m1 > 0 and m2 > 0 and (stab or 0) >= 60 and rel > -0.25 and volume_ok and open_ok:
         return "EINSTIEG"
@@ -443,6 +527,8 @@ def momentum_change(m1, prev1, direction):
 
 
 def reason(metrics, direction, signal):
+    if metrics.get("data_quality_issues"):
+        return metrics["data_quality_issues"][0]
     sign = 1 if direction == "long" else -1
     m3 = sign * (metrics.get("m3") or 0.0)
     stab = metrics.get("stability_long") if direction == "long" else metrics.get("stability_short")
@@ -493,12 +579,18 @@ def candidate_record(meta, metrics, direction, rank):
         "trend_quality": rounded(metrics.get("trend_quality"), 2),
         "rel_index": rounded(metrics.get("rel_index"), 2),
         "rel_sector": rounded(metrics.get("rel_sector"), 2),
+        "sector_benchmark_symbol": metrics.get("sector_benchmark_symbol"),
+        "sector_benchmark_kind": metrics.get("sector_benchmark_kind"),
         "dist_high": rounded(metrics.get("dist_high"), 2),
         "score": rounded(score, 0),
         "signal": signal,
         "momentum_change": change,
         "reason": reason(metrics, direction, signal),
         "latest_bar": metrics.get("latest_bar"),
+        "price_asof": metrics.get("price_asof"),
+        "reference_price": safe(metrics.get("price")),
+        "data_quality_ok": metrics.get("data_quality_ok") is True,
+        "data_quality_issues": metrics.get("data_quality_issues", []),
     }
 
 
@@ -526,6 +618,7 @@ def load_wkn_cache():
 
 
 def resolve_wkn(name, symbol, cache):
+    import requests
     if symbol in cache:
         return cache[symbol]
     slugs = []
@@ -664,7 +757,7 @@ def update_momentum_history(universe, scored, frames, now_utc, now_vienna, now_n
         rows = [(meta, metrics) for meta, metrics in scored if index_name in meta.get("indexes", [])]
         for direction in ("long", "short"):
             key = "score_long" if direction == "long" else "score_short"
-            ranked = sorted(rows, key=lambda x: x[1][key], reverse=True)[:10]
+            ranked = ranked_candidates(rows, direction, 10)
             for rank, (meta, metrics) in enumerate(ranked, 1):
                 signal = metrics["signal_long"] if direction == "long" else metrics["signal_short"]
                 stability_value = metrics["stability_long"] if direction == "long" else metrics["stability_short"]
@@ -703,7 +796,7 @@ def update_momentum_history(universe, scored, frames, now_utc, now_vienna, now_n
     print(f"MomentumRadar history: {len(records)} records · {history_path}")
 
 def main():
-    now_utc = datetime.now(timezone.utc)
+    started_at = now_utc = datetime.now(timezone.utc)
     now_vienna = now_utc.astimezone(VIENNA)
     now_ny = now_utc.astimezone(NEW_YORK)
     event = os.getenv("GITHUB_EVENT_NAME", "manual")
@@ -713,28 +806,39 @@ def main():
 
     universe = load_universe()
     by_symbol = {x["symbol"]: x for x in universe}
-    sector_symbols = sorted({sector_etf(x.get("sector")) for x in universe})
+    sector_symbols = sorted({symbol for x in universe if (symbol := sector_etf(x.get("sector")))})
     helper_symbols = sorted(set(list(INDEX_BENCHMARKS.values()) + sector_symbols))
     symbols = sorted(set(by_symbol) | set(helper_symbols))
 
     frames, errors = download_intraday(symbols)
-    bench_returns = {s: benchmark_return(frames[s], now_ny) for s in helper_symbols if s in frames}
+    now_utc = datetime.now(timezone.utc)
+    now_vienna, now_ny = now_utc.astimezone(VIENNA), now_utc.astimezone(NEW_YORK)
+    frames = {symbol: complete_bars(frame, now_utc) for symbol, frame in frames.items()}
+    bench_returns = {}
+    def comparable_benchmark(symbol, asof):
+        key = (symbol, asof)
+        if key not in bench_returns:
+            frame = frames.get(symbol)
+            bench_returns[key] = (None if frame is None else benchmark_return(frame, now_ny, symbol, asof))
+        return bench_returns[key]
     scored = []
 
     for symbol, meta in by_symbol.items():
         frame = frames.get(symbol)
         if frame is None or frame.empty:
             continue
-        sess = session_rows(frame, now_ny.date())
+        clock = now_utc.astimezone(session_spec(symbol)[0])
+        sess = session_rows(frame, clock.date(), symbol)
         if len(sess) < 2:
             continue
         close = sess["Close"].dropna()
         if len(close) < 2:
             continue
         last_ts = close.index[-1]
-        latest_age_min = max(0.0, (pd.Timestamp(now_ny) - last_ts).total_seconds() / 60.0)
-        prev_close = previous_regular_close(frame, now_ny.date())
-        day_base = prev_close if prev_close else safe(close.iloc[0])
+        price_asof = last_ts + pd.Timedelta(minutes=BAR_MINUTES)
+        latest_age_min = (pd.Timestamp(now_utc) - price_asof).total_seconds() / 60.0
+        prev_close = previous_regular_close(frame, clock.date(), symbol)
+        day_base = prev_close
         price = safe(close.iloc[-1])
         day_pct = pct(price, day_base)
         m1 = ret_at_hours(close, 1)
@@ -747,7 +851,7 @@ def main():
         low = safe(sess["Low"].min()) if "Low" in sess else safe(close.min())
         dist_high = pct(price, high)
         dist_low = pct(price, low)
-        volr = volume_ratio(frame, sess, now_ny)
+        volr = volume_ratio(frame, sess, now_ny, symbol)
         rsi = rsi14(close)
         mh = macd_hist(close)
         tq = trend_quality(close)
@@ -755,13 +859,16 @@ def main():
         memberships = meta.get("indexes", [])
         primary_index = memberships[0] if memberships else "S&P 500"
         index_symbol = INDEX_BENCHMARKS.get(primary_index, "SPY")
-        idx_ret = bench_returns.get(index_symbol)
-        sec_symbol = sector_etf(meta.get("sector"))
-        sec_ret = bench_returns.get(sec_symbol, bench_returns.get("SPY"))
+        idx_ret = comparable_benchmark(index_symbol, last_ts)
+        sector_not_applicable = symbol.endswith("-USD") or "=F" in symbol
+        sec_symbol = None if sector_not_applicable else sector_etf(meta.get("sector"))
+        sector_kind = "not_applicable" if sector_not_applicable else ("US_sector_ETF" if sec_symbol else "missing")
+        sec_ret = comparable_benchmark(sec_symbol, last_ts) if sec_symbol else None
         rel_index = None if day_pct is None or idx_ret is None else day_pct - idx_ret
         rel_sector = None if day_pct is None or sec_ret is None else day_pct - sec_ret
 
         metrics = {
+            "symbol": symbol,
             "price": price,
             "day_pct": day_pct,
             "m1": m1,
@@ -782,11 +889,16 @@ def main():
             "trend_quality": tq,
             "rel_index": rel_index,
             "rel_sector": rel_sector,
-            "open_check_long": regular_open_check(sess, "long"),
-            "open_check_short": regular_open_check(sess, "short"),
+            "sector_benchmark_symbol": sec_symbol,
+            "sector_benchmark_kind": sector_kind,
+            "open_check_long": regular_open_check(sess, "long", symbol),
+            "open_check_short": regular_open_check(sess, "short", symbol),
             "latest_bar": last_ts.isoformat(),
+            "price_asof": price_asof.isoformat(),
             "latest_age_min": latest_age_min,
         }
+        metrics["data_quality_issues"] = data_quality_issues(metrics)
+        metrics["data_quality_ok"] = not metrics["data_quality_issues"]
         metrics["score_long"] = score_candidate(metrics, "long")
         metrics["score_short"] = score_candidate(metrics, "short")
         metrics["signal_long"] = signal_for(metrics, "long", now_ny, latest_age_min)
@@ -798,20 +910,41 @@ def main():
     universes = {}
     for index_name in UNIVERSE_INDEXES:
         rows = [(meta, metrics) for meta, metrics in scored if index_name in meta.get("indexes", [])]
-        longs = sorted(rows, key=lambda x: x[1]["score_long"], reverse=True)[:5]
-        shorts = sorted(rows, key=lambda x: x[1]["score_short"], reverse=True)[:3]
+        longs = ranked_candidates(rows, "long", 5)
+        shorts = ranked_candidates(rows, "short", 3)
         long_records = [candidate_record(meta, metrics, "long", i + 1) for i, (meta, metrics) in enumerate(longs)]
         short_records = [candidate_record(meta, metrics, "short", i + 1) for i, (meta, metrics) in enumerate(shorts)]
         all_signals = [x["signal"] for x in long_records + short_records]
         overall = "EINSTIEG" if "EINSTIEG" in all_signals else ("BEOBACHTEN" if "BEOBACHTEN" in all_signals else "KEIN EINSTIEG")
         expected = sum(1 for meta in universe if index_name in meta.get("indexes", []))
         universes[index_name] = {
-            "coverage": {"universe": expected, "with_intraday_data": len(rows)},
+            "coverage": {"universe": expected, "with_intraday_data": len(rows),
+                         "with_quality_data": sum(m["data_quality_ok"] for _, m in rows)},
             "overall_signal": overall,
             "candidates": {"long": long_records, "short": short_records},
         }
 
     universes = enrich_candidate_wkns(universes)
+
+    # WKN lookups can take time: evaluate source age again at publication time.
+    finished_at = datetime.now(timezone.utc)
+    for _, metrics in scored:
+        metrics["latest_age_min"] = (pd.Timestamp(finished_at) - pd.Timestamp(metrics["price_asof"])).total_seconds() / 60
+        metrics["data_quality_issues"] = data_quality_issues(metrics)
+        metrics["data_quality_ok"] = not metrics["data_quality_issues"]
+        metrics["signal_long"] = signal_for(metrics, "long", finished_at.astimezone(NEW_YORK), metrics["latest_age_min"])
+        metrics["signal_short"] = signal_for(metrics, "short", finished_at.astimezone(NEW_YORK), metrics["latest_age_min"])
+    metrics_by_symbol = {meta["symbol"]: metrics for meta, metrics in scored}
+    for index_name, u in universes.items():
+        signals = []
+        for side in ("long", "short"):
+            for row in u["candidates"][side]:
+                m = metrics_by_symbol[row["symbol"]]
+                row.update(signal=m[f"signal_{side}"], data_quality_ok=m["data_quality_ok"],
+                           data_quality_issues=m["data_quality_issues"], reason=reason(m, side, m[f"signal_{side}"]))
+                signals.append(row["signal"])
+        u["coverage"]["with_quality_data"] = sum(m["data_quality_ok"] for meta, m in scored if index_name in meta["indexes"])
+        u["overall_signal"] = "EINSTIEG" if "EINSTIEG" in signals else ("BEOBACHTEN" if "BEOBACHTEN" in signals else "KEIN EINSTIEG")
 
     default_universe = universes.get("S&P 500", {"overall_signal": "KEIN EINSTIEG", "candidates": {"long": [], "short": []}})
     overall = default_universe["overall_signal"]
@@ -830,8 +963,9 @@ def main():
 
     payload = {
         "version": "momentum-radar-mvp-2",
-        "generated_at": now_utc.isoformat(),
-        "generated_at_vienna": now_vienna.isoformat(),
+        "started_at": started_at.isoformat(),
+        "generated_at": finished_at.isoformat(),
+        "generated_at_vienna": finished_at.astimezone(VIENNA).isoformat(),
         "market": {
             "phase": phase,
             "latest_bar": latest_market_bar,
@@ -841,6 +975,7 @@ def main():
         "coverage": {
             "universe": len(universe),
             "with_intraday_data": len(scored),
+            "with_quality_data": sum(m["data_quality_ok"] for _, m in scored),
             "indexes": UNIVERSE_INDEXES,
             "interval": INTERVAL,
             "lookback": LOOKBACK,
