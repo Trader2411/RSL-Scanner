@@ -1,26 +1,20 @@
 name: Update RSL data
-
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     paths:
-      - "scripts/build_rsl_data.py"
-      - "scripts/build_momentum_data.py"
-      - "requirements-web.txt"
-      - ".github/workflows/update-rsl-data.yml"
+      - scripts/build_rsl_data.py
+      - requirements-web.txt
+      - .github/workflows/update-rsl-data.yml
   schedule:
-    - cron: "17 8-21 * * 1-5"
-    - cron: "17 */6 * * 0,6"
-
+    - cron: '17 8-21 * * 1-5'
+    - cron: '17 */6 * * 0,6'
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
 concurrency:
   group: rsl-data-update
-  cancel-in-progress: true
-
+  cancel-in-progress: false
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -28,66 +22,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: '3.13'
           cache: pip
-
       - run: pip install -r requirements-web.txt
-
-      - name: Build MomentumRadar JSON
-        run: python scripts/build_momentum_data.py
-
-      - name: Validate MomentumRadar JSON
+      - name: Build RSL JSON at the existing cadence
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('docs/momentum-radar/data.json')
-          data=json.loads(p.read_text(encoding='utf-8'))
-          assert data.get('version') == 'momentum-radar-mvp-2'
-          assert 'candidates' in data and 'coverage' in data and 'universes' in data
-          assert 'Emerging Markets' in data['universes']
-          print('MomentumRadar JSON OK:', data['coverage'])
-          PY
-
-      - name: Build RSL JSON
-        run: |
-          if [ "${{ github.event_name }}" != "schedule" ]; then
+          if [ '${{ github.event_name }}' != 'schedule' ]; then
             python scripts/build_rsl_data.py
           else
             HOUR=$(date -u +%H)
             if [ $((10#$HOUR % 2)) -eq 0 ]; then
               python scripts/build_rsl_data.py
             else
-              echo "RSL-Zwischenstunde: RSL-Build übersprungen."
+              echo 'RSL-Zwischenstunde: RSL-Build übersprungen.'
             fi
           fi
-
-      - name: Commit refreshed data and sync latest main
+      - name: Save RSL independently of MomentumRadar
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/data.json docs/momentum-radar/data.json docs/momentum-radar/history/
-          git diff --cached --quiet || git commit -m "Refresh scanner market data"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/data.json
+          git diff --cached --quiet || git commit -m 'Refresh RSL market data'
           git pull --rebase origin main
           git push origin main
-          git pull --ff-only origin main
-
-      - name: Upload latest site
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: docs
-
-  deploy:
-    needs: update
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy latest site
-        id: deployment
-        uses: actions/deploy-pages@v4

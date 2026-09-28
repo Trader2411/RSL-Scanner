@@ -1,37 +1,60 @@
 name: Deploy RSL Scanner Pages
-
 on:
   push:
-    branches: ["main"]
-    paths:
-      - "docs/**"
-      - ".github/workflows/pages.yml"
+    branches: [main]
+    paths: ['docs/**', '.github/workflows/pages.yml', 'scripts/verify_momentum_publication.py']
   workflow_dispatch:
-
+  workflow_run:
+    workflows: [Update MomentumRadar candidate watch, Update MomentumRadar data, Update RSL data]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: read
   pages: write
   id-token: write
-
 concurrency:
   group: pages
-  cancel-in-progress: true
-
+  cancel-in-progress: false
 jobs:
   deploy:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-      - name: Upload site
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
-      - name: Deploy to GitHub Pages
+      - name: Publish current repository snapshot
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Verify the publicly served snapshot
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python scripts/verify_momentum_publication.py
+      - name: Install browser for live code-change test
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push'
+        run: |
+          pip install playwright==1.55.0
+          python -m playwright install --with-deps chromium
+      - name: Test live mobile interface
+        if: github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push'
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python tests/browser_momentum.py
+      - name: Save live browser evidence
+        if: always() && github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: momentum-live-mobile-qa
+          path: qa-output/
+          if-no-files-found: ignore

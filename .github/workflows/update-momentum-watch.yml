@@ -1,59 +1,66 @@
 name: Update MomentumRadar candidate watch
-
 on:
   workflow_dispatch:
+    inputs:
+      force_full:
+        description: Vollscan jetzt erneuern
+        type: boolean
+        default: false
   push:
-    branches: ["main"]
+    branches: [main]
     paths:
-      - "scripts/build_momentum_watch.py"
-      - ".github/workflows/update-momentum-watch.yml"
-      - "requirements-web.txt"
+      - scripts/build_momentum_watch.py
+      - scripts/build_momentum_data.py
+      - scripts/momentum_delivery.py
+      - .github/workflows/update-momentum-watch.yml
+      - requirements-web.txt
   schedule:
-    - cron: "7,22,37,52 8-21 * * 1-5"
-
+    - cron: '7,22,37,52 8-21 * * 1-5'
+  workflow_run:
+    workflows: [Update RSL data]
+    types: [completed]
+    branches: [main]
 permissions:
   contents: write
-
 concurrency:
-  group: momentum-radar-watch
-  cancel-in-progress: true
-
+  group: momentum-data-write
+  cancel-in-progress: false
 jobs:
   watch:
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+       github.event.workflow_run.head_repository.full_name == github.repository)
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
-
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: '3.13'
           cache: pip
-
       - run: pip install -r requirements-web.txt
-
-      - name: Refresh current candidates with 5-minute data
-        run: python scripts/build_momentum_watch.py
-
-      - name: Validate watch JSON
+      - name: Regression tests
         run: |
-          python - <<'PY'
-          import json
-          from pathlib import Path
-          p=Path('docs/momentum-radar/watch.json')
-          data=json.loads(p.read_text(encoding='utf-8'))
-          assert data.get('version') == 'momentum-radar-watch-1'
-          assert 'candidates' in data
-          print('Watch JSON OK:', data.get('candidate_count'))
-          PY
-
-      - name: Commit candidate watch
+          python -m unittest discover -s tests -p 'test_momentum*.py' -v
+          node --test tests/state.test.cjs
+      - name: Refresh full scan when due, then check candidates
+        env:
+          FORCE_FULL: ${{ github.event_name == 'push' || inputs.force_full == true }}
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add docs/momentum-radar/watch.json docs/momentum-radar/watch-history/
-          git diff --cached --quiet || git commit -m "Refresh MomentumRadar candidate watch"
+          if [ "$FORCE_FULL" = 'true' ]; then
+            python scripts/momentum_delivery.py --force-full
+          else
+            python scripts/momentum_delivery.py
+          fi
+      - name: Save coherent snapshot and histories
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add docs/momentum-radar/
+          git diff --cached --quiet || git commit -m 'Refresh verified MomentumRadar snapshot'
           git pull --rebase origin main
           git push origin main

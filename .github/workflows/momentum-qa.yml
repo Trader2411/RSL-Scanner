@@ -1,0 +1,29 @@
+name: MomentumRadar repair QA
+on:
+  push:
+    branches: [repair/momentum-delivery]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - run: pip install pandas numpy playwright==1.55.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python -m unittest discover -s tests -p 'test_momentum*.py' -v
+      - run: node --test tests/state.test.cjs
+      - name: Mobile browser with explicit synthetic fixture
+        env:
+          MOMENTUM_FIXTURE: '1'
+        run: python tests/browser_momentum.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: momentum-repair-qa
+          path: qa-output/
