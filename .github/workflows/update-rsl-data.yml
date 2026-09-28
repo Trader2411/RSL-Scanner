@@ -1,4 +1,5 @@
 name: Update RSL data
+
 on:
   workflow_dispatch:
   push:
@@ -8,8 +9,7 @@ on:
       - "requirements-web.txt"
       - ".github/workflows/update-rsl-data.yml"
   schedule:
-    - cron: "17 */2 * * 1-5"
-    - cron: "17 9,11,13,15,17,19,21 * * 1-5"
+    - cron: "17 8-21 * * 1-5"
     - cron: "17 */6 * * 0,6"
 
 permissions:
@@ -24,7 +24,7 @@ concurrency:
 jobs:
   update:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,10 +36,6 @@ jobs:
           cache: pip
 
       - run: pip install -r requirements-web.txt
-
-      - name: Build RSL JSON
-        if: ${{ github.event_name != 'schedule' || github.event.schedule != '17 9,11,13,15,17,19,21 * * 1-5' }}
-        run: python scripts/build_rsl_data.py
 
       - name: Build MomentumRadar JSON
         run: python scripts/build_momentum_data.py
@@ -53,15 +49,29 @@ jobs:
           data=json.loads(p.read_text(encoding='utf-8'))
           assert data.get('version') == 'momentum-radar-mvp-2'
           assert 'candidates' in data and 'coverage' in data and 'universes' in data
+          assert 'Emerging Markets' in data['universes']
           print('MomentumRadar JSON OK:', data['coverage'])
           PY
+
+      - name: Build RSL JSON
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            python scripts/build_rsl_data.py
+          else
+            HOUR=$(date -u +%H)
+            if [ $((10#$HOUR % 2)) -eq 0 ]; then
+              python scripts/build_rsl_data.py
+            else
+              echo "RSL-Zwischenstunde: RSL-Build übersprungen."
+            fi
+          fi
 
       - name: Commit refreshed data and sync latest main
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/data.json docs/momentum-radar/data.json docs/momentum-radar/history/
-          git diff --cached --quiet || git commit -m "Refresh RSL market data"
+          git diff --cached --quiet || git commit -m "Refresh scanner market data"
           git pull --rebase origin main
           git push origin main
           git pull --ff-only origin main
