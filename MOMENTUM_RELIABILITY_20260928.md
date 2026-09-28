@@ -33,3 +33,19 @@ Yahoo/yfinance kann Daten verzögert oder unvollständig liefern. yfinance verwe
 - https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features#actions (keine dauernde Serverersatzschleife)
 - https://github.com/ranaroussi/yfinance (Datenrechte und persönliche Nutzung)
 - https://help.yahoo.com/kb/SLN2310.html (börsenabhängige Datenverzögerung)
+
+
+## Belegter Abschlussstand, 28.09.2026, 21:30 Wien
+- Implementierung: `44bf05323a4c139b8d4f7edea63d017d2ac99970`, nach unverändertem Hauptbranch ohne Force-Push übernommen.
+- 32 Python- und 24 JavaScript-Regressionstests bestanden. GitHub-QA: Lauf 36471722585, Job 109095364726. Mobiler synthetischer Browsertest einschließlich 50-%-Grenze, ungültig gespeichertem Altwert, Aktualisieren, Fehlern, Rückkehr zu gültigen Daten, Suche und Wiederöffnen bestanden.
+- Reale Providerintegration zweimal bestanden: Läufe 36470759359 und36471241042. Der zweite Gesamtlauf scheiterte ausschließlich an der Reihenfolge im Browsertest (geschlossener Bereich vor sichtbarer Textprüfung); dies wurde korrigiert und separat erfolgreich geprüft. Keine fehlgeschlagene Prüfung als Erfolg ausgegeben.
+- Produktiver Datenlauf36471876261 erfolgreich; Datencommit `ae8146d2a836075a564d0a62de1591cb7c86e2d4`.
+- Vollscan: `2026-09-28T19:25:26.481596+00:00`; Kurzcheck: `2026-09-28T19:25:29.384964+00:00`. 1051/1051 Werte empfangen, 992 mit bestandenen Kern-Datenprüfungen, 62 Kurzchecks mit Kursen, keine gemeldeten Pipelinefehler.
+- Live-Veröffentlichung 36472150859 erfolgreich; exakte Snapshot-ID `36471876261-2026-09-28T19:25:29.547653+00:00` auf Pages geprüft. Mobiler Live-Browsertest erneut erfolgreich, keine JavaScript-Fehler.
+- Cloud-Browser um 21:29 Wien: neuer Vollscan/Kurzcheck 21:25 sichtbar, Aktualisieren abgeschlossen, Suche VTRS geprüft und zurückgesetzt. S&P 500 zeigte 500/500 geprüfte Werte. Angezeigte Signale sind technische Bewertungen, keine ausgeführten Trades.
+- Kennungen: Der bestehende WKN-Abruf liefert nicht für jeden neu gewählten Kandidaten eine Kennung. Fehlende Kennungen werden nicht erfunden. Quellencharts bleiben erreichbar.
+
+## Noch nicht erreicht
+Zuverlässiger unbeaufsichtigter Dauerbetrieb ist NICHT abgenommen. Letzte erneute API-Prüfung: weiterhin nur 11 schedule-Läufe, jüngster 28.09.2026 13:52:30 UTC abgebrochen; kein neuer nativer Zeitplanstart während dieser Reparatur. Die frischen Daten kamen durch den ausdrücklich beauftragten Reparatur-Push. Keine zusätzliche Plattform, keine bezahlte Ressource, kein dauernder Neustartmechanismus und keine Order eingerichtet.
+
+Der nächste erforderliche Nachweis ist ein eigenständiger zeitgesteuerter Datenlauf mit anschließend passender frischer Pages-Datei. Dafür muss die native GitHub-Auslösung wieder funktionieren; ein unabhängiger Zeitgeber wäre eine gesonderte Setup-Entscheidung. Der vorhandene manuelle Workflow ist im Fehlerfall verlinkt, ausdrücklich kein automatischer Ersatz. Die GitHub-Diagnose liegt vor; keine Supportnachricht wurde ohne Freigabe versendet.
