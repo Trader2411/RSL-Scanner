@@ -8,8 +8,13 @@ on:
       - requirements-web.txt
       - .github/workflows/update-rsl-data.yml
   schedule:
-    - cron: '55 1,3,5,7,9,11,13,15,17,19,21,23 * * 1-5'
-    - cron: '55 1,7,13,19 * * 0,6'
+    # Primary hourly run on weekdays.
+    - cron: '23 * * * 1-5'
+    # Recovery attempt 30 minutes later; it only rebuilds when data is stale.
+    - cron: '53 * * * 1-5'
+    # Weekend cadence remains every 6 hours, with the same recovery protection.
+    - cron: '23 1,7,13,19 * * 0,6'
+    - cron: '53 1,7,13,19 * * 0,6'
 
 permissions:
   contents: write
@@ -35,10 +40,50 @@ jobs:
 
       - run: pip install -r requirements-web.txt
 
+      - name: Decide whether fresh RSL data is needed
+        id: freshness
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          case "${{ github.event.schedule }}" in
+            "23 * * * 1-5"|"23 1,7,13,19 * * 0,6")
+              echo "run=true" >> "$GITHUB_OUTPUT"
+              exit 0
+              ;;
+          esac
+
+          NEEDS_BUILD=$(python - <<'PY'
+          import json
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          p = Path("docs/data.json")
+          if not p.exists():
+              print("true")
+              raise SystemExit
+
+          try:
+              payload = json.loads(p.read_text(encoding="utf-8"))
+              ts = payload.get("generated_at")
+              dt = datetime.fromisoformat(ts.replace("Z", "+00:00"))
+              age_minutes = (datetime.now(timezone.utc) - dt).total_seconds() / 60
+              print("true" if age_minutes >= 45 else "false")
+          except Exception:
+              print("true")
+          PY
+          )
+          echo "run=$NEEDS_BUILD" >> "$GITHUB_OUTPUT"
+
       - name: Build fresh RSL data
+        if: steps.freshness.outputs.run == 'true'
         run: python scripts/build_rsl_data.py
 
       - name: Save RSL independently of MomentumRadar
+        if: steps.freshness.outputs.run == 'true'
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
