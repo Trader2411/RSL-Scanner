@@ -1,0 +1,59 @@
+name: Update MomentumRadar candidate watch
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/build_momentum_watch.py"
+      - ".github/workflows/update-momentum-watch.yml"
+      - "requirements-web.txt"
+  schedule:
+    - cron: "7,22,37,52 8-21 * * 1-5"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: momentum-radar-watch
+  cancel-in-progress: true
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - run: pip install -r requirements-web.txt
+
+      - name: Refresh current candidates with 5-minute data
+        run: python scripts/build_momentum_watch.py
+
+      - name: Validate watch JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('docs/momentum-radar/watch.json')
+          data=json.loads(p.read_text(encoding='utf-8'))
+          assert data.get('version') == 'momentum-radar-watch-1'
+          assert 'candidates' in data
+          print('Watch JSON OK:', data.get('candidate_count'))
+          PY
+
+      - name: Commit candidate watch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/momentum-radar/watch.json docs/momentum-radar/watch-history/
+          git diff --cached --quiet || git commit -m "Refresh MomentumRadar candidate watch"
+          git pull --rebase origin main
+          git push origin main
