@@ -1,5 +1,17 @@
 # MomentumRadar – ausschließlich bestehendes GitHub-Setup
 
+## Aktueller Reparaturstand, 29.09.2026, 13:09 Wien
+
+Die folgenden älteren Diagnoseabschnitte sind historische Beobachtungen, nicht der aktuelle Zustand.
+
+- Verbindungslücke behoben: `update-momentum-watch.yml` reagiert jetzt zusätzlich auf erfolgreiche Abschlüsse von `RSL hourly watchdog`. Der bisherige Auslöser `Update RSL data` bleibt erhalten. Keine RSL-Dateien, Zeitpläne, Frischegrenzen oder Handelsregeln geändert.
+- Reparaturcommit: `8719fc9d84c694c21b6d75670ac43b217961bde0`.
+- 32 Python- und 24 JavaScript-Tests lokal und im GitHub-Datenlauf erfolgreich.
+- Datenlauf `36559690085` erfolgreich (Auslöser **push**, kein Nachweis für den nativen Zeitplan). Vollscan `2026-09-29T11:08:03.991619+00:00`, Kurzcheck `2026-09-29T11:08:06.943693+00:00`, Snapshot ohne Pipelinefehler; 61 Kandidaten geprüft. Frischer Abruf bedeutet nicht, dass alle Instrumente vollständige oder aktuelle Marktdaten liefern.
+- Pages-Lauf `36559864296` erfolgreich, einschließlich Abgleich des öffentlich ausgelieferten Snapshots und mobilem Browsertest. Live-Oberfläche zeigt Vollscan und Kurzcheck vom 29.09. um 13:08 Wien. S&P 500 zeigt weiterhin KEIN EINSTIEG wegen fehlender benötigter Marktdaten; Schutzmechanismen bleiben aktiv.
+- Neue Erkenntnis zum Scheduler: Ein Momentum-Zeitplanlauf startete am 28.09. um 23:53 UTC und übersprang die Datenberechnung korrekt außerhalb des freigegebenen Zeitfensters. RSL-Watchdog-Zeitplanläufe fanden ebenfalls statt. Die frühere Aussage, es gebe überhaupt keine Momentum-schedule-Ereignisse, ist damit überholt. Ein verlässlicher 15-Minuten-Takt und ein erfolgreicher Folgeabruf über die heute ergänzte Watchdog-Verbindung sind noch nicht live nachgewiesen.
+- Keine externe Nachricht gesendet, keine zusätzliche Infrastruktur eingerichtet.
+
 Stand: 28.09.2026, 18:38 UTC / 20:38 Europe/Vienna.
 
 ## Verbindliche Vorgabe
