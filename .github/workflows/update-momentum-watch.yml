@@ -18,7 +18,7 @@ on:
   schedule:
     - cron: '7,22,37,52 8-21 * * 1-5'
   workflow_run:
-    workflows: [Update RSL data]
+    workflows: [Update RSL data, RSL hourly watchdog]
     types: [completed]
     branches: [main]
 permissions:
