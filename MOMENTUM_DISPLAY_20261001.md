@@ -9,3 +9,5 @@ Zwei kompakte Übersichtskarten zeigen den stärksten aktuell auswertbaren Kandi
 Prüfung: 26 Node-Tests bestanden, JavaScript-Syntax geprüft. Mobile Playwright-Prüfung um Score, fehlende Gegenrichtung und Ausblendung nach Abruffehler ergänzt. Lokaler Browserlauf nicht möglich, Python-Playwright fehlt. Bestehender Pages-Workflow führt nach Veröffentlichung seinen Live-Mobiltest aus; dessen Ergebnis separat prüfen. Keine neuen Anbieter-/Nutzerdatenzugriffe, keine echte Handelsausführung bestätigt.
 
 Im alten Checkout lagen fremde uncommittete Workflowänderungen. Diese wurden nicht angefasst; neuer sauberer Checkout der aktuellen Hauptversion verwendet.
+
+Veröffentlichung bestätigt: Commit 2b77fbabc68452d0c3c4633c041b9bfa07fcfd64, Pages-Lauf 36928664650 am 01.10.2026 erfolgreich. Sowohl Prüfung des veröffentlichten Datenpakets als auch „Test live mobile interface“ erfolgreich; 390-px-Browserablauf einschließlich Suche, Aktualisieren/Fehlerfall und Speichern/Wiederöffnen. Der zusätzliche synthetische Prozentwert-Fall wurde lokal mangels Playwright nicht ausgeführt; Score-Logik durch Node-Tests geprüft. Keine Bestätigung einer Handelsrentabilität.
