@@ -67,6 +67,18 @@
     const state=assess(snapshot,x,now,error);
     return state.watch&&finite(x?.score)&&x.score>=0&&x.score<=100?x.score:null;
   }
+  function geoRecommendation(score,gate='watch'){
+    if(score===null||!finite(score)||score<0||score>100||gate==='blocked')return 'Gesperrt';
+    return score<30?'Finger weg':score<50?'Neutral':score<70||gate==='watch'?'Beobachten':score<85?'Einstieg ½':'Einstieg voll';
+  }
+  function recommendation(snapshot,x,now=Date.now(),error=false){
+    const state=assess(snapshot,x,now,error),score=strength(snapshot,x,now,error);
+    return {...state,score,action:geoRecommendation(score,state.signal==='EINSTIEG'?'entry':state.signal==='BEOBACHTEN'?'watch':'blocked')};
+  }
+  function bestRecommendation(snapshot,items,now=Date.now(),error=false){
+    const levels=['Gesperrt','Finger weg','Neutral','Beobachten','Einstieg ½','Einstieg voll'];
+    return items.reduce((best,x)=>{const action=recommendation(snapshot,x,now,error).action;return levels.indexOf(action)>levels.indexOf(best)?action:best;},'Gesperrt');
+  }
   function ranked(snapshot,items,now=Date.now(),error=false){
     const score=x=>finite(x?.score)&&x.score>=0&&x.score<=100?x.score:-1;
     return [...items].sort((a,b)=>{
@@ -78,7 +90,7 @@
     const states=(Array.isArray(items)?items:[]).map(x=>assess(snapshot,x,now,error));
     return states.reduce((best,s)=>LEVEL[s.signal]>LEVEL[best]?s.signal:best,'KEIN EINSTIEG');
   }
-  const api={ranked,strength,age,assess,aggregate,marketClosed,validateSnapshot,snapshotIssue,LIMITS};
+  const api={geoRecommendation,recommendation,bestRecommendation,ranked,strength,age,assess,aggregate,marketClosed,validateSnapshot,snapshotIssue,LIMITS};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   root.RadarState=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

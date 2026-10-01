@@ -40,21 +40,23 @@ with sync_playwright() as p:
     assert page.locator('#fetchStatus').inner_text().startswith('Seite geprüft:'), 'Fetch not confirmed'
     assert '(Wien)' in page.locator('#updated').inner_text(), 'Data timezone missing'
     if fixture:
-        assert page.locator('#overallSignal').inner_text()=='EINSTIEG', 'Valid fixture signal blocked'
-        assert page.locator('#signalSummary').inner_text()=='Einstiege: 1 LONG · 0 SHORT'
+        assert page.locator('#overallSignal').inner_text()=='Einstieg voll', 'Valid fixture signal blocked'
+        assert page.locator('#signalSummary').inner_text()=='Einstiege prüfen: 1 LONG · 0 SHORT'
         assert page.locator('#recovery').is_hidden(), 'Failure recovery shown with healthy data'
         assert '86 %' in page.locator('#directionStrengths').inner_text(), 'Signal strength missing'
         assert 'Short —' in page.locator('.strength-pair').first.inner_text(), 'Opposite strength invented'
         assert page.locator('.compass-return').get_attribute('href') == 'https://strategiekompass.w-p1.chatgpt.site'
     # Whole overview cards navigate, clear search and open Short directly.
+    assert page.locator('#longRanking').is_hidden() and page.locator('#shortRanking').is_hidden(), 'Candidates shown before direction click'
     for side in ('short','long'):
+        other = 'long' if side == 'short' else 'short'
+        page.locator('#'+other+'Strength').click()
         page.fill('#search','NO_MATCH_EXPECTED')
         page.locator('#'+side+'Strength').click()
         assert page.input_value('#search') == '', 'Overview click left a hidden search filter'
         assert page.locator('#'+side+'Ranking').is_visible()
         assert page.locator('#'+side+'Ranking').bounding_box()['y'] >= page.locator('header').bounding_box()['height'], 'Sticky header covers ranking heading'
-        if side == 'short':
-            assert page.locator('#shortRanking').get_attribute('open') is not None
+        assert page.locator('#'+other+'Ranking').is_hidden(), 'Opposite candidates left visible'
         assert page.evaluate('document.activeElement.id') == side+'Ranking', 'Ranking focus missing'
         assert page.locator('#'+side+'List .candidate').count() <= 5
         expected = page.evaluate("side => RadarState.ranked(SNAP,universeData().candidates[side],Date.now(),!!loadError).map(x=>x.symbol)", side)
@@ -62,6 +64,7 @@ with sync_playwright() as p:
         assert actual == expected, 'Visible top-five ranking is not sorted'
         page.locator('#'+side+'Back').click()
         assert page.evaluate('document.activeElement.id') == side+'Strength', 'Return to overview failed'
+        assert page.locator('#longRanking').is_hidden() and page.locator('#shortRanking').is_hidden(), 'Return leaves extra values below'
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), 'Ranking causes horizontal overflow'
     ids = page.evaluate('Object.keys(DATA.universes)')
     old_check = page.evaluate('lastFetchAt')
@@ -69,6 +72,7 @@ with sync_playwright() as p:
     assert page.evaluate('lastFetchAt') == old_check, 'Render must not falsify last successful fetch time'
     symbol = page.evaluate("DATA.universes[currentUniverse].candidates.long[0]?.symbol || ''")
     if symbol:
+        page.locator('#longStrength').click()
         page.fill('#search',symbol)
         assert symbol in page.locator('#longList').inner_text()
         page.fill('#search','')
@@ -110,7 +114,7 @@ with sync_playwright() as p:
     # A failed fetch must block old green signals immediately.
     page.route('**/snapshot.json?*', lambda route: route.fulfill(status=503, body='test'))
     page.click('#refresh');page.wait_for_function("document.getElementById('refresh').disabled === false")
-    assert page.locator('#overallSignal').inner_text()=='KEIN EINSTIEG'
+    assert page.locator('#overallSignal').inner_text()=='Gesperrt'
     assert page.locator('.candidate.entry').count()==0, 'Old green signal survived fetch failure'
     assert '%' not in page.locator('#directionStrengths').inner_text(), 'Old strength survived fetch failure'
     assert 'Abruf fehlgeschlagen' in page.locator('#fetchStatus').inner_text()
@@ -118,13 +122,13 @@ with sync_playwright() as p:
     if fixture:
         page.route('**/snapshot.json?*', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps(snap)))
         page.click('#refresh');page.wait_for_function("document.getElementById('refresh').disabled === false")
-        assert page.locator('#overallSignal').inner_text()=='EINSTIEG', 'Successful recovery did not restore a valid signal'
+        assert page.locator('#overallSignal').inner_text()=='Einstieg voll', 'Successful recovery did not restore a valid signal'
         confirmed = page.evaluate('lastFetchAt')
         malformed = copy.deepcopy(snap)
         malformed['full_scan']['universes']['Krypto']['candidates']['long'] = None
         page.route('**/snapshot.json?*', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps(malformed)))
         page.click('#refresh');page.wait_for_function("document.getElementById('refresh').disabled === false")
-        assert page.locator('#overallSignal').inner_text()=='KEIN EINSTIEG', 'Malformed payload left green signal'
+        assert page.locator('#overallSignal').inner_text()=='Gesperrt', 'Malformed payload left green signal'
         assert page.evaluate('lastFetchAt')==confirmed, 'Malformed payload changed successful-fetch clock'
         assert page.locator('#longList .candidate').count()==1, 'Malformed payload destroyed last known candidates'
         older = copy.deepcopy(snap)

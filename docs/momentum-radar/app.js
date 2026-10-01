@@ -1,5 +1,5 @@
 'use strict';
-let SNAP=null,DATA=null,selected=null,lastFetchAt=null,loadError='',loading=false;
+let SNAP=null,DATA=null,selected=null,activeDirection=null,lastFetchAt=null,loadError='',loading=false;
 const $=id=>document.getElementById(id);
 function saved(k,f){try{return localStorage.getItem(k)||f}catch(_){return f}}
 function store(k,v){try{localStorage.setItem(k,String(v))}catch(_){}}
@@ -10,8 +10,8 @@ const pp=v=>pct(v).replace(' %',' %-Pkt.');
 const money=v=>new Intl.NumberFormat('de-AT',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(v);
 const num=v=>typeof v==='number'&&Number.isFinite(v)?v.toLocaleString('de-AT',{maximumFractionDigits:v<1?6:2}):'—';
 const time=(v,seconds=false)=>v&&Number.isFinite(Date.parse(v))?new Date(v).toLocaleString('de-AT',{timeZone:'Europe/Vienna',day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit',...(seconds?{second:'2-digit'}:{})}):'—';
-const sClass=s=>s==='EINSTIEG'?'entry':s==='BEOBACHTEN'?'watch':'no';
-const sIcon=s=>s==='EINSTIEG'?'🟢':s==='BEOBACHTEN'?'🟡':'🔴';
+const sClass=s=>s?.startsWith('Einstieg')?'entry':['Beobachten','Neutral'].includes(s)?'watch':'no';
+const sIcon=s=>sClass(s)==='entry'?'🟢':sClass(s)==='watch'?'🟡':'🔴';
 function universeData(){return DATA?.universes?.[currentUniverse]||{coverage:{},candidates:{long:[],short:[]}}}
 function items(){const u=universeData();return [...(u.candidates.long||[]),...(u.candidates.short||[])]}
 async function load(){
@@ -35,15 +35,15 @@ function buildUniverseButtons(){
   const box=$('universeButtons');box.replaceChildren();
   const select=document.createElement('select');select.id='universe';select.setAttribute('aria-label','Index auswählen');
   for(const name of Object.keys(DATA?.universes||{})){const option=new Option(name,name);option.selected=name===currentUniverse;select.add(option)}
-  select.onchange=()=>{currentUniverse=select.value;selected=null;store('momentumRadarUniverse',currentUniverse);render()};box.appendChild(select);
+  select.onchange=()=>{currentUniverse=select.value;selected=null;activeDirection=null;store('momentumRadarUniverse',currentUniverse);render()};box.appendChild(select);
 }
 function render(){
   const u=universeData(),now=Date.now(),all=items();
-  const overall=RadarState.aggregate(SNAP,all,now,!!loadError);
+  const overall=RadarState.bestRecommendation(SNAP,all,now,!!loadError);
   $('overallSignal').textContent=overall;$('signalDot').className=`dot ${sClass(overall)}`;
   $('phase').textContent=currentUniverse;
-  const count=direction=>all.filter(x=>x.direction===direction&&RadarState.assess(SNAP,x,now,!!loadError).signal==='EINSTIEG').length;
-  $('signalSummary').textContent=`Einstiege: ${count('LONG')} LONG · ${count('SHORT')} SHORT`;
+  const count=direction=>all.filter(x=>x.direction===direction&&RadarState.recommendation(SNAP,x,now,!!loadError).action.startsWith('Einstieg')).length;
+  $('signalSummary').textContent=`Einstiege prüfen: ${count('LONG')} LONG · ${count('SHORT')} SHORT`;
   $('updated').textContent=`Vollscan ${time(DATA?.generated_at)} · Kurzcheck ${time(SNAP?.watch?.generated_at)} (Wien)`;
   $('fetchStatus').textContent=loadError?`Abruf fehlgeschlagen: ${loadError}${lastFetchAt?` · letzter Erfolg ${time(lastFetchAt,true)} (Wien)`:''}`:`Seite geprüft: ${time(lastFetchAt,true)} (Wien) · Dateiabruf jede Minute`;
   const message=RadarState.snapshotIssue(SNAP,now,!!loadError);
@@ -52,24 +52,27 @@ function render(){
   $('coverage').textContent=`${Number.isFinite(u.coverage?.with_quality_data)?u.coverage.with_quality_data:'—'}/${u.coverage?.universe||0}`;
   if(selected)selected=all.find(x=>x.symbol===selected.symbol&&x.direction===selected.direction)||null;
   if(!selected)selected=(u.candidates.long||[])[0]||null;
+  ['long','short'].forEach(side=>$(side+'Ranking').hidden=activeDirection!==side);
+  $('candidateSearch').hidden=!activeDirection;
   renderStrengths(all,now);
   renderList('longList',u.candidates.long||[]);renderList('shortList',u.candidates.short||[]);renderTargets();
 }
 function renderStrengths(all,now){
   $('directionStrengths').innerHTML=['LONG','SHORT'].map(side=>{
-    const rows=RadarState.ranked(SNAP,all.filter(x=>x.direction===side),now,!!loadError).map(x=>({x,score:RadarState.strength(SNAP,x,now,!!loadError),state:RadarState.assess(SNAP,x,now,!!loadError)})).filter(r=>r.score!==null).sort((a,b)=>b.score-a.score);
+    const rows=RadarState.ranked(SNAP,all.filter(x=>x.direction===side),now,!!loadError).map(x=>({x,score:RadarState.strength(SNAP,x,now,!!loadError),state:RadarState.recommendation(SNAP,x,now,!!loadError)})).filter(r=>r.score!==null).sort((a,b)=>b.score-a.score);
     const top=rows[0];
-    return `<button type="button" id="${side.toLowerCase()}Strength" aria-controls="${side.toLowerCase()}Ranking" class="strength-card ${side==='LONG'?'long':'short'}"><h2>${side==='LONG'?'Long':'Short'}</h2><strong>${top?num(top.score)+' %':'—'}</strong><small>Stärkster geprüfter Kandidat · Signalstärke</small><b>${top?esc(top.state.signal):'KEIN EINSTIEG'}</b><p>${top?esc(top.x.name)+': '+esc(top.state.why):'Keine aktuell bestätigte Prozentbewertung verfügbar.'}</p><span class="strength-link">Top 5 ansehen ↓</span></button>`;
+    return `<button type="button" id="${side.toLowerCase()}Strength" aria-controls="${side.toLowerCase()}Ranking" aria-expanded="${activeDirection===side.toLowerCase()}" class="strength-card ${side==='LONG'?'long':'short'}"><h2>${side==='LONG'?'Long':'Short'}</h2><strong>${top?num(top.score)+' %':'—'}</strong><small>Stärkster geprüfter Kandidat · Signalstärke</small><b>${top?esc(top.state.action):'Gesperrt'}</b><p>${top?esc(top.x.name)+': '+esc(top.state.why):'Keine aktuell bestätigte Prozentbewertung verfügbar.'}</p><span class="strength-link">Top 5 ansehen ↓</span></button>`;
   }).join('');
   ['long','short'].forEach(side=>$(side+'Strength').onclick=()=>openRanking(side));
 }
 function openRanking(side){
-  $('search').value='';render();
-  const panel=$(side+'Ranking');if(panel.tagName==='DETAILS')panel.open=true;
+  if(activeDirection===side){backToStrength(side);return;}
+  activeDirection=side;$('search').value='';render();
+  const panel=$(side+'Ranking');
   panel.style.scrollMarginTop=`${document.querySelector('header').getBoundingClientRect().height+16}px`;
   panel.focus({preventScroll:true});panel.scrollIntoView({block:'start',behavior:'instant'});
 }
-function backToStrength(side){const button=$(side+'Strength');button.focus();button.scrollIntoView({block:'center',behavior:'instant'});}
+function backToStrength(side){activeDirection=null;render();const button=$(side+'Strength');button.focus();button.scrollIntoView({block:'center',behavior:'instant'});}
 function candidateStrengths(x){
   return `<div class="strength-pair">${['LONG','SHORT'].map(side=>{
     const candidate=side===x.direction?x:items().find(row=>row.symbol===x.symbol&&row.direction===side);
@@ -88,14 +91,14 @@ function renderList(id,list){
   $(id).querySelectorAll('.candidate').forEach(el=>el.onclick=e=>{if(e.target.closest('a,button,summary,details'))return;selected=items().find(x=>x.symbol===el.dataset.symbol&&x.direction===el.dataset.direction);renderTargets()});
 }
 function card(x,expanded=false,rank=x.rank){
-  const state=RadarState.assess(SNAP,x,Date.now(),!!loadError),w=state.watch;
+  const state=RadarState.recommendation(SNAP,x,Date.now(),!!loadError),w=state.watch;
   const sourceUrl=`https://finance.yahoo.com/quote/${encodeURIComponent(x.symbol)}/chart/`;
   const wknUrl=typeof x.wkn_url==='string'&&x.wkn_url.startsWith('https://www.finanzen.net/')?x.wkn_url:null;
   const sectorNotApplicable=x.sector_benchmark_kind==='not_applicable'&&(x.symbol.endsWith('-USD')||x.symbol.includes('=F'));
   const sign=v=>typeof v==='number'?(v>=0?'pos':'neg'):'';
   const kpi=(name,value,raw)=>`<div class="kpi"><span>${name}</span><b class="${sign(raw)}">${value}</b></div>`;
-  return `<article class="candidate ${sClass(state.signal)}" data-symbol="${esc(x.symbol)}" data-direction="${esc(x.direction)}">
-    <div class="candidate-top"><div class="rank-name"><span class="rank">${esc(rank)}</span><div class="name"><b>${esc(x.name)}</b><small><a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(x.symbol)} ↗</a> · ${esc(x.direction)}${x.wkn?` · ${wknUrl?`<a class="wkn-link" href="${esc(wknUrl)}" target="_blank" rel="noopener noreferrer">WKN ${esc(x.wkn)} ↗</a>`:`WKN ${esc(x.wkn)}`}`:''}</small></div></div><span class="signal-pill ${sClass(state.signal)}">${sIcon(state.signal)} ${state.signal}</span></div>
+  return `<article class="candidate ${sClass(state.action)}" data-symbol="${esc(x.symbol)}" data-direction="${esc(x.direction)}">
+    <div class="candidate-top"><div class="rank-name"><span class="rank">${esc(rank)}</span><div class="name"><b>${esc(x.name)}</b><small><a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(x.symbol)} ↗</a> · ${esc(x.direction)}${x.wkn?` · ${wknUrl?`<a class="wkn-link" href="${esc(wknUrl)}" target="_blank" rel="noopener noreferrer">WKN ${esc(x.wkn)} ↗</a>`:`WKN ${esc(x.wkn)}`}`:''}</small></div></div><span class="signal-pill ${sClass(state.action)}">${sIcon(state.action)} ${state.action}</span></div>
     ${candidateStrengths(x)}<div class="reason">${esc(state.why)}</div>
     <div class="watch-line">${w?`Kurs ${num(w.price)}${x.currency?` ${esc(x.currency)}`:''} · Kursstand ${time(w.price_asof)} (Wien) · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`:`Kein bestätigter aktueller Kurs · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`}</div>
     <div class="kpis">${kpi('15 Min.',pct(w?.ret_15m_pct),w?.ret_15m_pct)}${kpi('30 Min.',pct(w?.ret_30m_pct),w?.ret_30m_pct)}${kpi('Seit Vollscan',pct(w?.move_since_scan_pct),w?.move_since_scan_pct)}</div>

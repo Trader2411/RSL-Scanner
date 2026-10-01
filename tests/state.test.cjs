@@ -39,3 +39,15 @@ test('top five are strongest first per direction, stable on ties, no fabricated 
  assert.equal(S.ranked(s,rows.slice(0,2),now).length,2);
  assert.deepEqual(S.ranked(s,[],now),[]);assert.equal(rows[0].symbol,'A');
 });
+
+test('Geo recommendations preserve strategy gates and shared scale boundaries',()=>{
+ for(const [score,label] of [[0,'Finger weg'],[29,'Finger weg'],[30,'Neutral'],[49,'Neutral'],[50,'Beobachten'],[69,'Beobachten'],[70,'Einstieg ½'],[84,'Einstieg ½'],[85,'Einstieg voll'],[100,'Einstieg voll']]){
+   const {s,x}=sample();x.score=score;assert.equal(S.recommendation(s,x,now).action,label);
+   assert.equal(S.recommendation(s,x,now,true).action,'Gesperrt');
+ }
+ const {s,x}=sample();x.score=100;x.signal='BEOBACHTEN';assert.equal(S.recommendation(s,x,now).action,'Beobachten');
+ x.signal='KEIN EINSTIEG';assert.equal(S.recommendation(s,x,now).action,'Gesperrt');
+ assert.equal(S.bestRecommendation(s,[x],now),'Gesperrt');
+ x.signal='EINSTIEG';assert.equal(S.bestRecommendation(s,[x],now),'Einstieg voll');
+ x.score=null;assert.equal(S.recommendation(s,x,now).action,'Gesperrt');
+});
