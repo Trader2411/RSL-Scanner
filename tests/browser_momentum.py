@@ -52,6 +52,7 @@ with sync_playwright() as p:
         page.locator('#'+side+'Strength').click()
         assert page.input_value('#search') == '', 'Overview click left a hidden search filter'
         assert page.locator('#'+side+'Ranking').is_visible()
+        assert page.locator('#'+side+'Ranking').bounding_box()['y'] >= page.locator('header').bounding_box()['height'], 'Sticky header covers ranking heading'
         if side == 'short':
             assert page.locator('#shortRanking').get_attribute('open') is not None
         assert page.evaluate('document.activeElement.id') == side+'Ranking', 'Ranking focus missing'

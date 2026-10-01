@@ -66,6 +66,7 @@ function renderStrengths(all,now){
 function openRanking(side){
   $('search').value='';render();
   const panel=$(side+'Ranking');if(panel.tagName==='DETAILS')panel.open=true;
+  panel.style.scrollMarginTop=`${document.querySelector('header').getBoundingClientRect().height+16}px`;
   panel.focus({preventScroll:true});panel.scrollIntoView({block:'start',behavior:'instant'});
 }
 function backToStrength(side){const button=$(side+'Strength');button.focus();button.scrollIntoView({block:'center',behavior:'instant'});}
