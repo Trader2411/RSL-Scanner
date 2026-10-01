@@ -52,7 +52,22 @@ function render(){
   $('coverage').textContent=`${Number.isFinite(u.coverage?.with_quality_data)?u.coverage.with_quality_data:'—'}/${u.coverage?.universe||0}`;
   if(selected)selected=all.find(x=>x.symbol===selected.symbol&&x.direction===selected.direction)||null;
   if(!selected)selected=(u.candidates.long||[])[0]||null;
+  renderStrengths(all,now);
   renderList('longList',u.candidates.long||[]);renderList('shortList',u.candidates.short||[]);renderTargets();
+}
+function renderStrengths(all,now){
+  $('directionStrengths').innerHTML=['LONG','SHORT'].map(side=>{
+    const rows=all.filter(x=>x.direction===side).map(x=>({x,score:RadarState.strength(SNAP,x,now,!!loadError),state:RadarState.assess(SNAP,x,now,!!loadError)})).filter(r=>r.score!==null).sort((a,b)=>b.score-a.score);
+    const top=rows[0];
+    return `<div class="strength-card ${side==='LONG'?'long':'short'}"><h2>${side==='LONG'?'Long':'Short'}</h2><strong>${top?num(top.score)+' %':'—'}</strong><small>Stärkster geprüfter Kandidat · Signalstärke</small><b>${top?esc(top.state.signal):'KEIN EINSTIEG'}</b><p>${top?esc(top.x.name)+': '+esc(top.state.why):'Keine aktuell bestätigte Prozentbewertung verfügbar.'}</p></div>`;
+  }).join('');
+}
+function candidateStrengths(x){
+  return `<div class="strength-pair">${['LONG','SHORT'].map(side=>{
+    const candidate=side===x.direction?x:items().find(row=>row.symbol===x.symbol&&row.direction===side);
+    const score=candidate?RadarState.strength(SNAP,candidate,Date.now(),!!loadError):null;
+    return `<span class="${side==='LONG'?'pos':'neg'}">${side==='LONG'?'Long':'Short'} <b>${score===null?'—':num(score)+' %'}</b></span>`;
+  }).join('')}<small>Signalstärke · keine Gewinnwahrscheinlichkeit</small></div>`;
 }
 function renderList(id,list){
   const expanded=new Set(Array.from($(id).querySelectorAll('.candidate')).filter(el=>el.querySelector('details[open]')).map(el=>`${el.dataset.symbol}|${el.dataset.direction}`));
@@ -70,7 +85,7 @@ function card(x,expanded=false){
   const kpi=(name,value,raw)=>`<div class="kpi"><span>${name}</span><b class="${sign(raw)}">${value}</b></div>`;
   return `<article class="candidate ${sClass(state.signal)}" data-symbol="${esc(x.symbol)}" data-direction="${esc(x.direction)}">
     <div class="candidate-top"><div class="rank-name"><span class="rank">${esc(x.rank)}</span><div class="name"><b>${esc(x.name)}</b><small><a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(x.symbol)} ↗</a> · ${esc(x.direction)}${x.wkn?` · ${wknUrl?`<a class="wkn-link" href="${esc(wknUrl)}" target="_blank" rel="noopener noreferrer">WKN ${esc(x.wkn)} ↗</a>`:`WKN ${esc(x.wkn)}`}`:''}</small></div></div><span class="signal-pill ${sClass(state.signal)}">${sIcon(state.signal)} ${state.signal}</span></div>
-    <div class="reason">${esc(state.why)}</div>
+    ${candidateStrengths(x)}<div class="reason">${esc(state.why)}</div>
     <div class="watch-line">${w?`Kurs ${num(w.price)}${x.currency?` ${esc(x.currency)}`:''} · Kursstand ${time(w.price_asof)} (Wien) · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`:`Kein bestätigter aktueller Kurs · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`}</div>
     <div class="kpis">${kpi('15 Min.',pct(w?.ret_15m_pct),w?.ret_15m_pct)}${kpi('30 Min.',pct(w?.ret_30m_pct),w?.ret_30m_pct)}${kpi('Seit Vollscan',pct(w?.move_since_scan_pct),w?.move_since_scan_pct)}</div>
     <details${expanded?' open':''}><summary>Bewertung aus dem Vollscan</summary><div class="watch-line">Kursstand ${time(x.price_asof)} (Wien)</div><div class="kpis">${kpi('Tag',pct(x.day_pct),x.day_pct)}${kpi('1 Std.',pct(x.m1),x.m1)}${kpi('2 Std.',pct(x.m2),x.m2)}${kpi('3 Std.',pct(x.m3),x.m3)}${kpi('Volumen',x.volume_ratio==null?'—':`${num(x.volume_ratio)}×`)}${kpi('Stabilität',x.stability==null?'—':`${Math.round(x.stability)} %`)}${kpi('Indexvergleich',pp(x.rel_index),x.rel_index)}${kpi('Sektorvergleich',sectorNotApplicable?'Nicht anwendbar':pp(x.rel_sector),sectorNotApplicable?null:x.rel_sector)}${kpi('RSI',num(x.rsi))}</div><div class="muted">Momentum im Vollscan: ${esc(x.momentum_change||'—')} · ${esc(x.reason||'')}</div></details>

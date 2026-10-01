@@ -63,11 +63,15 @@
     const reason=signal===x.signal&&LEVEL[x.signal]<LEVEL[check.watch_signal]?x.reason:check.reason;
     return {signal,why:reason||x.reason||'Signal geprüft.',watch:check};
   }
+  function strength(snapshot,x,now=Date.now(),error=false){
+    const state=assess(snapshot,x,now,error);
+    return state.watch&&finite(x?.score)&&x.score>=0&&x.score<=100?x.score:null;
+  }
   function aggregate(snapshot,items,now=Date.now(),error=false){
     const states=(Array.isArray(items)?items:[]).map(x=>assess(snapshot,x,now,error));
     return states.reduce((best,s)=>LEVEL[s.signal]>LEVEL[best]?s.signal:best,'KEIN EINSTIEG');
   }
-  const api={age,assess,aggregate,marketClosed,validateSnapshot,snapshotIssue,LIMITS};
+  const api={strength,age,assess,aggregate,marketClosed,validateSnapshot,snapshotIssue,LIMITS};
   if(typeof module!=='undefined'&&module.exports)module.exports=api;
   root.RadarState=api;
 })(typeof globalThis!=='undefined'?globalThis:this);

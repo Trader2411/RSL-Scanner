@@ -30,7 +30,7 @@ with sync_playwright() as p:
     page.on('pageerror', lambda error: failures.append(str(error)))
     if fixture:
         stamp = datetime.now(timezone.utc).isoformat()
-        row = {'symbol':'HBAR-USD','name':'Test Hedera','direction':'LONG','signal':'EINSTIEG','rank':1,'reference_price':.1,'day_pct':2,'m1':1,'m2':2,'m3':3,'stability':70,'volume_ratio':1,'rel_index':1,'rel_sector':1,'price_asof':stamp,'data_quality_ok':True,'data_quality_issues':[]}
+        row = {'symbol':'HBAR-USD','name':'Test Hedera','direction':'LONG','signal':'EINSTIEG','rank':1,'score':86,'reference_price':.1,'day_pct':2,'m1':1,'m2':2,'m3':3,'stability':70,'volume_ratio':1,'rel_index':1,'rel_sector':1,'price_asof':stamp,'data_quality_ok':True,'data_quality_issues':[]}
         snap = {'version':'momentum-snapshot-1','id':'EXPLICIT-SYNTHETIC-TEST','generated_at':stamp,'full_scan':{'generated_at':stamp,'universes':{n:{'coverage':{'with_intraday_data':1,'with_quality_data':1,'universe':1},'candidates':{'long':[row],'short':[]}} for n in ('S&P 500','Krypto')}},'watch':{'generated_at':stamp,'base_scan_generated_at':stamp,'candidates':{'HBAR-USD|LONG':{'symbol':'HBAR-USD','direction':'LONG','price':.1,'price_asof':stamp,'ret_15m_pct':1,'ret_30m_pct':1,'ret_60m_pct':1,'watch_signal':'EINSTIEG'}}}}
         page.route('**/snapshot.json?*', lambda route: route.fulfill(status=200, content_type='application/json', body=json.dumps(snap)))
     page.goto(url, wait_until='networkidle', timeout=60000)
@@ -43,6 +43,9 @@ with sync_playwright() as p:
         assert page.locator('#overallSignal').inner_text()=='EINSTIEG', 'Valid fixture signal blocked'
         assert page.locator('#signalSummary').inner_text()=='Einstiege: 1 LONG · 0 SHORT'
         assert page.locator('#recovery').is_hidden(), 'Failure recovery shown with healthy data'
+        assert '86 %' in page.locator('#directionStrengths').inner_text(), 'Signal strength missing'
+        assert 'Short —' in page.locator('.strength-pair').first.inner_text(), 'Opposite strength invented'
+        assert page.locator('.compass-return').get_attribute('href') == 'https://strategiekompass.w-p1.chatgpt.site'
     ids = page.evaluate('Object.keys(DATA.universes)')
     old_check = page.evaluate('lastFetchAt')
     page.select_option('#universe', ids[-1])
@@ -92,6 +95,7 @@ with sync_playwright() as p:
     page.click('#refresh');page.wait_for_function("document.getElementById('refresh').disabled === false")
     assert page.locator('#overallSignal').inner_text()=='KEIN EINSTIEG'
     assert page.locator('.candidate.entry').count()==0, 'Old green signal survived fetch failure'
+    assert '%' not in page.locator('#directionStrengths').inner_text(), 'Old strength survived fetch failure'
     assert 'Abruf fehlgeschlagen' in page.locator('#fetchStatus').inner_text()
     assert page.locator('#recovery').is_visible(), 'Failed fetch offers no existing-workflow recovery'
     if fixture:
