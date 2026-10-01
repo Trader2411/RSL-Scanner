@@ -46,6 +46,22 @@ with sync_playwright() as p:
         assert '86 %' in page.locator('#directionStrengths').inner_text(), 'Signal strength missing'
         assert 'Short —' in page.locator('.strength-pair').first.inner_text(), 'Opposite strength invented'
         assert page.locator('.compass-return').get_attribute('href') == 'https://strategiekompass.w-p1.chatgpt.site'
+    # Whole overview cards navigate, clear search and open Short directly.
+    for side in ('short','long'):
+        page.fill('#search','NO_MATCH_EXPECTED')
+        page.locator('#'+side+'Strength').click()
+        assert page.input_value('#search') == '', 'Overview click left a hidden search filter'
+        assert page.locator('#'+side+'Ranking').is_visible()
+        if side == 'short':
+            assert page.locator('#shortRanking').get_attribute('open') is not None
+        assert page.evaluate('document.activeElement.id') == side+'Ranking', 'Ranking focus missing'
+        assert page.locator('#'+side+'List .candidate').count() <= 5
+        expected = page.evaluate("side => RadarState.ranked(SNAP,universeData().candidates[side],Date.now(),!!loadError).map(x=>x.symbol)", side)
+        actual = page.locator('#'+side+'List .candidate').evaluate_all('(rows)=>rows.map(x=>x.dataset.symbol)')
+        assert actual == expected, 'Visible top-five ranking is not sorted'
+        page.locator('#'+side+'Back').click()
+        assert page.evaluate('document.activeElement.id') == side+'Strength', 'Return to overview failed'
+    assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth + 1'), 'Ranking causes horizontal overflow'
     ids = page.evaluate('Object.keys(DATA.universes)')
     old_check = page.evaluate('lastFetchAt')
     page.select_option('#universe', ids[-1])
@@ -117,7 +133,7 @@ with sync_playwright() as p:
         assert page.evaluate('lastFetchAt')==confirmed, 'Older CDN generation replaced newer data'
         assert 'Älteres Datenpaket' in page.locator('#fetchStatus').inner_text(), 'Older generation has no visible explanation'
     assert not failures, failures
-    checks=['mobile overflow','load','refresh error','search','universe persistence','depot persistence','last successful fetch timestamp','Vienna timezone label','expanded metrics retained','capital and target calculation','invalid setting rejected','existing workflow recovery']
+    checks=['Long/Short top-five navigation and return','direction ranking and five-row limit','mobile overflow','load','refresh error','search','universe persistence','depot persistence','last successful fetch timestamp','Vienna timezone label','expanded metrics retained','capital and target calculation','invalid setting rejected','existing workflow recovery']
     if fixture: checks += ['green valid fixture','successful refresh recovery','malformed payload rollback','older generation rejected']
     evidence={'mode':'synthetic' if fixture else 'live','url':url,'browser':'Chromium mobile emulation','checks':checks,'page_errors':failures}
     (OUT/'browser-result.json').write_text(json.dumps(evidence,ensure_ascii=False,indent=2))

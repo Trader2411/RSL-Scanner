@@ -11,3 +11,8 @@ Prüfung: 26 Node-Tests bestanden, JavaScript-Syntax geprüft. Mobile Playwright
 Im alten Checkout lagen fremde uncommittete Workflowänderungen. Diese wurden nicht angefasst; neuer sauberer Checkout der aktuellen Hauptversion verwendet.
 
 Veröffentlichung bestätigt: Commit 2b77fbabc68452d0c3c4633c041b9bfa07fcfd64, Pages-Lauf 36928664650 am 01.10.2026 erfolgreich. Sowohl Prüfung des veröffentlichten Datenpakets als auch „Test live mobile interface“ erfolgreich; 390-px-Browserablauf einschließlich Suche, Aktualisieren/Fehlerfall und Speichern/Wiederöffnen. Der zusätzliche synthetische Prozentwert-Fall wurde lokal mangels Playwright nicht ausgeführt; Score-Logik durch Node-Tests geprüft. Keine Bestätigung einer Handelsrentabilität.
+
+## Klick auf Long/Short – Top 5
+Beide Richtungskarten öffnen jetzt direkt die jeweilige Rangliste; Short klappt automatisch auf. Suchfilter wird beim Sprung gelöscht. Rücksprung zur Richtungskarte und Kompass-Link bleiben erreichbar. Bis fünf Werte, gültige Signalstärken zuerst absteigend, nicht bestätigte Werte hinten mit bestehenden Sperren; bei insgesamt veralteten Daten ausdrücklich letzte Scan-Reihenfolge. Angezeigte Rangnummern entsprechen der sichtbaren Sortierung.
+
+27 Node-Tests bestanden, inklusive Sortierung, Gleichstand, fünf Kandidaten, Datenlücken, alter Scan und leere Listen. Der mobile Workflowtest wurde um Klick beider Karten, Suchfilter-Rücksetzung, Short-Aufklappen, Fokus, Rangfolge, Fünferlimit, Rücksprung und Überlauf erweitert. Lokales Python-Playwright fehlt; tatsächliches Ergebnis des Live-Workflows nach Publikation gesondert prüfen.

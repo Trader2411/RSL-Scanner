@@ -57,11 +57,18 @@ function render(){
 }
 function renderStrengths(all,now){
   $('directionStrengths').innerHTML=['LONG','SHORT'].map(side=>{
-    const rows=all.filter(x=>x.direction===side).map(x=>({x,score:RadarState.strength(SNAP,x,now,!!loadError),state:RadarState.assess(SNAP,x,now,!!loadError)})).filter(r=>r.score!==null).sort((a,b)=>b.score-a.score);
+    const rows=RadarState.ranked(SNAP,all.filter(x=>x.direction===side),now,!!loadError).map(x=>({x,score:RadarState.strength(SNAP,x,now,!!loadError),state:RadarState.assess(SNAP,x,now,!!loadError)})).filter(r=>r.score!==null).sort((a,b)=>b.score-a.score);
     const top=rows[0];
-    return `<div class="strength-card ${side==='LONG'?'long':'short'}"><h2>${side==='LONG'?'Long':'Short'}</h2><strong>${top?num(top.score)+' %':'—'}</strong><small>Stärkster geprüfter Kandidat · Signalstärke</small><b>${top?esc(top.state.signal):'KEIN EINSTIEG'}</b><p>${top?esc(top.x.name)+': '+esc(top.state.why):'Keine aktuell bestätigte Prozentbewertung verfügbar.'}</p></div>`;
+    return `<button type="button" id="${side.toLowerCase()}Strength" aria-controls="${side.toLowerCase()}Ranking" class="strength-card ${side==='LONG'?'long':'short'}"><h2>${side==='LONG'?'Long':'Short'}</h2><strong>${top?num(top.score)+' %':'—'}</strong><small>Stärkster geprüfter Kandidat · Signalstärke</small><b>${top?esc(top.state.signal):'KEIN EINSTIEG'}</b><p>${top?esc(top.x.name)+': '+esc(top.state.why):'Keine aktuell bestätigte Prozentbewertung verfügbar.'}</p><span class="strength-link">Top 5 ansehen ↓</span></button>`;
   }).join('');
+  ['long','short'].forEach(side=>$(side+'Strength').onclick=()=>openRanking(side));
 }
+function openRanking(side){
+  $('search').value='';render();
+  const panel=$(side+'Ranking');if(panel.tagName==='DETAILS')panel.open=true;
+  panel.focus({preventScroll:true});panel.scrollIntoView({block:'start',behavior:'instant'});
+}
+function backToStrength(side){const button=$(side+'Strength');button.focus();button.scrollIntoView({block:'center',behavior:'instant'});}
 function candidateStrengths(x){
   return `<div class="strength-pair">${['LONG','SHORT'].map(side=>{
     const candidate=side===x.direction?x:items().find(row=>row.symbol===x.symbol&&row.direction===side);
@@ -72,11 +79,14 @@ function candidateStrengths(x){
 function renderList(id,list){
   const expanded=new Set(Array.from($(id).querySelectorAll('.candidate')).filter(el=>el.querySelector('details[open]')).map(el=>`${el.dataset.symbol}|${el.dataset.direction}`));
   const query=$('search').value.trim().toLowerCase();
-  const shown=list.filter(x=>!query||`${x.name} ${x.symbol} ${x.wkn||''}`.toLowerCase().includes(query));
-  $(id).innerHTML=shown.length?shown.map(x=>card(x,expanded.has(`${x.symbol}|${x.direction}`))).join(''):'<p class="muted">Keine passenden Kandidaten in dieser Auswahl.</p>';
+  const ranked=RadarState.ranked(SNAP,list,Date.now(),!!loadError);
+  const side=id==='longList'?'long':'short';
+  $(side+'Count').textContent=`Nach Signalstärke absteigend · ${ranked.length} von bis zu 5 Werten verfügbar. Nicht bestätigte Bewertungen folgen zuletzt; bei veralteten Daten gilt die letzte Scan-Reihenfolge.`;
+  const shown=ranked.filter(x=>!query||`${x.name} ${x.symbol} ${x.wkn||''}`.toLowerCase().includes(query));
+  $(id).innerHTML=shown.length?shown.map(x=>card(x,expanded.has(`${x.symbol}|${x.direction}`),ranked.indexOf(x)+1)).join(''):'<p class="muted">Keine passenden Kandidaten in dieser Auswahl.</p>';
   $(id).querySelectorAll('.candidate').forEach(el=>el.onclick=e=>{if(e.target.closest('a,button,summary,details'))return;selected=items().find(x=>x.symbol===el.dataset.symbol&&x.direction===el.dataset.direction);renderTargets()});
 }
-function card(x,expanded=false){
+function card(x,expanded=false,rank=x.rank){
   const state=RadarState.assess(SNAP,x,Date.now(),!!loadError),w=state.watch;
   const sourceUrl=`https://finance.yahoo.com/quote/${encodeURIComponent(x.symbol)}/chart/`;
   const wknUrl=typeof x.wkn_url==='string'&&x.wkn_url.startsWith('https://www.finanzen.net/')?x.wkn_url:null;
@@ -84,7 +94,7 @@ function card(x,expanded=false){
   const sign=v=>typeof v==='number'?(v>=0?'pos':'neg'):'';
   const kpi=(name,value,raw)=>`<div class="kpi"><span>${name}</span><b class="${sign(raw)}">${value}</b></div>`;
   return `<article class="candidate ${sClass(state.signal)}" data-symbol="${esc(x.symbol)}" data-direction="${esc(x.direction)}">
-    <div class="candidate-top"><div class="rank-name"><span class="rank">${esc(x.rank)}</span><div class="name"><b>${esc(x.name)}</b><small><a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(x.symbol)} ↗</a> · ${esc(x.direction)}${x.wkn?` · ${wknUrl?`<a class="wkn-link" href="${esc(wknUrl)}" target="_blank" rel="noopener noreferrer">WKN ${esc(x.wkn)} ↗</a>`:`WKN ${esc(x.wkn)}`}`:''}</small></div></div><span class="signal-pill ${sClass(state.signal)}">${sIcon(state.signal)} ${state.signal}</span></div>
+    <div class="candidate-top"><div class="rank-name"><span class="rank">${esc(rank)}</span><div class="name"><b>${esc(x.name)}</b><small><a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">${esc(x.symbol)} ↗</a> · ${esc(x.direction)}${x.wkn?` · ${wknUrl?`<a class="wkn-link" href="${esc(wknUrl)}" target="_blank" rel="noopener noreferrer">WKN ${esc(x.wkn)} ↗</a>`:`WKN ${esc(x.wkn)}`}`:''}</small></div></div><span class="signal-pill ${sClass(state.signal)}">${sIcon(state.signal)} ${state.signal}</span></div>
     ${candidateStrengths(x)}<div class="reason">${esc(state.why)}</div>
     <div class="watch-line">${w?`Kurs ${num(w.price)}${x.currency?` ${esc(x.currency)}`:''} · Kursstand ${time(w.price_asof)} (Wien) · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`:`Kein bestätigter aktueller Kurs · <a class="source-chart-link" href="${sourceUrl}" target="_blank" rel="noopener noreferrer">Quellenchart ↗</a>`}</div>
     <div class="kpis">${kpi('15 Min.',pct(w?.ret_15m_pct),w?.ret_15m_pct)}${kpi('30 Min.',pct(w?.ret_30m_pct),w?.ret_30m_pct)}${kpi('Seit Vollscan',pct(w?.move_since_scan_pct),w?.move_since_scan_pct)}</div>
@@ -101,6 +111,7 @@ function renderTargets(persist=false){
   $('need1').textContent=`benötigt ${(1/fraction).toFixed(1)} % auf den Einsatz`;$('need2').textContent=`benötigt ${(2/fraction).toFixed(1)} % auf den Einsatz`;
   $('progress').textContent='Nicht erfasst';$('progressText').textContent='Ohne Kauf- und Verkaufsdaten kein tatsächlicher Depotgewinn.';
 }
+['long','short'].forEach(side=>$(side+'Back').onclick=()=>backToStrength(side));
 $('refresh').onclick=load;$('search').oninput=render;
 for(const id of ['depot','allocation'])$(id).oninput=()=>renderTargets(true);
 $('depot').value=saved('momentumRadarDepot','5000');$('allocation').value=saved('momentumRadarAllocation','50');

@@ -28,3 +28,14 @@ test('known decision check does not accept object prototype properties',()=>{con
 test('sector comparison may be explicitly inapplicable only for crypto and futures',()=>{for(const symbol of ['HBAR-USD','GC=F']){const {s,x}=sample();x.symbol=symbol;x.rel_sector=null;x.sector_benchmark_kind='not_applicable';s.watch.candidates[`${symbol}|LONG`]={...s.watch.candidates['AAPL|LONG'],symbol};assert.equal(S.assess(s,x,now).signal,'EINSTIEG')}const {s,x}=sample();x.rel_sector=null;x.sector_benchmark_kind='not_applicable';assert.equal(S.assess(s,x,now).signal,'KEIN EINSTIEG')});
 test('strength exposes existing independent score without changing recommendations',()=>{const {s,x}=sample();x.score=86;assert.equal(S.strength(s,x,now),86);assert.equal(S.assess(s,x,now).signal,'EINSTIEG');x.signal='BEOBACHTEN';assert.equal(S.strength(s,x,now),86);assert.equal(S.assess(s,x,now).signal,'BEOBACHTEN');s.watch.candidates['AAPL|LONG'].watch_signal='KEIN EINSTIEG';assert.equal(S.strength(s,x,now),86);assert.equal(S.assess(s,x,now).signal,'KEIN EINSTIEG');});
 test('strength hides missing, malformed, expired and failed evaluations',()=>{for(const score of [undefined,null,NaN,-1,101,'86']){const {s,x}=sample();x.score=score;assert.equal(S.strength(s,x,now),null);}const {s,x}=sample();x.score=86;assert.equal(S.strength(s,x,now+21*60000),null);assert.equal(S.strength(s,x,now,true),null);});
+
+test('top five are strongest first per direction, stable on ties, no fabricated rows',()=>{
+ const {s,x}=sample();const rows=[20,90,70,80,60,50,90].map((score,i)=>({...x,symbol:String.fromCharCode(65+i),score}));
+ for(const row of rows)s.watch.candidates[row.symbol+'|LONG']={...s.watch.candidates['AAPL|LONG'],symbol:row.symbol};
+ assert.deepEqual(S.ranked(s,rows,now).map(x=>x.symbol),['B','G','D','C','E']);
+ delete s.watch.candidates['B|LONG'];
+ assert.deepEqual(S.ranked(s,rows,now).map(x=>x.symbol),['G','D','C','E','F']);
+ assert.deepEqual(S.ranked(s,rows,now,true).map(x=>x.symbol),['B','G','D','C','E']);
+ assert.equal(S.ranked(s,rows.slice(0,2),now).length,2);
+ assert.deepEqual(S.ranked(s,[],now),[]);assert.equal(rows[0].symbol,'A');
+});
