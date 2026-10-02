@@ -19,8 +19,10 @@ BASE_QUOTE_LIMIT = 45
 
 
 def scan_window(now):
-    local = now.astimezone(ZoneInfo('Europe/Vienna'))
-    return local.weekday() < 5 and time(10) <= local.time() <= time(22)
+    # The existing RSL workflow also runs hourly overnight and on weekends.
+    # Crypto/futures must not be blocked by a global US-equity time window.
+    # Each symbol's session and freshness gates remain in the signal builder.
+    return True
 
 
 def age_minutes(value, now):
@@ -111,7 +113,7 @@ def build_full():
 def main(force_full=False):
     now = datetime.now(timezone.utc)
     if os.getenv('GITHUB_EVENT_NAME') in ('schedule', 'workflow_run') and not scan_window(now):
-        print('Outside the approved weekday 10:00–22:00 Vienna scan window.')
+        print('Outside the scan window.')
         return
     try:
         data = read_json(BASE / 'data.json')

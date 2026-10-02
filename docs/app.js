@@ -157,7 +157,22 @@ function closeChart(){
   modal.setAttribute("aria-hidden","true");
   document.body.classList.remove("modal-open");
 }
-async function load(){ $("status").textContent="Daten werden geladen…"; const r=await fetch("data.json?"+Date.now()); DATA=await r.json(); const names=Object.keys(DATA.indexes||{}); if(names.length&&!names.includes(currentIndex))currentIndex=names[0]; buildButtons(); render(); $("status").textContent=DATA.generated_at?"Daten geladen":"Erster Datenlauf noch offen"; }
+let loading=false,lastAttempt=0;
+async function load(){
+ if(loading)return;loading=true;lastAttempt=Date.now();$("status").textContent="Daten werden geladen…";
+ const abort=new AbortController(),timer=setTimeout(()=>abort.abort(),20000);
+ try{const r=await fetch("data.json?"+Date.now(),{cache:'no-store',signal:abort.signal});if(!r.ok)throw Error('HTTP '+r.status);
+ const next=await r.json();if(!next||!next.indexes||!Number.isFinite(Date.parse(next.generated_at)))throw Error('Ungültiger Datenstand');
+ if(DATA&&Date.parse(next.generated_at)<Date.parse(DATA.generated_at))throw Error('Älteres Datenpaket geliefert');
+ DATA=next;const names=Object.keys(DATA.indexes||{});if(names.length&&!names.includes(currentIndex))currentIndex=names[0];buildButtons();render();
+ $("status").textContent=Date.now()-Date.parse(DATA.generated_at)>2*3600000?"Quelldaten älter als 2 Stunden · keine aktuelle Kursbestätigung":"Quelldaten geladen · Kurstage je Wert beachten";
+ }catch(e){$("status").textContent="Abruf fehlgeschlagen · letzter gespeicherter Stand: "+(e.name==='AbortError'?'Zeitüberschreitung':e.message);}
+ finally{clearTimeout(timer);loading=false;}
+}
+const resumeRefresh=()=>{if(document.visibilityState==='visible'&&Date.now()-lastAttempt>=60000)void load();};
+setInterval(()=>{if(document.visibilityState==='visible')void load();},300000);
+document.addEventListener('visibilitychange',resumeRefresh);window.addEventListener('pageshow',resumeRefresh);
+
 function buildButtons(){const box=$("indexButtons");box.innerHTML="";const names=Object.keys(DATA.indexes||{});(names.length?names:["S&P 500","NASDAQ 100","Dow Jones","DAX","Krypto"]).forEach(n=>{const b=document.createElement("button");b.textContent=n;b.className=n===currentIndex?"active":"";b.onclick=()=>{currentIndex=n;buildButtons();render()};box.appendChild(b)})}
 function values(){
   let a=[...(DATA.indexes?.[currentIndex]||[])];

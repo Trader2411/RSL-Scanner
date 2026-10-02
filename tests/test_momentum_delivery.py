@@ -61,14 +61,10 @@ class Regression(unittest.TestCase):
         self.assertEqual(record['watch_signal'],'KEIN EINSTIEG')
         watch['base_scan_generated_at']='wrong'
         with self.assertRaises(ValueError): validate_pair(data,watch,now)
-    def test_scan_window_has_exact_end_and_dst(self):
-        for month, utc_open, utc_end in ((9,8,20),(12,9,21)):
-            # Both dates are Monday in 2026.
-            day=28
-            self.assertTrue(scan_window(datetime(2026,month,day,utc_open,tzinfo=timezone.utc)))
-            self.assertTrue(scan_window(datetime(2026,month,day,utc_end,tzinfo=timezone.utc)))
-            self.assertFalse(scan_window(datetime(2026,month,day,utc_end,1,tzinfo=timezone.utc)))
-            self.assertFalse(scan_window(datetime(2026,month,day,utc_open-1,59,tzinfo=timezone.utc)))
+    def test_continuous_assets_can_refresh_morning_night_and_weekend(self):
+        for stamp in ['2026-10-02T07:00:00+00:00','2026-10-03T02:00:00+00:00','2026-12-28T23:00:00+00:00']:
+            self.assertTrue(scan_window(datetime.fromisoformat(stamp)))
+
     def test_new_watch_does_not_repair_invalid_full_scan(self):
         now=datetime.now(timezone.utc); stamp=now.isoformat()
         for quality, source in ((False,stamp),(True,(now-timedelta(hours=3)).isoformat()),(True,None)):
