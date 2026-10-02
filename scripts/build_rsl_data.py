@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import requests
 import yfinance as yf
+from crypto_history import repair_crypto_prices
 
 OUT = Path("docs/data.json")
 OUT.parent.mkdir(parents=True, exist_ok=True)
@@ -331,6 +332,7 @@ def download_prices(symbols):
 def build_index(meta):
     meta = meta.drop_duplicates("symbol").reset_index(drop=True)
     prices = download_prices(meta["symbol"].tolist())
+    prices, recovered = repair_crypto_prices(prices, meta["symbol"].tolist())
     rec = []
     for _, m in meta.iterrows():
         s = m["symbol"]
@@ -371,6 +373,8 @@ def build_index(meta):
             "m1": pct(d.iloc[-1], d.iloc[-22]) if len(d) > 22 else None,
             "cross": cross_signal(d),
             "chart130": chart_values,
+            "chart_recovered_days": recovered.get(s, []),
+            "chart_recovery_source": "Yahoo Finance: Schlusskurs aus 24 vollständigen UTC-Stundenkerzen" if recovered.get(s) else None,
             "chart_dates": [ts.strftime("%Y-%m-%d") for ts in chart.index],
             "chart_start": chart.index[0].strftime("%Y-%m-%d") if len(chart) else None,
             "chart_end": chart.index[-1].strftime("%Y-%m-%d") if len(chart) else None,

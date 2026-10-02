@@ -5,16 +5,14 @@ on:
     branches: [main]
     paths:
       - scripts/build_rsl_data.py
+      - scripts/crypto_history.py
       - requirements-web.txt
       - .github/workflows/update-rsl-data.yml
   schedule:
-    # Primary hourly run on weekdays.
-    - cron: '23 * * * 1-5'
+    # Hourly every day: the exported crypto universe trades 24/7.
+    - cron: '23 * * * *'
     # Recovery attempt 30 minutes later; it only rebuilds when data is stale.
-    - cron: '53 * * * 1-5'
-    # Weekend cadence remains every 6 hours, with the same recovery protection.
-    - cron: '23 1,7,13,19 * * 0,6'
-    - cron: '53 1,7,13,19 * * 0,6'
+    - cron: '53 * * * *'
 
 permissions:
   contents: write
@@ -50,7 +48,7 @@ jobs:
           fi
 
           case "${{ github.event.schedule }}" in
-            "23 * * * 1-5"|"23 1,7,13,19 * * 0,6")
+            "23 * * * *")
               echo "run=true" >> "$GITHUB_OUTPUT"
               exit 0
               ;;
@@ -77,6 +75,9 @@ jobs:
           PY
           )
           echo "run=$NEEDS_BUILD" >> "$GITHUB_OUTPUT"
+
+      - name: Verify complete-day recovery
+        run: python tests/test_crypto_history.py
 
       - name: Build fresh RSL data
         if: steps.freshness.outputs.run == 'true'
