@@ -20,3 +20,8 @@ Direkter öffentlicher Abruf von https://trader2411.github.io/RSL-Scanner/data.j
 
 ## Kleinster nächster Schritt
 Repository-Eigentümer muss beim wartenden Pages-Lauf die Umgebungsprüfung prüfen und, sofern zulässig, freigeben. Der verbundene Zugang bietet weder diese Freigabe noch das Abbrechen des blockierenden Laufs. Danach neuesten Pages-Lauf und öffentliche data.json mit dem tatsächlich veröffentlichten Repository-Snapshot vergleichen. Nicht als veröffentlicht oder vollständig live bestätigt ausgeben, bevor dieser Vergleich erfolgreich ist.
+
+## Nachprüfung am 8. Oktober, ca. 12:57 Wien
+Der Eigentümer hat den festhängenden Lauf 37440940896 abgebrochen; Screenshot bestätigt Cancelled. Die gezeigten Umgebungseinstellungen haben Required reviewers und Wait timer deaktiviert und erlauben main. Eine aktuell aktive manuelle Freigaberegel ist daher nicht belegt; der ursprüngliche Wartegrund bleibt ungeklärt. Keine Schutzregeln geändert.
+
+Pages-Lauf https://github.com/Trader2411/RSL-Scanner/actions/runs/37750391080 ist erfolgreich abgeschlossen. Direkter Abruf und vollständiger JSON-Vergleich bestätigen: öffentliche data.json entspricht der aktuellen Repository-Datei. generated_at=2026-10-08T08:29:18.614011+00:00, also 8. Oktober 10:29:18 Wien. Dieser Zeitpunkt bezeichnet die Erzeugung der Datei, nicht die Aktualität jeder Kurskerze. Der zuvor dokumentierte Veröffentlichungsblocker ist aufgehoben. Berechnung, Speicherung und Veröffentlichung dieser Reparaturläufe sind jetzt live bestätigt. Dauerhafte Zuverlässigkeit über spätere automatische Läufe bleibt eine noch nicht abgeschlossene Beobachtung.
