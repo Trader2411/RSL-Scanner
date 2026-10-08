@@ -15,7 +15,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: rsl-hourly-watchdog
+  group: rsl-data-update
   cancel-in-progress: false
 
 jobs:
@@ -44,5 +44,17 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add docs/data.json
           git diff --cached --quiet || git commit -m "Refresh RSL market data"
-          git pull --rebase origin main
-          git push origin main
+          # MomentumRadar may advance main while RSL is being calculated.
+          # Retry without force-pushing or masking a real merge conflict.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git rebase origin/main; then
+              git rebase --abort
+              echo 'Conflicting remote edit: RSL data not pushed.' >&2
+              exit 1
+            fi
+            if git push origin HEAD:main; then exit 0; fi
+            echo "Push failed; refresh remote state and retry ${attempt}/3." >&2
+          done
+          echo 'RSL data could not be saved after three attempts.' >&2
+          exit 1
