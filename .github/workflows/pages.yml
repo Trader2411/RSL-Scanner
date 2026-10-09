@@ -78,6 +78,11 @@ jobs:
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: python tests/browser_momentum.py
+      - name: Test live RSL interface
+        if: github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push')
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python tests/browser_rsl.py
       - name: Save live browser evidence
         if: always() && (github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push'))
         uses: actions/upload-artifact@v4
