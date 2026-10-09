@@ -2,7 +2,7 @@ name: Deploy RSL Scanner Pages
 on:
   push:
     branches: [main]
-    paths: ['docs/**', '.github/workflows/pages.yml', 'scripts/verify_momentum_publication.py']
+    paths: ['docs/**', '.github/workflows/pages.yml', 'scripts/verify_momentum_publication.py', 'scripts/verify_rsl_publication.py']
   workflow_dispatch:
   workflow_run:
     workflows: [Update MomentumRadar candidate watch, Update MomentumRadar data, Update RSL data, RSL hourly watchdog]
@@ -10,6 +10,7 @@ on:
     branches: [main]
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -34,13 +35,39 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: docs
+      - name: Wait until Pages artifact is registered
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          # GitHub sometimes indexes a successfully uploaded artifact a few seconds late.
+          # Publishing before it appears causes "No artifacts named github-pages".
+          for attempt in {1..15}; do
+            if artifact_id="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/artifacts?per_page=100" --jq '.artifacts[] | select(.name=="github-pages" and .expired==false) | .id')"; then
+              if [ -n "$artifact_id" ]; then
+                echo "Pages artifact registered: $artifact_id"
+                sleep 3
+                exit 0
+              fi
+            else
+              echo "::warning::Could not read artifact registry; retrying."
+            fi
+            echo "Waiting for Pages artifact metadata ($attempt/15)"
+            sleep 4
+          done
+          echo "::error::Pages artifact not registered; publication withheld."
+          exit 1
       - name: Publish current repository snapshot
         id: deployment
         uses: actions/deploy-pages@v4
-      - name: Verify the publicly served snapshot
+      - name: Verify the publicly served MomentumRadar snapshot
         env:
           PAGE_URL: ${{ steps.deployment.outputs.page_url }}
         run: python scripts/verify_momentum_publication.py
+      - name: Verify the publicly served RSL data
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: python scripts/verify_rsl_publication.py
       - name: Install browser for live code-change test
         if: github.event_name == 'push' || (github.event_name == 'workflow_run' && github.event.workflow_run.event == 'push')
         run: |
