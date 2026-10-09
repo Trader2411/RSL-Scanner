@@ -44,7 +44,7 @@ with sync_playwright() as playwright:
     assert page.locator("#chartTitle").inner_text().strip(), "Stock chart title is missing"
     page.locator("#chartClose").click()
     assert page.locator("#chartModal").get_attribute("aria-hidden") == "true", "Stock chart does not close"
-    page.screenshot(path=str(out / "rsl-mobile.png"), full_page=True)
+    page.screenshot(path=str(out / "rsl-mobile.png"), full_page=False)
     assert not page_errors, "RSL JavaScript errors: " + "; ".join(page_errors)
     print("RSL_BROWSER_VERIFIED " + json.dumps({
         "url": url,
