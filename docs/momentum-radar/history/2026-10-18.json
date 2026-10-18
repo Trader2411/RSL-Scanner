@@ -23,11 +23,11 @@
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -2.64,
-    "return_2h_pct": -2.34,
-    "return_eod_pct": null,
+    "return_2h_pct": -2.38,
+    "return_eod_pct": -22.47,
     "max_favorable_pct": 0.28,
-    "max_adverse_pct": -20.03,
-    "outcome_complete": false
+    "max_adverse_pct": -22.79,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|HBAR-USD|2",
@@ -52,12 +52,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": 1.18,
+    "return_1h_pct": 1.19,
     "return_2h_pct": 1.3,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.71,
-    "max_adverse_pct": -0.58,
-    "outcome_complete": false
+    "return_eod_pct": -3.34,
+    "max_favorable_pct": 5.79,
+    "max_adverse_pct": -3.9,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|IOTA-USD|3",
@@ -83,11 +83,11 @@
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.14,
-    "return_2h_pct": 0.18,
-    "return_eod_pct": null,
+    "return_2h_pct": 0.3,
+    "return_eod_pct": -7.07,
     "max_favorable_pct": 0.85,
-    "max_adverse_pct": -5.2,
-    "outcome_complete": false
+    "max_adverse_pct": -7.6,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|KSM-USD|4",
@@ -114,10 +114,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.65,
     "return_2h_pct": -0.9,
-    "return_eod_pct": null,
+    "return_eod_pct": -5.62,
     "max_favorable_pct": 0.2,
-    "max_adverse_pct": -4.47,
-    "outcome_complete": false
+    "max_adverse_pct": -5.68,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|1INCH-USD|5",
@@ -144,10 +144,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.14,
     "return_2h_pct": 0.46,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.09,
     "max_favorable_pct": 0.97,
-    "max_adverse_pct": -1.91,
-    "outcome_complete": false
+    "max_adverse_pct": -3.43,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|ENJ-USD|6",
@@ -172,12 +172,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": -0.07,
-    "return_2h_pct": -0.03,
-    "return_eod_pct": null,
+    "return_1h_pct": -0.11,
+    "return_2h_pct": 0.2,
+    "return_eod_pct": -7.14,
     "max_favorable_pct": 0.53,
-    "max_adverse_pct": -5.57,
-    "outcome_complete": false
+    "max_adverse_pct": -7.53,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|LDO-USD|7",
@@ -204,10 +204,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.59,
     "return_2h_pct": 0.51,
-    "return_eod_pct": null,
+    "return_eod_pct": -5.84,
     "max_favorable_pct": 1.72,
-    "max_adverse_pct": -4.5,
-    "outcome_complete": false
+    "max_adverse_pct": -6.21,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|THETA-USD|8",
@@ -232,12 +232,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": 0.17,
-    "return_2h_pct": 0.35,
-    "return_eod_pct": null,
+    "return_1h_pct": 0.16,
+    "return_2h_pct": 0.46,
+    "return_eod_pct": -6.42,
     "max_favorable_pct": 0.84,
-    "max_adverse_pct": -4.42,
-    "outcome_complete": false
+    "max_adverse_pct": -6.7,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|FLOW-USD|9",
@@ -264,10 +264,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.36,
     "return_2h_pct": -0.13,
-    "return_eod_pct": null,
+    "return_eod_pct": -6.75,
     "max_favorable_pct": 0.68,
-    "max_adverse_pct": -4.77,
-    "outcome_complete": false
+    "max_adverse_pct": -7.01,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|LONG|AXS-USD|10",
@@ -293,11 +293,11 @@
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.14,
-    "return_2h_pct": -0.16,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.08,
+    "return_eod_pct": -5.68,
     "max_favorable_pct": 0.76,
-    "max_adverse_pct": -4.44,
-    "outcome_complete": false
+    "max_adverse_pct": -6.0,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|MKR-USD|1",
@@ -324,10 +324,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.0,
     "return_2h_pct": -0.17,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.5,
+    "return_eod_pct": 3.42,
+    "max_favorable_pct": 3.76,
     "max_adverse_pct": -0.41,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|SAND-USD|2",
@@ -354,10 +354,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 2.02,
     "return_2h_pct": -0.51,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.06,
+    "return_eod_pct": 4.71,
+    "max_favorable_pct": 5.32,
     "max_adverse_pct": -13.97,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|NEAR-USD|3",
@@ -383,11 +383,11 @@
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.83,
-    "return_2h_pct": -2.03,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.23,
+    "return_2h_pct": -1.99,
+    "return_eod_pct": 3.76,
+    "max_favorable_pct": 4.6,
     "max_adverse_pct": -4.7,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|XRP-USD|4",
@@ -414,10 +414,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.61,
     "return_2h_pct": -0.63,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.68,
+    "return_eod_pct": 2.26,
+    "max_favorable_pct": 2.69,
     "max_adverse_pct": -1.19,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|BTC-USD|5",
@@ -444,10 +444,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.32,
     "return_2h_pct": -0.47,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.35,
+    "return_eod_pct": 0.51,
+    "max_favorable_pct": 0.71,
     "max_adverse_pct": -1.24,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|QNT-USD|6",
@@ -474,10 +474,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.4,
     "return_2h_pct": -1.09,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.47,
-    "max_adverse_pct": -2.91,
-    "outcome_complete": false
+    "return_eod_pct": 5.79,
+    "max_favorable_pct": 7.01,
+    "max_adverse_pct": -2.79,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|RUNE-USD|7",
@@ -502,12 +502,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": -0.58,
-    "return_2h_pct": -0.95,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.9,
-    "max_adverse_pct": -2.59,
-    "outcome_complete": false
+    "return_1h_pct": -0.59,
+    "return_2h_pct": -0.97,
+    "return_eod_pct": 2.75,
+    "max_favorable_pct": 2.83,
+    "max_adverse_pct": -2.58,
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|XLM-USD|8",
@@ -534,10 +534,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.34,
     "return_2h_pct": -0.49,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.6,
+    "return_eod_pct": 2.52,
+    "max_favorable_pct": 2.85,
     "max_adverse_pct": -1.27,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|BCH-USD|9",
@@ -564,10 +564,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.34,
     "return_2h_pct": -0.6,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.4,
+    "return_eod_pct": 3.29,
+    "max_favorable_pct": 3.93,
     "max_adverse_pct": -1.3,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261017T233515Z|Krypto|SHORT|AAVE-USD|10",
@@ -594,10 +594,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.3,
     "return_2h_pct": 0.09,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.69,
-    "max_adverse_pct": -2.26,
-    "outcome_complete": false
+    "return_eod_pct": 3.32,
+    "max_favorable_pct": 3.84,
+    "max_adverse_pct": -2.18,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|HBAR-USD|1",
@@ -624,10 +624,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.42,
     "return_2h_pct": 0.27,
-    "return_eod_pct": null,
-    "max_favorable_pct": 4.48,
-    "max_adverse_pct": -1.74,
-    "outcome_complete": false
+    "return_eod_pct": -4.47,
+    "max_favorable_pct": 4.55,
+    "max_adverse_pct": -5.02,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|SOL-USD|2",
@@ -654,10 +654,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.39,
     "return_2h_pct": 0.56,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.66,
     "max_favorable_pct": 1.29,
-    "max_adverse_pct": -1.61,
-    "outcome_complete": false
+    "max_adverse_pct": -2.88,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|KAVA-USD|3",
@@ -684,10 +684,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.43,
     "return_2h_pct": -0.43,
-    "return_eod_pct": null,
+    "return_eod_pct": -0.28,
     "max_favorable_pct": 2.84,
-    "max_adverse_pct": -0.43,
-    "outcome_complete": false
+    "max_adverse_pct": -0.57,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|XRP-USD|4",
@@ -714,10 +714,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.03,
     "return_2h_pct": 0.18,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.85,
     "max_favorable_pct": 0.58,
-    "max_adverse_pct": -2.24,
-    "outcome_complete": false
+    "max_adverse_pct": -3.2,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|ENJ-USD|5",
@@ -742,12 +742,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": -0.43,
+    "return_1h_pct": -0.47,
     "return_2h_pct": -0.48,
-    "return_eod_pct": null,
+    "return_eod_pct": -7.14,
     "max_favorable_pct": 0.53,
-    "max_adverse_pct": -5.57,
-    "outcome_complete": false
+    "max_adverse_pct": -7.53,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|MANA-USD|6",
@@ -774,10 +774,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.11,
     "return_2h_pct": 0.57,
-    "return_eod_pct": null,
+    "return_eod_pct": -6.9,
     "max_favorable_pct": 1.84,
-    "max_adverse_pct": -5.29,
-    "outcome_complete": false
+    "max_adverse_pct": -7.36,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|ADA-USD|7",
@@ -804,10 +804,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.32,
     "return_2h_pct": 0.51,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.47,
     "max_favorable_pct": 0.97,
-    "max_adverse_pct": -2.23,
-    "outcome_complete": false
+    "max_adverse_pct": -3.96,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|ANKR-USD|8",
@@ -834,10 +834,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.66,
     "return_2h_pct": -0.55,
-    "return_eod_pct": null,
+    "return_eod_pct": -6.28,
     "max_favorable_pct": 0.49,
-    "max_adverse_pct": -5.4,
-    "outcome_complete": false
+    "max_adverse_pct": -6.71,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|RUNE-USD|9",
@@ -862,12 +862,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": 0.35,
+    "return_1h_pct": 0.3,
     "return_2h_pct": 0.78,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.31,
     "max_favorable_pct": 1.99,
-    "max_adverse_pct": -2.43,
-    "outcome_complete": false
+    "max_adverse_pct": -3.32,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|LONG|SAND-USD|10",
@@ -894,10 +894,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 3.78,
     "return_2h_pct": 7.04,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.75,
     "max_favorable_pct": 16.32,
-    "max_adverse_pct": 0.17,
-    "outcome_complete": false
+    "max_adverse_pct": -3.09,
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|SAND-USD|1",
@@ -924,10 +924,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -3.78,
     "return_2h_pct": -7.04,
-    "return_eod_pct": null,
-    "max_favorable_pct": -0.17,
+    "return_eod_pct": 2.75,
+    "max_favorable_pct": 3.19,
     "max_adverse_pct": -16.32,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|EOS-USD|2",
@@ -954,10 +954,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.16,
     "return_2h_pct": 2.08,
-    "return_eod_pct": null,
-    "max_favorable_pct": 21.69,
+    "return_eod_pct": 20.34,
+    "max_favorable_pct": 26.05,
     "max_adverse_pct": -0.49,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|MANA-USD|3",
@@ -984,10 +984,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.11,
     "return_2h_pct": -0.57,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.58,
+    "return_eod_pct": 6.9,
+    "max_favorable_pct": 7.94,
     "max_adverse_pct": -1.84,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|ENJ-USD|4",
@@ -1012,12 +1012,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": 0.43,
+    "return_1h_pct": 0.47,
     "return_2h_pct": 0.48,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.9,
+    "return_eod_pct": 7.14,
+    "max_favorable_pct": 8.14,
     "max_adverse_pct": -0.53,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|AXS-USD|5",
@@ -1044,10 +1044,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.26,
     "return_2h_pct": 0.02,
-    "return_eod_pct": null,
-    "max_favorable_pct": 4.5,
+    "return_eod_pct": 5.55,
+    "max_favorable_pct": 6.24,
     "max_adverse_pct": -0.89,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|ADA-USD|6",
@@ -1074,10 +1074,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.32,
     "return_2h_pct": -0.51,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.28,
+    "return_eod_pct": 3.47,
+    "max_favorable_pct": 4.13,
     "max_adverse_pct": -0.97,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|DOT-USD|7",
@@ -1104,10 +1104,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": -0.4,
     "return_2h_pct": -0.46,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.86,
+    "return_eod_pct": 5.13,
+    "max_favorable_pct": 5.79,
     "max_adverse_pct": -1.22,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|KSM-USD|8",
@@ -1134,10 +1134,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.25,
     "return_2h_pct": 0.93,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.99,
+    "return_eod_pct": 5.0,
+    "max_favorable_pct": 5.33,
     "max_adverse_pct": -0.19,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|ICP-USD|9",
@@ -1162,12 +1162,12 @@
     "rel_sector": null,
     "rsi": null,
     "momentum_change": "noch nicht vergleichbar",
-    "return_1h_pct": 0.08,
+    "return_1h_pct": -0.03,
     "return_2h_pct": -0.65,
-    "return_eod_pct": null,
-    "max_favorable_pct": 4.02,
+    "return_eod_pct": 5.05,
+    "max_favorable_pct": 5.84,
     "max_adverse_pct": -1.21,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T011445Z|Krypto|SHORT|OP-USD|10",
@@ -1194,10 +1194,10 @@
     "momentum_change": "noch nicht vergleichbar",
     "return_1h_pct": 0.35,
     "return_2h_pct": -0.58,
-    "return_eod_pct": null,
-    "max_favorable_pct": 4.99,
+    "return_eod_pct": 7.27,
+    "max_favorable_pct": 8.0,
     "max_adverse_pct": -1.33,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|SAND-USD|1",
@@ -1224,10 +1224,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.77,
     "return_2h_pct": -2.15,
-    "return_eod_pct": null,
+    "return_eod_pct": -12.92,
     "max_favorable_pct": 4.15,
-    "max_adverse_pct": -10.31,
-    "outcome_complete": false
+    "max_adverse_pct": -13.23,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|MANA-USD|2",
@@ -1254,10 +1254,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -1.15,
     "return_2h_pct": -2.18,
-    "return_eod_pct": null,
+    "return_eod_pct": -7.0,
     "max_favorable_pct": 1.72,
-    "max_adverse_pct": -5.4,
-    "outcome_complete": false
+    "max_adverse_pct": -7.46,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|HBAR-USD|3",
@@ -1284,10 +1284,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 1.42,
     "return_2h_pct": 1.89,
-    "return_eod_pct": null,
-    "max_favorable_pct": 4.73,
-    "max_adverse_pct": -1.51,
-    "outcome_complete": false
+    "return_eod_pct": -4.25,
+    "max_favorable_pct": 4.8,
+    "max_adverse_pct": -4.8,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|NEAR-USD|4",
@@ -1314,10 +1314,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.23,
     "return_2h_pct": 0.34,
-    "return_eod_pct": null,
+    "return_eod_pct": -5.81,
     "max_favorable_pct": 1.67,
-    "max_adverse_pct": -5.2,
-    "outcome_complete": false
+    "max_adverse_pct": -6.43,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|BAT-USD|5",
@@ -1344,10 +1344,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.21,
     "return_2h_pct": -0.1,
-    "return_eod_pct": null,
+    "return_eod_pct": -6.44,
     "max_favorable_pct": 2.07,
-    "max_adverse_pct": -5.22,
-    "outcome_complete": false
+    "max_adverse_pct": -7.25,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|SOL-USD|6",
@@ -1372,12 +1372,12 @@
     "rel_sector": null,
     "rsi": 47.3,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.1,
+    "return_1h_pct": -0.08,
     "return_2h_pct": -0.34,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.79,
-    "max_adverse_pct": -1.69,
-    "outcome_complete": false
+    "return_eod_pct": -2.75,
+    "max_favorable_pct": 0.78,
+    "max_adverse_pct": -2.97,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|KAVA-USD|7",
@@ -1404,10 +1404,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.0,
     "return_2h_pct": 0.28,
-    "return_eod_pct": null,
+    "return_eod_pct": -0.28,
     "max_favorable_pct": 2.84,
-    "max_adverse_pct": -0.0,
-    "outcome_complete": false
+    "max_adverse_pct": -0.57,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|SHIB-USD|8",
@@ -1462,12 +1462,12 @@
     "rel_sector": null,
     "rsi": 45.7,
     "momentum_change": "stärker",
-    "return_1h_pct": 0.07,
-    "return_2h_pct": 0.1,
-    "return_eod_pct": null,
+    "return_1h_pct": 0.2,
+    "return_2h_pct": 0.11,
+    "return_eod_pct": -3.54,
     "max_favorable_pct": 1.75,
-    "max_adverse_pct": -2.66,
-    "outcome_complete": false
+    "max_adverse_pct": -3.55,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|LONG|AVAX-USD|10",
@@ -1494,10 +1494,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.41,
     "return_2h_pct": 0.38,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.87,
     "max_favorable_pct": 1.64,
-    "max_adverse_pct": -2.53,
-    "outcome_complete": false
+    "max_adverse_pct": -4.71,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|EOS-USD|1",
@@ -1522,12 +1522,12 @@
     "rel_sector": null,
     "rsi": 35.2,
     "momentum_change": "stärker",
-    "return_1h_pct": 1.68,
+    "return_1h_pct": 1.86,
     "return_2h_pct": 1.43,
-    "return_eod_pct": null,
-    "max_favorable_pct": 15.23,
-    "max_adverse_pct": 0.12,
-    "outcome_complete": false
+    "return_eod_pct": 15.87,
+    "max_favorable_pct": 19.35,
+    "max_adverse_pct": 0.14,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|ANKR-USD|2",
@@ -1554,10 +1554,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.81,
     "return_2h_pct": -0.77,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.19,
+    "return_eod_pct": 4.0,
+    "max_favorable_pct": 4.64,
     "max_adverse_pct": -1.59,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|IOTA-USD|3",
@@ -1582,12 +1582,12 @@
     "rel_sector": null,
     "rsi": 33.0,
     "momentum_change": "gleich",
-    "return_1h_pct": -0.41,
+    "return_1h_pct": -0.49,
     "return_2h_pct": -0.27,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.65,
+    "return_eod_pct": 5.44,
+    "max_favorable_pct": 6.35,
     "max_adverse_pct": -0.89,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|ENJ-USD|4",
@@ -1612,12 +1612,12 @@
     "rel_sector": null,
     "rsi": 33.3,
     "momentum_change": "schwächer",
-    "return_1h_pct": -0.59,
+    "return_1h_pct": -0.71,
     "return_2h_pct": -0.31,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.67,
-    "max_adverse_pct": -1.03,
-    "outcome_complete": false
+    "return_eod_pct": 5.15,
+    "max_favorable_pct": 5.86,
+    "max_adverse_pct": -1.01,
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|OP-USD|5",
@@ -1644,10 +1644,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.13,
     "return_2h_pct": -0.05,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.11,
+    "return_eod_pct": 5.58,
+    "max_favorable_pct": 6.06,
     "max_adverse_pct": -1.63,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|CRV-USD|6",
@@ -1674,10 +1674,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.89,
     "return_2h_pct": -0.56,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.92,
+    "return_eod_pct": 3.01,
+    "max_favorable_pct": 3.51,
     "max_adverse_pct": -1.27,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|FIL-USD|7",
@@ -1704,10 +1704,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.02,
     "return_2h_pct": 0.12,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.83,
+    "return_eod_pct": 4.74,
+    "max_favorable_pct": 5.38,
     "max_adverse_pct": -2.2,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|ZRX-USD|8",
@@ -1734,10 +1734,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.12,
     "return_2h_pct": 0.11,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.22,
+    "return_eod_pct": 4.69,
+    "max_favorable_pct": 5.18,
     "max_adverse_pct": -0.88,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|MKR-USD|9",
@@ -1762,12 +1762,12 @@
     "rel_sector": null,
     "rsi": 20.7,
     "momentum_change": "stärker",
-    "return_1h_pct": 0.09,
+    "return_1h_pct": 0.13,
     "return_2h_pct": 0.64,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.23,
+    "return_eod_pct": 3.16,
+    "max_favorable_pct": 3.48,
     "max_adverse_pct": -0.04,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T060645Z|Krypto|SHORT|AXS-USD|10",
@@ -1794,10 +1794,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.36,
     "return_2h_pct": 0.23,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.53,
+    "return_eod_pct": 4.67,
+    "max_favorable_pct": 5.26,
     "max_adverse_pct": -0.99,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|KAVA-USD|1",
@@ -1824,10 +1824,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.28,
     "return_2h_pct": -0.84,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.37,
     "max_favorable_pct": 0.7,
-    "max_adverse_pct": -1.53,
-    "outcome_complete": false
+    "max_adverse_pct": -2.65,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|HBAR-USD|2",
@@ -1854,10 +1854,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.09,
     "return_2h_pct": -2.31,
-    "return_eod_pct": null,
+    "return_eod_pct": -7.91,
     "max_favorable_pct": 0.57,
-    "max_adverse_pct": -5.28,
-    "outcome_complete": false
+    "max_adverse_pct": -8.44,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|QNT-USD|3",
@@ -1884,10 +1884,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.86,
     "return_2h_pct": -2.46,
-    "return_eod_pct": null,
+    "return_eod_pct": -8.01,
     "max_favorable_pct": 0.34,
-    "max_adverse_pct": -5.64,
-    "outcome_complete": false
+    "max_adverse_pct": -8.76,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|RUNE-USD|4",
@@ -1912,12 +1912,12 @@
     "rel_sector": null,
     "rsi": 64.0,
     "momentum_change": "schwächer",
-    "return_1h_pct": -0.48,
+    "return_1h_pct": -0.4,
     "return_2h_pct": -1.75,
-    "return_eod_pct": null,
+    "return_eod_pct": -4.71,
     "max_favorable_pct": 0.08,
-    "max_adverse_pct": -3.84,
-    "outcome_complete": false
+    "max_adverse_pct": -4.72,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|AAVE-USD|5",
@@ -1944,10 +1944,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.01,
     "return_2h_pct": -1.26,
-    "return_eod_pct": null,
+    "return_eod_pct": -4.68,
     "max_favorable_pct": 0.38,
-    "max_adverse_pct": -3.05,
-    "outcome_complete": false
+    "max_adverse_pct": -5.06,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|BNB-USD|6",
@@ -1974,10 +1974,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.11,
     "return_2h_pct": -0.81,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.38,
     "max_favorable_pct": 0.04,
-    "max_adverse_pct": -1.78,
-    "outcome_complete": false
+    "max_adverse_pct": -2.48,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|SOL-USD|7",
@@ -2004,10 +2004,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.07,
     "return_2h_pct": -1.25,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.26,
     "max_favorable_pct": 0.23,
-    "max_adverse_pct": -2.21,
-    "outcome_complete": false
+    "max_adverse_pct": -3.48,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|DASH-USD|8",
@@ -2034,10 +2034,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": 0.33,
     "return_2h_pct": 0.08,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.87,
-    "max_adverse_pct": -3.62,
-    "outcome_complete": false
+    "return_eod_pct": -6.0,
+    "max_favorable_pct": 1.71,
+    "max_adverse_pct": -6.02,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|BTC-USD|9",
@@ -2064,10 +2064,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.2,
     "return_2h_pct": -0.8,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.02,
-    "max_adverse_pct": -1.34,
-    "outcome_complete": false
+    "return_eod_pct": -1.5,
+    "max_favorable_pct": 0.03,
+    "max_adverse_pct": -1.69,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|LONG|ADA-USD|10",
@@ -2094,10 +2094,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.03,
     "return_2h_pct": -1.64,
-    "return_eod_pct": null,
+    "return_eod_pct": -3.73,
     "max_favorable_pct": 0.27,
-    "max_adverse_pct": -2.5,
-    "outcome_complete": false
+    "max_adverse_pct": -4.22,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|IOTA-USD|1",
@@ -2122,12 +2122,12 @@
     "rel_sector": null,
     "rsi": 33.4,
     "momentum_change": "stärker",
-    "return_1h_pct": 0.31,
+    "return_1h_pct": 0.3,
     "return_2h_pct": 1.85,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.2,
+    "return_eod_pct": 5.02,
+    "max_favorable_pct": 5.88,
     "max_adverse_pct": 0.03,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|MANA-USD|2",
@@ -2154,10 +2154,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": 0.12,
     "return_2h_pct": 1.3,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.91,
+    "return_eod_pct": 4.48,
+    "max_favorable_pct": 5.21,
     "max_adverse_pct": -0.12,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|EOS-USD|3",
@@ -2184,10 +2184,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.87,
     "return_2h_pct": 3.47,
-    "return_eod_pct": null,
-    "max_favorable_pct": 13.11,
-    "max_adverse_pct": -0.26,
-    "outcome_complete": false
+    "return_eod_pct": 14.29,
+    "max_favorable_pct": 17.15,
+    "max_adverse_pct": 0.23,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|FLOW-USD|4",
@@ -2214,10 +2214,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.26,
     "return_2h_pct": 1.39,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.97,
+    "return_eod_pct": 4.9,
+    "max_favorable_pct": 5.45,
     "max_adverse_pct": -0.26,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|AXS-USD|5",
@@ -2244,10 +2244,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.46,
     "return_2h_pct": 1.81,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.21,
+    "return_eod_pct": 4.37,
+    "max_favorable_pct": 4.92,
     "max_adverse_pct": -0.16,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|SAND-USD|6",
@@ -2274,10 +2274,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": 0.0,
     "return_2h_pct": -0.65,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.15,
-    "max_adverse_pct": -3.26,
-    "outcome_complete": false
+    "return_eod_pct": 7.67,
+    "max_favorable_pct": 8.69,
+    "max_adverse_pct": -3.43,
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|SNX-USD|7",
@@ -2304,10 +2304,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.5,
     "return_2h_pct": 0.73,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.85,
+    "return_eod_pct": 4.48,
+    "max_favorable_pct": 4.78,
     "max_adverse_pct": -0.91,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|ICP-USD|8",
@@ -2334,10 +2334,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.33,
     "return_2h_pct": 1.16,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.28,
+    "return_eod_pct": 4.37,
+    "max_favorable_pct": 5.09,
     "max_adverse_pct": -0.41,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|ZRX-USD|9",
@@ -2363,11 +2363,11 @@
     "rsi": 42.1,
     "momentum_change": "stärker",
     "return_1h_pct": -0.02,
-    "return_2h_pct": 1.16,
-    "return_eod_pct": null,
-    "max_favorable_pct": 3.03,
+    "return_2h_pct": 0.96,
+    "return_eod_pct": 4.51,
+    "max_favorable_pct": 4.99,
     "max_adverse_pct": -0.22,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T112605Z|Krypto|SHORT|NEO-USD|10",
@@ -2392,12 +2392,12 @@
     "rel_sector": null,
     "rsi": 38.8,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.29,
+    "return_1h_pct": -0.34,
     "return_2h_pct": 1.3,
-    "return_eod_pct": null,
-    "max_favorable_pct": 2.85,
-    "max_adverse_pct": -0.43,
-    "outcome_complete": false
+    "return_eod_pct": 4.25,
+    "max_favorable_pct": 4.66,
+    "max_adverse_pct": -0.44,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|HBAR-USD|1",
@@ -2424,10 +2424,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -1.05,
     "return_2h_pct": -1.74,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.58,
-    "max_adverse_pct": -3.1,
-    "outcome_complete": false
+    "return_eod_pct": -5.79,
+    "max_favorable_pct": 1.46,
+    "max_adverse_pct": -6.33,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|SAND-USD|2",
@@ -2454,10 +2454,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -2.63,
     "return_2h_pct": -3.78,
-    "return_eod_pct": null,
+    "return_eod_pct": -7.06,
     "max_favorable_pct": -0.0,
-    "max_adverse_pct": -4.27,
-    "outcome_complete": false
+    "max_adverse_pct": -7.39,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|KAVA-USD|3",
@@ -2484,10 +2484,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.14,
     "return_2h_pct": -0.14,
-    "return_eod_pct": null,
+    "return_eod_pct": -1.54,
     "max_favorable_pct": 0.14,
-    "max_adverse_pct": -0.7,
-    "outcome_complete": false
+    "max_adverse_pct": -1.83,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|LTC-USD|4",
@@ -2513,11 +2513,11 @@
     "rsi": 39.8,
     "momentum_change": "schwächer",
     "return_1h_pct": -1.01,
-    "return_2h_pct": -0.67,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.61,
+    "return_eod_pct": -3.01,
     "max_favorable_pct": 0.58,
-    "max_adverse_pct": -1.5,
-    "outcome_complete": false
+    "max_adverse_pct": -3.51,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|AXS-USD|5",
@@ -2544,10 +2544,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.3,
     "return_2h_pct": -0.0,
-    "return_eod_pct": null,
+    "return_eod_pct": -1.86,
     "max_favorable_pct": 0.69,
-    "max_adverse_pct": -0.57,
-    "outcome_complete": false
+    "max_adverse_pct": -2.19,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|KSM-USD|6",
@@ -2574,10 +2574,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.87,
     "return_2h_pct": -0.36,
-    "return_eod_pct": null,
+    "return_eod_pct": -2.3,
     "max_favorable_pct": -0.27,
-    "max_adverse_pct": -1.11,
-    "outcome_complete": false
+    "max_adverse_pct": -2.37,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|SOL-USD|7",
@@ -2604,10 +2604,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.01,
     "return_2h_pct": 0.22,
-    "return_eod_pct": null,
+    "return_eod_pct": -1.41,
     "max_favorable_pct": 0.39,
-    "max_adverse_pct": -0.34,
-    "outcome_complete": false
+    "max_adverse_pct": -1.64,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|XRP-USD|8",
@@ -2634,10 +2634,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.24,
     "return_2h_pct": -0.02,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.39,
-    "max_adverse_pct": -0.46,
-    "outcome_complete": false
+    "return_eod_pct": -1.07,
+    "max_favorable_pct": 0.41,
+    "max_adverse_pct": -1.43,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|LINK-USD|9",
@@ -2663,11 +2663,11 @@
     "rsi": 24.9,
     "momentum_change": "stärker",
     "return_1h_pct": 0.08,
-    "return_2h_pct": 0.34,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.57,
-    "max_adverse_pct": -0.4,
-    "outcome_complete": false
+    "return_2h_pct": 0.4,
+    "return_eod_pct": -1.58,
+    "max_favorable_pct": 0.56,
+    "max_adverse_pct": -1.86,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|LONG|BNB-USD|10",
@@ -2694,10 +2694,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.29,
     "return_2h_pct": -0.13,
-    "return_eod_pct": null,
+    "return_eod_pct": -1.05,
     "max_favorable_pct": 0.12,
-    "max_adverse_pct": -0.44,
-    "outcome_complete": false
+    "max_adverse_pct": -1.15,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|RUNE-USD|1",
@@ -2722,12 +2722,12 @@
     "rel_sector": null,
     "rsi": 16.5,
     "momentum_change": "stärker",
-    "return_1h_pct": 0.03,
-    "return_2h_pct": -0.33,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.12,
-    "max_adverse_pct": -0.64,
-    "outcome_complete": false
+    "return_1h_pct": 0.01,
+    "return_2h_pct": -0.39,
+    "return_eod_pct": 1.02,
+    "max_favorable_pct": 1.04,
+    "max_adverse_pct": -3.54,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|QNT-USD|2",
@@ -2754,10 +2754,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": 0.22,
     "return_2h_pct": -0.23,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.95,
+    "return_eod_pct": 3.44,
+    "max_favorable_pct": 4.41,
     "max_adverse_pct": -1.02,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|AXS-USD|3",
@@ -2784,10 +2784,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": 0.3,
     "return_2h_pct": 0.0,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.57,
+    "return_eod_pct": 1.86,
+    "max_favorable_pct": 2.24,
     "max_adverse_pct": -0.69,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|MANA-USD|4",
@@ -2814,10 +2814,10 @@
     "momentum_change": "gleich",
     "return_1h_pct": -0.12,
     "return_2h_pct": -0.0,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.49,
+    "return_eod_pct": 2.17,
+    "max_favorable_pct": 2.73,
     "max_adverse_pct": -0.6,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|THETA-USD|5",
@@ -2842,12 +2842,12 @@
     "rel_sector": null,
     "rsi": 27.0,
     "momentum_change": "schwächer",
-    "return_1h_pct": 0.1,
-    "return_2h_pct": -0.06,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.44,
+    "return_1h_pct": 0.13,
+    "return_2h_pct": -0.04,
+    "return_eod_pct": 2.52,
+    "max_favorable_pct": 2.9,
     "max_adverse_pct": -0.51,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|ZEC-USD|6",
@@ -2873,11 +2873,11 @@
     "rsi": 26.0,
     "momentum_change": "stärker",
     "return_1h_pct": 1.08,
-    "return_2h_pct": -0.24,
-    "return_eod_pct": null,
-    "max_favorable_pct": 1.7,
-    "max_adverse_pct": -0.86,
-    "outcome_complete": false
+    "return_2h_pct": -0.21,
+    "return_eod_pct": 3.13,
+    "max_favorable_pct": 4.26,
+    "max_adverse_pct": -0.85,
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|EOS-USD|7",
@@ -2902,12 +2902,12 @@
     "rel_sector": null,
     "rsi": 17.6,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.48,
-    "return_2h_pct": 2.14,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.19,
+    "return_1h_pct": -0.45,
+    "return_2h_pct": 2.27,
+    "return_eod_pct": 7.84,
+    "max_favorable_pct": 8.95,
     "max_adverse_pct": -1.31,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|NEAR-USD|8",
@@ -2934,10 +2934,10 @@
     "momentum_change": "stärker",
     "return_1h_pct": -0.51,
     "return_2h_pct": -2.29,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.61,
+    "return_eod_pct": 1.25,
+    "max_favorable_pct": 1.94,
     "max_adverse_pct": -2.64,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|ROSE-USD|9",
@@ -2964,10 +2964,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.21,
     "return_2h_pct": -0.21,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.52,
+    "return_eod_pct": 2.61,
+    "max_favorable_pct": 3.61,
     "max_adverse_pct": -0.96,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T144515Z|Krypto|SHORT|FIL-USD|10",
@@ -2994,10 +2994,10 @@
     "momentum_change": "schwächer",
     "return_1h_pct": -0.36,
     "return_2h_pct": -0.92,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.36,
+    "return_eod_pct": 2.4,
+    "max_favorable_pct": 2.85,
     "max_adverse_pct": -1.67,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|HBAR-USD|1",
@@ -3023,11 +3023,11 @@
     "rsi": 40.1,
     "momentum_change": "stärker",
     "return_1h_pct": -1.41,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -1.95,
+    "return_eod_pct": -4.8,
     "max_favorable_pct": 0.21,
-    "max_adverse_pct": -2.08,
-    "outcome_complete": false
+    "max_adverse_pct": -5.35,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|KAVA-USD|2",
@@ -3053,11 +3053,11 @@
     "rsi": 49.3,
     "momentum_change": "gleich",
     "return_1h_pct": -0.42,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.84,
+    "return_eod_pct": -1.54,
     "max_favorable_pct": -0.0,
-    "max_adverse_pct": -0.7,
-    "outcome_complete": false
+    "max_adverse_pct": -1.83,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|DASH-USD|3",
@@ -3083,11 +3083,11 @@
     "rsi": 43.7,
     "momentum_change": "stärker",
     "return_1h_pct": -1.21,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -1.1,
+    "return_eod_pct": -3.89,
     "max_favorable_pct": -0.21,
-    "max_adverse_pct": -1.45,
-    "outcome_complete": false
+    "max_adverse_pct": -3.91,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|CRV-USD|4",
@@ -3113,11 +3113,11 @@
     "rsi": 46.4,
     "momentum_change": "stärker",
     "return_1h_pct": -0.15,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.36,
+    "return_eod_pct": -2.23,
     "max_favorable_pct": 0.42,
-    "max_adverse_pct": -0.45,
-    "outcome_complete": false
+    "max_adverse_pct": -2.62,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|NEAR-USD|5",
@@ -3143,11 +3143,11 @@
     "rsi": 30.5,
     "momentum_change": "stärker",
     "return_1h_pct": 0.64,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": 0.47,
+    "return_eod_pct": -1.91,
     "max_favorable_pct": 1.96,
-    "max_adverse_pct": 0.17,
-    "outcome_complete": false
+    "max_adverse_pct": -2.56,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|FIL-USD|6",
@@ -3173,11 +3173,11 @@
     "rsi": 41.7,
     "momentum_change": "stärker",
     "return_1h_pct": -0.94,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.85,
+    "return_eod_pct": -3.23,
     "max_favorable_pct": 0.81,
-    "max_adverse_pct": -1.21,
-    "outcome_complete": false
+    "max_adverse_pct": -3.6,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|LTC-USD|7",
@@ -3202,12 +3202,12 @@
     "rel_sector": null,
     "rsi": 31.6,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.34,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.51,
-    "max_adverse_pct": -0.45,
-    "outcome_complete": false
+    "return_1h_pct": -0.3,
+    "return_2h_pct": -0.16,
+    "return_eod_pct": -1.99,
+    "max_favorable_pct": 0.5,
+    "max_adverse_pct": -2.49,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|ICP-USD|8",
@@ -3232,12 +3232,12 @@
     "rel_sector": null,
     "rsi": 34.5,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.53,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_1h_pct": -0.57,
+    "return_2h_pct": -0.49,
+    "return_eod_pct": -2.11,
     "max_favorable_pct": 0.45,
-    "max_adverse_pct": -0.69,
-    "outcome_complete": false
+    "max_adverse_pct": -2.6,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|TRX-USD|9",
@@ -3262,12 +3262,12 @@
     "rel_sector": null,
     "rsi": 45.2,
     "momentum_change": "stärker",
-    "return_1h_pct": 0.04,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.05,
-    "max_adverse_pct": -0.04,
-    "outcome_complete": false
+    "return_1h_pct": 0.03,
+    "return_2h_pct": 0.06,
+    "return_eod_pct": -0.25,
+    "max_favorable_pct": 0.08,
+    "max_adverse_pct": -0.26,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|LONG|ETC-USD|10",
@@ -3293,11 +3293,11 @@
     "rsi": 36.3,
     "momentum_change": "stärker",
     "return_1h_pct": -0.42,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
+    "return_2h_pct": -0.25,
+    "return_eod_pct": -1.56,
     "max_favorable_pct": 0.24,
-    "max_adverse_pct": -0.56,
-    "outcome_complete": false
+    "max_adverse_pct": -2.4,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|SAND-USD|1",
@@ -3323,11 +3323,11 @@
     "rsi": 32.0,
     "momentum_change": "stärker",
     "return_1h_pct": -0.34,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.68,
-    "max_adverse_pct": -0.51,
-    "outcome_complete": false
+    "return_2h_pct": -0.17,
+    "return_eod_pct": 3.74,
+    "max_favorable_pct": 4.26,
+    "max_adverse_pct": -0.85,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|KSM-USD|2",
@@ -3353,11 +3353,11 @@
     "rsi": 30.0,
     "momentum_change": "gleich",
     "return_1h_pct": -0.55,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": -0.11,
+    "return_2h_pct": -0.44,
+    "return_eod_pct": 1.44,
+    "max_favorable_pct": 1.54,
     "max_adverse_pct": -0.55,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|ZEC-USD|3",
@@ -3383,11 +3383,11 @@
     "rsi": 25.9,
     "momentum_change": "schwächer",
     "return_1h_pct": -0.54,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": -0.01,
-    "max_adverse_pct": -1.7,
-    "outcome_complete": false
+    "return_2h_pct": -0.31,
+    "return_eod_pct": 1.97,
+    "max_favorable_pct": 3.02,
+    "max_adverse_pct": -1.65,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|AXS-USD|4",
@@ -3413,11 +3413,11 @@
     "rsi": 32.7,
     "momentum_change": "stärker",
     "return_1h_pct": 0.2,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.42,
-    "max_adverse_pct": -0.29,
-    "outcome_complete": false
+    "return_2h_pct": -0.14,
+    "return_eod_pct": 1.71,
+    "max_favorable_pct": 2.09,
+    "max_adverse_pct": -0.3,
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|EOS-USD|5",
@@ -3442,12 +3442,12 @@
     "rel_sector": null,
     "rsi": 26.7,
     "momentum_change": "schwächer",
-    "return_1h_pct": 4.82,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 5.63,
+    "return_1h_pct": 5.16,
+    "return_2h_pct": 5.13,
+    "return_eod_pct": 8.23,
+    "max_favorable_pct": 9.41,
     "max_adverse_pct": 0.69,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|ROSE-USD|6",
@@ -3473,11 +3473,11 @@
     "rsi": 35.9,
     "momentum_change": "gleich",
     "return_1h_pct": 0.51,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.52,
+    "return_2h_pct": 0.57,
+    "return_eod_pct": 2.61,
+    "max_favorable_pct": 3.61,
     "max_adverse_pct": -0.36,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|CHZ-USD|7",
@@ -3503,11 +3503,11 @@
     "rsi": 29.1,
     "momentum_change": "stärker",
     "return_1h_pct": 0.36,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.59,
+    "return_2h_pct": 0.76,
+    "return_eod_pct": 2.15,
+    "max_favorable_pct": 3.16,
     "max_adverse_pct": -0.19,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|INJ-USD|8",
@@ -3532,12 +3532,12 @@
     "rel_sector": null,
     "rsi": 30.0,
     "momentum_change": "stärker",
-    "return_1h_pct": -0.49,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": -0.24,
+    "return_1h_pct": -0.51,
+    "return_2h_pct": -0.62,
+    "return_eod_pct": 1.78,
+    "max_favorable_pct": 2.87,
     "max_adverse_pct": -1.46,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|AAVE-USD|9",
@@ -3563,11 +3563,11 @@
     "rsi": 28.9,
     "momentum_change": "schwächer",
     "return_1h_pct": -0.07,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.19,
+    "return_2h_pct": 0.04,
+    "return_eod_pct": 1.87,
+    "max_favorable_pct": 2.31,
     "max_adverse_pct": -0.64,
-    "outcome_complete": false
+    "outcome_complete": true
   },
   {
     "id": "20261018T164041Z|Krypto|SHORT|RUNE-USD|10",
@@ -3592,12 +3592,12 @@
     "rel_sector": null,
     "rsi": 28.3,
     "momentum_change": "gleich",
-    "return_1h_pct": 0.02,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": 0.19,
-    "max_adverse_pct": -0.45,
-    "outcome_complete": false
+    "return_1h_pct": -0.01,
+    "return_2h_pct": -0.61,
+    "return_eod_pct": 1.21,
+    "max_favorable_pct": 1.23,
+    "max_adverse_pct": -3.34,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|KAVA-USD|1",
@@ -3622,12 +3622,12 @@
     "rel_sector": null,
     "rsi": 40.1,
     "momentum_change": "gleich",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -0.85,
+    "return_2h_pct": -1.41,
+    "return_eod_pct": -1.13,
+    "max_favorable_pct": -0.14,
+    "max_adverse_pct": -1.41,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|SAND-USD|2",
@@ -3652,12 +3652,12 @@
     "rel_sector": null,
     "rsi": 37.0,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -3.39,
+    "return_2h_pct": -3.56,
+    "return_eod_pct": -4.07,
+    "max_favorable_pct": 0.51,
+    "max_adverse_pct": -4.41,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|HBAR-USD|3",
@@ -3682,12 +3682,12 @@
     "rel_sector": null,
     "rsi": 29.7,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -2.94,
+    "return_2h_pct": -2.64,
+    "return_eod_pct": -3.0,
+    "max_favorable_pct": -0.05,
+    "max_adverse_pct": -3.55,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|NEAR-USD|4",
@@ -3712,12 +3712,12 @@
     "rel_sector": null,
     "rsi": 43.3,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -2.36,
+    "return_2h_pct": -2.2,
+    "return_eod_pct": -2.57,
+    "max_favorable_pct": 0.07,
+    "max_adverse_pct": -3.22,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|TRX-USD|5",
@@ -3742,12 +3742,12 @@
     "rel_sector": null,
     "rsi": 50.6,
     "momentum_change": "gleich",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -0.18,
+    "return_2h_pct": -0.23,
+    "return_eod_pct": -0.28,
+    "max_favorable_pct": 0.05,
+    "max_adverse_pct": -0.29,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|KSM-USD|6",
@@ -3772,12 +3772,12 @@
     "rel_sector": null,
     "rsi": 41.2,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -1.71,
+    "return_2h_pct": -1.59,
+    "return_eod_pct": -1.98,
+    "max_favorable_pct": -0.11,
+    "max_adverse_pct": -2.05,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|CRV-USD|7",
@@ -3802,12 +3802,12 @@
     "rel_sector": null,
     "rsi": 45.8,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -1.76,
+    "return_2h_pct": -1.88,
+    "return_eod_pct": -2.03,
+    "max_favorable_pct": 0.0,
+    "max_adverse_pct": -2.41,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|RUNE-USD|8",
@@ -3832,12 +3832,12 @@
     "rel_sector": null,
     "rsi": 36.4,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.69,
+    "return_2h_pct": -0.7,
+    "return_eod_pct": -1.28,
+    "max_favorable_pct": 3.28,
+    "max_adverse_pct": -1.28,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|MANA-USD|9",
@@ -3862,12 +3862,12 @@
     "rel_sector": null,
     "rsi": 37.0,
     "momentum_change": "gleich",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -2.18,
+    "return_2h_pct": -1.82,
+    "return_eod_pct": -1.94,
+    "max_favorable_pct": 0.36,
+    "max_adverse_pct": -2.42,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|LONG|DOGE-USD|10",
@@ -3892,12 +3892,12 @@
     "rel_sector": null,
     "rsi": 40.4,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": -1.9,
+    "return_2h_pct": -1.89,
+    "return_eod_pct": -1.7,
+    "max_favorable_pct": 0.04,
+    "max_adverse_pct": -2.16,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|ENJ-USD|1",
@@ -3922,12 +3922,12 @@
     "rel_sector": null,
     "rsi": 28.1,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.71,
+    "return_2h_pct": 1.93,
+    "return_eod_pct": 1.62,
+    "max_favorable_pct": 2.07,
+    "max_adverse_pct": -0.26,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|BAT-USD|2",
@@ -3952,12 +3952,12 @@
     "rel_sector": null,
     "rsi": 30.7,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 2.14,
+    "return_2h_pct": 0.16,
+    "return_eod_pct": 1.62,
+    "max_favorable_pct": 2.53,
+    "max_adverse_pct": -0.23,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|EOS-USD|3",
@@ -3982,12 +3982,12 @@
     "rel_sector": null,
     "rsi": 17.6,
     "momentum_change": "schwächer",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 2.45,
+    "return_2h_pct": 3.93,
+    "return_eod_pct": 3.76,
+    "max_favorable_pct": 4.33,
+    "max_adverse_pct": -0.23,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|HBAR-USD|4",
@@ -4012,12 +4012,12 @@
     "rel_sector": null,
     "rsi": 29.7,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 2.94,
+    "return_2h_pct": 2.64,
+    "return_eod_pct": 3.0,
+    "max_favorable_pct": 3.69,
+    "max_adverse_pct": 0.05,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|ANKR-USD|5",
@@ -4042,12 +4042,12 @@
     "rel_sector": null,
     "rsi": 32.9,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.88,
+    "return_2h_pct": 1.58,
+    "return_eod_pct": 1.6,
+    "max_favorable_pct": 2.09,
+    "max_adverse_pct": -0.25,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|ROSE-USD|6",
@@ -4072,12 +4072,12 @@
     "rel_sector": null,
     "rsi": 33.8,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 2.83,
+    "return_2h_pct": 2.72,
+    "return_eod_pct": 2.61,
+    "max_favorable_pct": 3.61,
+    "max_adverse_pct": 0.47,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|ZRX-USD|7",
@@ -4102,12 +4102,12 @@
     "rel_sector": null,
     "rsi": 34.1,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.65,
+    "return_2h_pct": 1.61,
+    "return_eod_pct": 1.76,
+    "max_favorable_pct": 2.04,
+    "max_adverse_pct": -0.32,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|FIL-USD|8",
@@ -4132,12 +4132,12 @@
     "rel_sector": null,
     "rsi": 33.1,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.35,
+    "return_2h_pct": 1.84,
+    "return_eod_pct": 2.05,
+    "max_favorable_pct": 2.49,
+    "max_adverse_pct": -0.46,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|ETC-USD|9",
@@ -4162,12 +4162,12 @@
     "rel_sector": null,
     "rsi": 31.2,
     "momentum_change": "stärker",
-    "return_1h_pct": null,
-    "return_2h_pct": null,
-    "return_eod_pct": null,
-    "max_favorable_pct": null,
-    "max_adverse_pct": null,
-    "outcome_complete": false
+    "return_1h_pct": 1.57,
+    "return_2h_pct": 1.21,
+    "return_eod_pct": 1.07,
+    "max_favorable_pct": 1.95,
+    "max_adverse_pct": -0.34,
+    "outcome_complete": true
   },
   {
     "id": "20261018T181535Z|Krypto|SHORT|SNX-USD|10",
@@ -4192,6 +4192,606 @@
     "rel_sector": null,
     "rsi": 28.4,
     "momentum_change": "stärker",
+    "return_1h_pct": 1.58,
+    "return_2h_pct": 1.74,
+    "return_eod_pct": 1.79,
+    "max_favorable_pct": 1.91,
+    "max_adverse_pct": -0.19,
+    "outcome_complete": true
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|BAT-USD|1",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 1,
+    "symbol": "BAT-USD",
+    "name": "Basic Attention Token",
+    "signal": "KEIN EINSTIEG",
+    "score": 27.0,
+    "signal_price": 0.1705,
+    "day_pct": -4.78,
+    "m1": 2.02,
+    "m2": 0.82,
+    "m3": -0.11,
+    "stability": 21.0,
+    "volume_ratio": 0.25,
+    "rel_index": -4.42,
+    "rel_sector": null,
+    "rsi": 44.1,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|LDO-USD|2",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 2,
+    "symbol": "LDO-USD",
+    "name": "Lido DAO",
+    "signal": "KEIN EINSTIEG",
+    "score": 22.0,
+    "signal_price": 0.3678,
+    "day_pct": -3.44,
+    "m1": 1.31,
+    "m2": -1.33,
+    "m3": -1.4,
+    "stability": 13.0,
+    "volume_ratio": 0.89,
+    "rel_index": -3.08,
+    "rel_sector": null,
+    "rsi": 38.4,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|HBAR-USD|3",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 3,
+    "symbol": "HBAR-USD",
+    "name": "Hedera",
+    "signal": "KEIN EINSTIEG",
+    "score": 21.0,
+    "signal_price": 0.0822,
+    "day_pct": -1.76,
+    "m1": 0.31,
+    "m2": -2.43,
+    "m3": -3.14,
+    "stability": 13.0,
+    "volume_ratio": 6.24,
+    "rel_index": -1.4,
+    "rel_sector": null,
+    "rsi": 25.7,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|QNT-USD|4",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 4,
+    "symbol": "QNT-USD",
+    "name": "Quant",
+    "signal": "KEIN EINSTIEG",
+    "score": 20.0,
+    "signal_price": 183.71,
+    "day_pct": -5.2,
+    "m1": 0.65,
+    "m2": -2.24,
+    "m3": -3.11,
+    "stability": 8.0,
+    "volume_ratio": 1.32,
+    "rel_index": -4.84,
+    "rel_sector": null,
+    "rsi": 29.0,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|ETC-USD|5",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 5,
+    "symbol": "ETC-USD",
+    "name": "Ethereum Classic",
+    "signal": "KEIN EINSTIEG",
+    "score": 19.0,
+    "signal_price": 7.482,
+    "day_pct": -2.62,
+    "m1": 0.36,
+    "m2": -1.33,
+    "m3": -1.45,
+    "stability": 20.0,
+    "volume_ratio": 1.4,
+    "rel_index": -2.26,
+    "rel_sector": null,
+    "rsi": 30.2,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|MANA-USD|6",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 6,
+    "symbol": "MANA-USD",
+    "name": "Decentraland",
+    "signal": "KEIN EINSTIEG",
+    "score": 19.0,
+    "signal_price": 0.0811,
+    "day_pct": -5.59,
+    "m1": 0.37,
+    "m2": -1.82,
+    "m3": -2.05,
+    "stability": 19.0,
+    "volume_ratio": 1.41,
+    "rel_index": -5.23,
+    "rel_sector": null,
+    "rsi": 29.6,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|SOL-USD|7",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 7,
+    "symbol": "SOL-USD",
+    "name": "Solana",
+    "signal": "KEIN EINSTIEG",
+    "score": 18.0,
+    "signal_price": 100.83,
+    "day_pct": -1.28,
+    "m1": 0.19,
+    "m2": -1.14,
+    "m3": -1.14,
+    "stability": 23.0,
+    "volume_ratio": 1.45,
+    "rel_index": -0.92,
+    "rel_sector": null,
+    "rsi": 32.6,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|SAND-USD|8",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 8,
+    "symbol": "SAND-USD",
+    "name": "The Sandbox",
+    "signal": "KEIN EINSTIEG",
+    "score": 18.0,
+    "signal_price": 0.0569,
+    "day_pct": -4.69,
+    "m1": -0.18,
+    "m2": -3.56,
+    "m3": -3.23,
+    "stability": 15.0,
+    "volume_ratio": 7.47,
+    "rel_index": -4.33,
+    "rel_sector": null,
+    "rsi": 26.7,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|LTC-USD|9",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 9,
+    "symbol": "LTC-USD",
+    "name": "Litecoin",
+    "signal": "KEIN EINSTIEG",
+    "score": 17.0,
+    "signal_price": 57.062,
+    "day_pct": -1.63,
+    "m1": 0.2,
+    "m2": -1.54,
+    "m3": -1.69,
+    "stability": 22.0,
+    "volume_ratio": 1.37,
+    "rel_index": -1.27,
+    "rel_sector": null,
+    "rsi": 29.6,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|LONG|EGLD-USD|10",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "LONG",
+    "rank": 10,
+    "symbol": "EGLD-USD",
+    "name": "MultiversX",
+    "signal": "KEIN EINSTIEG",
+    "score": 17.0,
+    "signal_price": 3.4011,
+    "day_pct": -3.85,
+    "m1": 0.51,
+    "m2": -2.09,
+    "m3": -1.76,
+    "stability": 18.0,
+    "volume_ratio": 0.9,
+    "rel_index": -3.49,
+    "rel_sector": null,
+    "rsi": 29.7,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|ATOM-USD|1",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 1,
+    "symbol": "ATOM-USD",
+    "name": "Cosmos",
+    "signal": "EINSTIEG",
+    "score": 74.0,
+    "signal_price": 1.6229,
+    "day_pct": -3.11,
+    "m1": -0.93,
+    "m2": -1.95,
+    "m3": -2.61,
+    "stability": 76.0,
+    "volume_ratio": 0.75,
+    "rel_index": -2.75,
+    "rel_sector": null,
+    "rsi": 24.8,
+    "momentum_change": "gleich",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|EOS-USD|2",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 2,
+    "symbol": "EOS-USD",
+    "name": "EOS",
+    "signal": "BEOBACHTEN",
+    "score": 71.0,
+    "signal_price": 0.0867,
+    "day_pct": -21.13,
+    "m1": -1.52,
+    "m2": -2.74,
+    "m3": -4.01,
+    "stability": 68.0,
+    "volume_ratio": 0.53,
+    "rel_index": -20.77,
+    "rel_sector": null,
+    "rsi": 17.4,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|RUNE-USD|3",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 3,
+    "symbol": "RUNE-USD",
+    "name": "THORChain",
+    "signal": "BEOBACHTEN",
+    "score": 70.0,
+    "signal_price": 0.6167,
+    "day_pct": -2.01,
+    "m1": -2.35,
+    "m2": -1.57,
+    "m3": -0.77,
+    "stability": 30.0,
+    "volume_ratio": 3.69,
+    "rel_index": -1.65,
+    "rel_sector": null,
+    "rsi": 40.7,
+    "momentum_change": "stärker",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|SAND-USD|4",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 4,
+    "symbol": "SAND-USD",
+    "name": "The Sandbox",
+    "signal": "BEOBACHTEN",
+    "score": 66.0,
+    "signal_price": 0.0569,
+    "day_pct": -4.69,
+    "m1": -0.18,
+    "m2": -3.56,
+    "m3": -3.23,
+    "stability": 53.0,
+    "volume_ratio": 7.47,
+    "rel_index": -4.33,
+    "rel_sector": null,
+    "rsi": 26.7,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|HBAR-USD|5",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 5,
+    "symbol": "HBAR-USD",
+    "name": "Hedera",
+    "signal": "BEOBACHTEN",
+    "score": 66.0,
+    "signal_price": 0.0822,
+    "day_pct": -1.76,
+    "m1": 0.31,
+    "m2": -2.43,
+    "m3": -3.14,
+    "stability": 70.0,
+    "volume_ratio": 6.24,
+    "rel_index": -1.4,
+    "rel_sector": null,
+    "rsi": 25.7,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|THETA-USD|6",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 6,
+    "symbol": "THETA-USD",
+    "name": "Theta Network",
+    "signal": "BEOBACHTEN",
+    "score": 66.0,
+    "signal_price": 0.1799,
+    "day_pct": -5.48,
+    "m1": -0.39,
+    "m2": -1.76,
+    "m3": -2.76,
+    "stability": 68.0,
+    "volume_ratio": 1.27,
+    "rel_index": -5.12,
+    "rel_sector": null,
+    "rsi": 19.4,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|ICP-USD|7",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 7,
+    "symbol": "ICP-USD",
+    "name": "Internet Computer",
+    "signal": "BEOBACHTEN",
+    "score": 65.0,
+    "signal_price": 2.7674,
+    "day_pct": -4.87,
+    "m1": -0.37,
+    "m2": -1.92,
+    "m3": -2.22,
+    "stability": 53.0,
+    "volume_ratio": 1.34,
+    "rel_index": -4.51,
+    "rel_sector": null,
+    "rsi": 27.1,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|INJ-USD|8",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 8,
+    "symbol": "INJ-USD",
+    "name": "Injective",
+    "signal": "BEOBACHTEN",
+    "score": 65.0,
+    "signal_price": 7.803,
+    "day_pct": -8.26,
+    "m1": -0.88,
+    "m2": -3.31,
+    "m3": -3.46,
+    "stability": 51.0,
+    "volume_ratio": 0.46,
+    "rel_index": -7.91,
+    "rel_sector": null,
+    "rsi": 21.7,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|NEO-USD|9",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 9,
+    "symbol": "NEO-USD",
+    "name": "NEO",
+    "signal": "BEOBACHTEN",
+    "score": 64.0,
+    "signal_price": 2.1177,
+    "day_pct": -4.87,
+    "m1": -0.77,
+    "m2": -2.23,
+    "m3": -2.19,
+    "stability": 54.0,
+    "volume_ratio": 0.84,
+    "rel_index": -4.51,
+    "rel_sector": null,
+    "rsi": 21.2,
+    "momentum_change": "schwächer",
+    "return_1h_pct": null,
+    "return_2h_pct": null,
+    "return_eod_pct": null,
+    "max_favorable_pct": null,
+    "max_adverse_pct": null,
+    "outcome_complete": false
+  },
+  {
+    "id": "20261018T205721Z|Krypto|SHORT|CRV-USD|10",
+    "scan_time_utc": "2026-10-18T20:57:21.160139+00:00",
+    "scan_time_vienna": "2026-10-18T22:57:21.160139+02:00",
+    "signal_time_ny": "2026-10-18T16:57:21.160139-04:00",
+    "universe": "Krypto",
+    "direction": "SHORT",
+    "rank": 10,
+    "symbol": "CRV-USD",
+    "name": "Curve DAO",
+    "signal": "BEOBACHTEN",
+    "score": 63.0,
+    "signal_price": 0.3292,
+    "day_pct": -3.66,
+    "m1": -0.12,
+    "m2": -1.67,
+    "m3": -2.34,
+    "stability": 73.0,
+    "volume_ratio": 1.25,
+    "rel_index": -3.3,
+    "rel_sector": null,
+    "rsi": 35.5,
+    "momentum_change": "schwächer",
     "return_1h_pct": null,
     "return_2h_pct": null,
     "return_eod_pct": null,
